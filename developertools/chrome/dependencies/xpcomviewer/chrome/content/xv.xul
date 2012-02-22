@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://global/skin/toolbar.css" type="text/css"?>
+<?xml-stylesheet href="chrome://xpcomviewer/skin/xpcomviewer.css" type="text/css"?>
+
+<?xml-overlay href="chrome://global/content/utility-overlay.xul"?>
+
+<!-- ***** BEGIN LICENSE BLOCK *****
+   - Version: MPL 1.1/GPL 2.0/LGPL 2.1
+   -
+   - The contents of this file are subject to the Mozilla Public License Version
+   - 1.1 (the "License"); you may not use this file except in compliance with
+   - the License. You may obtain a copy of the License at
+   - http://www.mozilla.org/MPL/
+   -
+   - Software distributed under the License is distributed on an "AS IS" basis,
+   - WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License
+   - for the specific language governing rights and limitations under the
+   - License.
+   -
+   - The Original Code is XPCOMViewer.
+   -
+   - The Initial Developer of the Original Code is Ondrej Donek.
+   - Portions created by the Initial Developer are Copyright (C) 2007
+   - the Initial Developer. All Rights Reserved.
+   -
+   - Contributor(s):
+   -   Ondrej Donek, <ondrejd@gmail.com> (Original Author)
+   -
+   - Alternatively, the contents of this file may be used under the terms of
+   - either the GNU General Public License Version 2 or later (the "GPL"), or
+   - the GNU Lesser General Public License Version 2.1 or later (the "LGPL"),
+   - in which case the provisions of the GPL or the LGPL are applicable instead
+   - of those above. If you wish to allow use of your version of this file only
+   - under the terms of either the GPL or the LGPL, and not to allow others to
+   - use your version of this file under the terms of the MPL, indicate your
+   - decision by deleting the provisions above and replace them with the notice
+   - and other provisions required by the LGPL or the GPL. If you do not delete
+   - the provisions above, a recipient may use your version of this file under
+   - the terms of any one of the MPL, the GPL or the LGPL.
+   -
+   - ***** END LICENSE BLOCK ***** -->
+
+<!DOCTYPE window [
+	<!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd">
+	%brandDTD;
+	<!ENTITY % xpcomviewerDTD SYSTEM "chrome://xpcomviewer/locale/xpcomviewer.dtd">
+	%xpcomviewerDTD;
+]>
+
+<!-- TODO
+   - ====
+   - @todo Finish preferences dialog
+   - @todo Allow search selected XPCOM object on preferred Bugzilla server
+   - @todo Finish bookmarks service!
+   - @todo When creating report attach notes if this feature is eabled
+   -       in user preferences.
+   - @todo It would be great if when mouse is over the bookmark column
+   -       of tree item which has bookmark attached shows popup with
+   -       text of that bookmark.
+   -->
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="xpcomviewer" title="&appFullName;"
+        windowtype="xpcomviewer"
+        width="800" height="600"
+        persist="width height screenX screenY"
+        onload="extensions.xv.onLoad(event)"
+        onunload="extensions.xv.onUnload(event);"
+        onclose="extensions.xv.onClose(event);">
+
+  <script type="application/javascript"
+          src="chrome://global/content/utilityOverlay.js"/>
+  <script type="application/javascript"
+          src="chrome://global/content/printUtils.js"/>
+  <script type="application/javascript"
+          src="chrome://help/content/contextHelp.js"/>
+
+  <script type="application/x-javascript;version=1.7"
+          src="chrome://xpcomviewer/content/xv.js"/>
+
+  <!-- XPCOMViewer's commands -->
+  <commandset id="mainCommandset">
+    <command id="cmd_quit" oncommand="extensions.xv.quit();"/>
+    <command id="cmd_fullscreen" oncommand="extensions.xv.toggleFullscreen();"/>
+    <command id="cmd_showAbout" oncommand="extensions.xv.showAboutDialog();"/>
+    <command id="cmd_showHomePage" oncommand="extensions.xv.showHomePage();"/>
+    <command id="cmd_showHelp" oncommand="extensions.xv.showHelp();"/>
+    <command id="cmd_showJSConsole" oncommand="extensions.xv.showJSConsole();"/>
+    <command id="cmd_showPreferences" oncommand="extensions.xv.showPrefsDialog();"/>
+    <command id="cmd_showClasses" oncommand="extensions.xv.refreshTree('classes');"/>
+    <command id="cmd_showIfaces" oncommand="extensions.xv.refreshTree('ifaces');"/>
+    <command id="cmd_showResults" oncommand="extensions.xv.refreshTree('results');"/>
+    <command id="cmd_showFiltered" oncommand="extensions.xv.showFilteredTreeitems();"/>
+    <command id="cmd_showAll" oncommand="extensions.xv.showAllTreeitems();"/>
+    <command id="cmd_copyNameOfSel" oncommand="extensions.xv.copyNameOfSelected();"/>
+    <command id="cmd_saveAsXML" oncommand="extensions.xv.saveReportAs('xml');"/>
+    <command id="cmd_saveAsHTML" oncommand="extensions.xv.saveReportAs('html');"/>
+    <command id="cmd_saveAsTXT" oncommand="extensions.xv.saveReportAs('txt');"/>
+    <command id="cmd_ifaceLXRLookup" oncommand="extensions.xv.ifaceLXRLookup();"/>
+    <command id="cmd_showLXRSearch" oncommand="extensions.xv.showSearchPage('lxr');"/>
+    <command id="cmd_showBugzillaSearch" oncommand="extensions.xv.showSearchPage('bugzilla');"/>
+		<command id="cmd_closeLXRTab" oncommand="extensions.xv.closeSearchTab('lxr');"/>
+		<command id="cmd_closeBugzillaTab" oncommand="extensions.xv.closeSearchTab('bugzilla');"/>
+    <command id="cmd_generateCppCode" oncommand="extensions.xv.generateCode('cpp');"/>
+    <command id="cmd_generateJsCode" oncommand="extensions.xv.generateCode('js');"/>
+    <command id="cmd_generatePyCode" oncommand="extensions.xv.generateCode('py');"/>
+    <!-- These commands are related to bookmarks only -->
+    <command id="cmd_showWithBookmark" oncommand="extensions.xv.showTreeitemsWithBookmark();"/>
+    <command id="cmd_addBookmark" oncommand="extensions.xv.addBookmark();"/>
+    <command id="cmd_editBookmark" oncommand="extensions.xv.editBookmark(event);"/>
+    <command id="cmd_removeBookmark" oncommand="extensions.xv.removeBookmark(event);"/>
+  </commandset>
+
+  <!-- Main keyset -->
+  <keyset id="mainKeyset">
+    <key id="key_quit" key="&quitCmd.commandkey;"
+         modifiers="accel" command="cmd_quit"/>
+    <key id="key_addBookmark" key="&addBookmarkCmd.commandkey;"
+         modifiers="accel,shift" command="cmd_addBookmark"/>
+		<key modifiers="control" key="f" oncommand="extensions.xv.toggleFilterToolbar();"/>
+    <key modifiers="control" key="l" oncommand="extensions.xv.showJSConsole();"/>
+  </keyset>
+
+  <popupset id="mainPopupset">
+    <!-- XPCOM tree context menu -->
+    <popup id="xpcomviewer-maintree-contextmenu">
+	    <menuitem id="xv-addBookmark-popupmenuitem"
+                label="&addBookmarkCmd.label;"
+                accesskey="&addBookmarkCmd.key;"
+                key="key_addBookmark"
+                image="chrome://xpcomviewer/skin/icons/add.png"
+                command="cmd_addBookmark"
+                class="menuitem-iconic addBookmark16"/>
+      <menuitem id="editBookmark-popupmenuitem"
+                label="&editBookmarkCmd.label;"
+                accesskey="&editBookmarkCmd.key;"
+                class="menuitem-iconic editBookmark16"
+                command="cmd_editBookmark"/>
+      <menuseparator/>
+	    <menuitem id="xv-removeBookmark-popupmenuitem"
+                label="&removeBookmarkCmd.label;"
+                accesskey="&removeBookmarkCmd.key;"
+                command="cmd_removeBookmark"
+                class="menuitem-iconic"
+                image="chrome://xpcomviewer/skin/icons/delete.png"
+                disabled="true"/>
+      <menuseparator id="xv-bookmarksCmds-menuseparator"/>
+      <menuitem label="&copyNameOfSelCmd.label;"
+                accesskey="&copyNameOfSelCmd.key;"
+                tooltiptext="&copyNameOfSelCmd.tip;"
+                command="cmd_copyNameOfSel"/>
+      <menuseparator/>
+      <menuitem label="&generateCppCodeCmd.label;"
+                accesskey="&generateCppCodeCmd.key;"
+                tooltiptext="&generateCppCodeCmd.tip;"
+                command="cmd_generateCppCode"
+                disabled="true"/>
+      <menuitem label="&generateJsCodeCmd.label;"
+                accesskey="&generateJsCodeCmd.key;"
+                tooltiptext="&generateJsCodeCmd.tip;"
+                command="cmd_generateJsCode"/>
+      <menuitem label="&generatePythonCodeCmd.label;"
+                accesskey="&generatePythonCodeCmd.key;"
+                tooltiptext="&generatePythonCodeCmd.tip;"
+                command="cmd_generatePythonCode"/>
+      <menuseparator/>
+      <menuitem label="&ifaceLxrLookupCmd.label;"
+                accesskey="&ifaceLxrLookupCmd.key;"
+                tooltiptext="&ifaceLxrLookupCmd.tip;"
+                command="cmd_ifaceLXRLookup"
+                class="menuitem-iconic web16"/>
+      <!--
+      <menuitem id="xv-showLxrSearchPage-popupmenuitem"
+                label="&showLxrSearchPage.label;"
+                accesskey="&showLxrSearchPage.key;"
+                tooltiptext="&showLxrSearchPage.tip;"
+                command="cmd_showLXRSearch"
+                type="checkbox"
+                class="menuitem-iconic web16"/>
+      <menuitem id="xv-showBugzillaSearchPage-popupmenuitem"
+                label="&showBugzillaSearchPage.label;"
+                accesskey="&showBugzillaSearchPage.key;"
+                tooltiptext="&showBugzillaSearchPage.tip;"
+                command="cmd_showBugzillaSearch"
+                type="checkbox"
+                class="menuitem-iconic bugzilla16"/>
+      -->
+    </popup>
+
+    <!-- Bookmarks tree context menu -->
+    <popup id="bookmarks-tree-context">
+      <!--
+      @todo Add "Goto bookmark" menuitem.
+      <menuitem id="gotoBookmark-popupmenuitem"
+                label="&gotoBookmarkCmd.label;"
+                accesskey="&gotoBookmarkCmd.key;"
+                class="menuitem-iconic gotoBookmark16"
+                command="cmd_gotoBookmark"/>
+      -->
+      <menuitem id="editBookmark-popupmenuitem"
+                label="&editBookmarkCmd.label;"
+                accesskey="&editBookmarkCmd.key;"
+                class="menuitem-iconic editBookmark16"
+                command="cmd_editBookmark2"/>
+      <menuseparator/>
+      <menuitem id="removeBookmark-popupmenuitem"
+                label="&removeBookmarkCmd.label;"
+                accesskey="&removeBookmarkCmd.key;"
+                class="menuitem-iconic removeBookmark16"
+                command="cmd_removeBookmark2"/>
+    </popup>
+    <!-- LXR tab context menu -->
+    <popup id="lxr_tab-context">
+      <menuitem id="closeLxrTab-popupmenuitem"
+                label="&closeTabboxTabCmd.label;"
+                accesskey="&closeTabboxTabCmd.key;"
+                command="cmd_closeLxrTab"/>
+    </popup>
+    <!-- Bugzilla tab context menu -->
+    <popup id="bugzilla_tab-context">
+      <menuitem id="closeBugzillaTab-popupmenuitem"
+                label="&closeTabboxTabCmd.label;"
+                accesskey="&closeTabboxTabCmd.key;"
+                command="cmd_closeBugzillaTab"/>
+    </popup>
+  </popupset>
+
+  <!-- Main toolbox -->
+  <toolbox id="workspace-toolbox" class="toolbox-top"
+           mode="icons">
+    <menubar id="main-menubar">
+      <menu id="file-menu" label="&fileMenu.label;"
+            accesskey="&fileMenu.key;">
+        <menupopup id="file-menupopup">
+          <menu id="fileMenuSave"
+                label="&fileMenuSave.label;"
+                accesskey="&fileMenuSave.key;"
+                class="menu-iconic save16">
+            <menupopup>
+              <menuitem label="&saveAsXMLCmd.label;"
+                        accesskey="&saveAsXMLCmd.key;"
+                        tooltiptext="&saveAsXMLCmd.tip;"
+                        command="cmd_saveAsXML"/>
+              <menuitem label="&saveAsHTMLCmd.label;"
+                        accesskey="&saveAsHTMLCmd.key;"
+                        tooltiptext="&saveAsHTMLCmd.tip;"
+                        command="cmd_saveAsHTML"/>
+              <menuitem label="&saveAsTXTCmd.label;"
+                        accesskey="&saveAsTXTCmd.key;"
+                        tooltiptext="&saveAsTXTCmd.tip;"
+                        command="cmd_saveAsTXT"/>
+            </menupopup>
+          </menu>
+          <menuseparator/>
+          <menuitem id="xv-addbookmark-mainmenuitem"
+                    label="&addBookmarkCmd.label;"
+                    accesskey="&addBookmarkCmd.key;"
+                    tooltiptext="&addBookmarkCmd.tip;"
+                    class="menuitem-iconic addBookmark16"
+                    command="cmd_addBookmark"/>
+          <menuseparator id="xvAddBookmarkMainmenuitemSep"/>
+          <menuitem label="&quitCmd.label;"
+                    accesskey="&quitCmd.key;"
+                    tooltiptext="&quitCmd.tip;"
+                    key="key_quit"
+                    class="menuitem-iconic quit16"
+                    command="cmd_quit"/>
+        </menupopup>
+      </menu>
+      <menu id="show-menu" label="&showMenu.label;"
+            accesskey="&showMenu.key;">
+        <menupopup id="show-menupopup">
+          <!--
+          <menuitem id="toggleBottompane-menuitem"
+                    label="&showBookmarksPaneCmd.label;"
+                    accesskey="&showBookmarksPaneCmd.key;"
+                    type="checkbox" checked="false"
+                    class="menuitem-iconic addBookmark16"
+                    command="cmd_toggleBottompane"/>
+          <menuseparator id="toggleBottompane-menuitem-sep"/>
+          -->
+          <menuitem id="toggleFullScreenMode-menuitem"
+                    label="&toggleFullscreenCmd.label;"
+                    accesskey="&toggleFullscreenCmd.key;"
+                    tooltiptext="&toggleFullscreenCmd.tip;"
+                    type="checkbox" checked="false"
+                    class="menuitem-iconic fullscreen16"
+                    command="cmd_fullscreen"/>
+          <menuseparator/>
+          <menuitem id="xv-showLxrSearchPage-mainmenuitem"
+                    label="&showLxrSearchPage.label;"
+                    accesskey="&showLxrSearchPage.key;"
+                    tooltiptext="&showLxrSearchPage.tip;"
+                    type="checkbox"
+                    class="menuitem-iconic web16"
+                    command="cmd_showLXRSearch"/>
+          <menuitem id="xv-showBugzillaSearchPage-mainmenuitem"
+                    label="&showBugzillaSearchPage.label;"
+                    accesskey="&showBugzillaSearchPage.key;"
+                    tooltiptext="&showBugzillaSearchPage.tip;"
+                    type="checkbox"
+                    class="menuitem-iconic bugzilla16"
+                    command="cmd_showLXRSearch"/>
+          <menuitem id="xv-showJSShellTab-mainmenuitem"
+                    label="&showJSShellCmd.label;"
+                    accesskey="&showJSShellCmd.key;"
+                    tooltiptext="&showJSShellCmd.tip;"
+                    type="checkbox"
+                    class="menuitem-iconic jsshell16"
+                    command="cmd_showJSShell"/>
+          <!--
+          <menuitem label="&showJSConsoleCmd.label;"
+                    accesskey="&showJSConsoleCmd.key;"
+                    tooltiptext="&showJSConsoleCmd.tip;"
+                    command="cmd_showJSConsole"/>
+          -->
+          <menuseparator/>
+          <menuitem label="&showPreferencesCmd.label;"
+                    accesskey="&showPreferencesCmd.key;"
+                    tooltiptext="&showPreferencesCmd.tip;"
+                    class="menuitem-iconic preferences16"
+                    command="cmd_showPreferences"/>
+        </menupopup>
+      </menu>
+      <menu id="help-menu" label="&helpMenu.label;"
+            accesskey="&helpMenu.key;">
+        <menupopup id="help-menupopup">
+          <menuitem label="&showHelpCmd.label;"
+                    accesskey="&showHelpCmd.key;"
+                    tooltiptext="&showHelpCmd.tip;"
+                    class="menuitem-iconic help16"
+                    command="cmd_showHelp"/>
+          <menuitem label="&showHomePageCmd.label;"
+                    accesskey="&showHomePageCmd.key;"
+                    tooltiptext="&showHomePageCmd.tip;"
+                    class="menuitem-iconic web16"
+                    command="cmd_showHomePage"/>
+          <menuseparator/>
+          <menuitem label="&showAboutCmd.label;"
+                    accesskey="&showAboutCmd.key;"
+                    tooltiptext="&showAboutCmd.tip;"
+                    class="menuitem-iconic xpcomviewer16"
+                    command="cmd_showAbout"/>
+        </menupopup>
+      </menu>
+      <menuspacer flex="1"/>
+    </menubar>
+    <!-- Main Toolbar -->
+    <toolbar id="main-toolbar"
+             class="toolbar-primary chromeclass-toolbar"
+             toolbarname="&mainToolbar.toolbarname;"
+             accesskey="&mainToolbar.key;"
+             fullscreentoolbar="true" mode="icons"
+             iconsize="full" customizable="true">
+      <toolbarbutton id="save-button" type="menu-button"
+                     class="toolbarbutton-1 chromeclass-toolbar-additional"
+                     label="&fileMenuSave.label;">
+        <menupopup>
+          <menuitem label="&saveAsXMLCmd.label;"
+                    accesskey="&saveAsXMLCmd.key;"
+                    tooltiptext="&saveAsXMLCmd.tip;"
+                    command="cmd_saveAsXML"/>
+          <menuitem label="&saveAsHTMLCmd.label;"
+                    accesskey="&saveAsHTMLCmd.key;"
+                    tooltiptext="&saveAsHTMLCmd.tip;"
+                    command="cmd_saveAsHTML"/>
+          <menuitem label="&saveAsTXTCmd.label;"
+                    accesskey="&saveAsTXTCmd.key;"
+                    tooltiptext="&saveAsTXTCmd.tip;"
+                    command="cmd_saveAsTXT"/>
+        </menupopup>
+      </toolbarbutton>
+      <toolbarseparator id="xvAddBookmarkToolbarbuttonSeparator"/>
+	    <toolbarbutton id="xv-addbookmark-toolbarbutton"
+                     label="&addBookmarkCmd.label;"
+                     tooltiptext="&addBookmarkCmd.tip;"
+                     class="toolbarbutton-1"
+                     command="cmd_addBookmark"/>
+      <toolbarseparator id="toolbarFilterSeparator"/>
+      <toolbarbutton id="showClasses-button"
+                     label="&showClassesCmd.label;"
+                     tooltiptext="&showClassesCmd.tip;"
+                     class="toolbarbutton-1"
+                     command="cmd_showClasses"/>
+      <toolbarbutton id="showInterfaces-button"
+                     label="&showIfacesCmd.label;"
+                     tooltiptext="&showIfacesCmd.tip;"
+                     class="toolbarbutton-1"
+                     command="cmd_showIfaces"/>
+      <toolbarbutton id="showResults-button"
+                     label="&showResultsCmd.label;"
+                     tooltiptext="&showResultsCmd.tip;"
+                     class="toolbarbutton-1"
+                     command="cmd_showResults"/>
+      <!--
+      <toolbarseparator id="toolbarShowSearchSeparator"/>
+      <toolbarbutton id="showLxrSearchPage-button"
+                     label="&showLxrSearchPage.label;"
+                     accesskey="&showLxrSearchPage.key;"
+                     tooltiptext="&showLxrSearchPage.tip;"
+                     class="toolbarbutton-1" type="checkbox"
+                     command="cmd_showLXRSearch"/>
+      <toolbarbutton id="showBugzillaSearchPage-button"
+                     label="&showBugzillaSearchPage.label;"
+                     accesskey="&showBugzillaSearchPage.key;"
+                     tooltiptext="&showBugzillaSearchPage.tip;"
+                     class="toolbarbutton-1" type="checkbox"
+                     command="cmd_showBugzillaSearch"/>
+      -->
+      <toolbarspacer flex="1"/>
+      <toolbarbutton id="showHelp-button"
+                     label="&showHelpCmd.label;"
+                     accesskey="&showHelpCmd.key;"
+                     tooltiptext="&showHelpCmd.tip;"
+                     class="toolbarbutton-1"
+                     command="cmd_showHelp"/>
+    </toolbar>
+    <!-- // Main Toolbar -->
+  </toolbox>
+
+  <!-- XPCOMViewer's Workspace box -->
+  <vbox flex="1">
+    <tabbox id="workspace-tabbox" eventnode="window" flex="3">
+      <!-- XXX collapsed="true" -->
+      <tabs id="workspace-tabbox-tabs">
+        <tab id="xpcomviewer-maintree-tab"
+             label="&xpcomTreeTab.label;"
+             class="classesView-tab"/>
+				<tab id="xpcomviewer-lxrbrowser-tab"
+             label="&lxrLookupTab.label;"
+             accesskey="&lxrLookupTab.key;"
+             class="lxrSearchView-tab"
+             context="lxr_tab-context"
+             disabled="true"/>
+				<tab id="xpcomviewer-bugzillabrowser-tab"
+             label="&bugzillaLookupTab.label;"
+             accesskey="&bugzillaLookupTab.key;"
+             class="bugzillaSearchView-tab"
+             context="bugzilla_tab-context"
+             disabled="true"/>
+        <tab id="xpcomviewer-jsshell-tab"
+             label="&jsshellTab.label;"
+             accesskey="&jsshellTab.key;"
+             tooltiptext="&jsshellTab.tip;"
+             class="jsshellView-tab"/>
+      </tabs>
+      <tabpanels id="workspace-tabbox-tabpanels" flex="1">
+
+        <tabpanel id="xpcom-tree-tabpanel" orient="vertical" flex="1">
+          <toolbox id="xpcom-tree-toolbox">
+            <!-- Main tree's filter toolbar -->
+            <toolbar id="filter-toolbar" toolbarname="&filterToolbar.toolbarname;"
+                     accesskey="&filterToolbar.key;"
+										 collapsed="true">
+              <toolbaritem flex="1" align="center">
+                <label value="&filterTextbox.label;"
+                       accesskey="&filterTextbox.key;"
+                       control="main-search-textbox"
+                       tabindex="0"/>
+                <textbox id="xpcomviewer-maintreefilter-textbox" flex="1"
+                         value="" type="timed" timeout="500"
+                         command="cmd_showFiltered"/>
+              </toolbaritem>
+              <toolbarbutton id="showAll-button"
+                             label="&showAllCmd.label;"
+                             accesskey="&showAllCmd.key;"
+                             tooltiptext="&showAllCmd.tip;"
+                             command="cmd_showAll"/>
+              <toolbarbutton id="showWithBookmark-button"
+                             label="&showWithBookmarkCmd.label;"
+                             accesskey="&showWithBookmarkCmd.key;"
+                             tooltiptext="&showWithBookmarkCmd.tip;"
+                             command="cmd_showWithBookmark"/>
+            </toolbar>
+            <!-- // Main tree's filter toolbar -->
+          </toolbox>
+          <!-- Main XPCOMViewer tree -->
+          <tree id="xpcomviewer-main-tree"
+                context="xpcomviewer-maintree-contextmenu"
+                seltype="single" flex="6"
+                onclick="extensions.xv.onMainTreeClick(event);"
+                onselect="extensions.xv.onMainTreeSelect(event);">
+            <treecols id="xpcom-tree-cols">
+              <treecol id="bookmarkCol"
+                       label="&xpcomTree.bookmarkCol.label;"
+                       tooltiptext="&xpcomTree.bookmarkCol.tip;"/>
+              <treeseparator id="xpcomviewer-maintree-bookmarkColSep"/>
+              <treecol id="nameCol" flex="4" primary="true"
+                       label="&xpcomTree.nameCol.label;"/>
+              <treeseparator/>
+              <treecol id="valueCol" flex="2"
+                       label="&xpcomTree.valueCol.label;"/>
+            </treecols>
+            <treechildren id="xpcom-treechildren"/>
+          </tree>
+          <!-- // Main XPCOMViewer tree -->
+        </tabpanel>
+
+        <!-- LXR search tabpanel -->
+				<tabpanel id="xpcomviewer-lxrbrowser-tabpanel" flex="1">
+          <browser id="mainContentLXR" src="about:blank"
+                   flex="1" autocompleteenabled="false"
+                   homepage="about:blank" type="content"/>
+				</tabpanel>
+
+        <!-- Bugzilla search tabpanel -->
+				<tabpanel id="xpcomviewer-bugzillabrowser-tabpanel" flex="1">
+          <browser id="mainContentBugzilla" src="about:blank"
+                   flex="1" autocompleteenabled="false"
+                   homepage="about:blank" type="content"/>
+				</tabpanel>
+
+        <!-- JavaScript Shell tabpanel -->
+				<tabpanel id="xpcomviewer-jsshell-tabpanel" flex="1">
+          <iframe id="mainContentJSShell" flex="1"
+                  src="chrome://xpcomviewer/content/jsshell/shell.xul"/>
+				</tabpanel>
+
+      </tabpanels>
+    </tabbox>
+  </vbox>
+  <!-- // XPCOMViewer's Workspace box -->
+
+  <!-- Statusbar -->
+  <statusbar id="xpcomviewer-statusbar">
+    <statusbarpanel id="xpcomviewer-statusbar-label" flex="1"/>
+  </statusbar>
+
+</window>

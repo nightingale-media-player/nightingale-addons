@@ -1,0 +1,31 @@
+Index: app/chrome/content/tools/extension-generator.js
+===================================================================
+--- app/chrome/content/tools/extension-generator.js	(revision 8340)
++++ app/chrome/content/tools/extension-generator.js	(working copy)
+@@ -65,21 +65,21 @@ ExtensionGenerator.prototype = {
+       fileOut.append(files[index]);
+       this._writeToFile(fileOut, fileData);
+     }
+   },
+ 
+   createInstall : function() {
+     if (this.rootFolder == null)
+       return;
+-
+-    // TODO: Is this desirable? Only do this if options enabled
+-      
+-    // auto-add the options url if left blank
+-    if (!this.optionsURL || this.optionsURL.length == 0) {
++    
++    // Hook up the options dialog if requested
++    if (this.ui.indexOf("options") != -1 &&
++        (!this.optionsURL || this.optionsURL.length == 0))
++    {
+       this.optionsURL = "chrome://" + this.package + "/content/options.xul";
+     }
+ 
+     var installFolder = this.rootFolder.clone();
+     this._processTemplates(installFolder, ["install-rdf.tmpl"], ["install.rdf"]);
+   },
+ 
+   createManifest : function(fileName) {

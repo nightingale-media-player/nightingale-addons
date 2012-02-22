@@ -1,0 +1,51 @@
+15 March 2003
+
+Changed the encoding in the scrolling example to show French characters.
+Tied the size of the limited scroll widgets to the size of the font.
+Gave the stack and deck examples another chicken.
+
+---------------------------------
+
+28 Feb 2003
+
+Moved the source location again.
+It now has its own tab (and the tabs themselves have been 
+moved to be subordinate to the selection listbox).
+
+Removed the 'grow' from the left side of the 'grow' splitter
+Added stack and deck examples
+
+---------------------------------
+
+26 Feb 2003
+
+Added a grippy to the splitter on the main window.
+And added a second splitter, to the left of which
+now resides the source code.  This lets us remove
+the "source" entries from the left-hand list.
+
+Added a double splitter example.
+Added examples of images on checkboxes, radiobuttons, and  menuitems.
+Added an example of a statusbar.
+Added examples of colorpickers and progressmeters.
+Removed obsolete listcells.
+Wrapped all of the html:headers in <description>s.
+
+---------------------------------
+
+11 Feb 2003
+
+Housekeeping:
+ Corrected the initial page.
+ Removed the not-working tab.
+ Removed tabcontrols and tabpanel's from tabboxes.
+ Replaced "ltr" and "rtl" with "forward" and "reverse".
+ Got rid of some extra boxes.
+ Cleaned up the trees a bit.
+ Added Clint to the lists of cats.
+
+Put a splitter between the widget list and the frame.
+Added controls to look at the source.
+Added a splitter page.
+Added a ChangeLog tab.
+

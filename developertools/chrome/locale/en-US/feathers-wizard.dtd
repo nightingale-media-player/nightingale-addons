@@ -1,0 +1,23 @@
+<!ENTITY wizard.title    "Feathers Add-On Wizard">
+
+
+<!ENTITY overview.label                "New Feathers Add-On">
+<!ENTITY overview.description          "Create an add-on to customize Songbird's appearance and layout">
+<!ENTITY overview.purpose              "This wizard will create a feathers add-on, allowing customization of Songbird's appearance and layout.  It will generate the necessary project files, and then register the project folder as a test add-on.">
+<!ENTITY overview.requirements         "To build a feathers add-on we recommend you have:">
+<!ENTITY overview.requirements.b1      "A text editor such as MetaPad or TextMate">
+<!ENTITY overview.requirements.b2      "A basic understanding of Cascading Style Sheets (CSS)">
+<!ENTITY overview.requirements.b3      "An image manipulation tool such as Photoshop or GIMP">
+<!ENTITY overview.link                 "Learn about creating feathers">
+
+<!ENTITY ready.label                "Ready to Generate">
+<!ENTITY ready.description          "We now have enough information to create your feathers add-on">
+<!ENTITY ready.nextstep             "Completing this wizard will:">
+<!ENTITY ready.nextstep.b1          "Create manifest files with your information">
+<!ENTITY ready.nextstep.b2          "Generate images and CSS for your feathers">
+<!ENTITY ready.nextstep.b3          "Register your project folder as a test add-on">
+<!ENTITY ready.mustrestart          "To load your feathers, restart Songbird.">
+<!ENTITY ready.restart.checkbox     "Restart Songbird automatically">
+<!ENTITY ready.instructions         "Then, you can make changes to your feathers project files and see the changes in your Songbird by simply selecting 'Refresh UI' from the Tools menu.">
+<!ENTITY ready.link                 "Learn about creating feathers">
+

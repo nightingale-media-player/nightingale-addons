@@ -1,0 +1,62 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+/* ============================================================= */
+/* PANE BUTTONS */
+/* ============================================================= */
+
+#xpcomviewer radio[pane] {
+  list-style-image: url("chrome://xpcomviewer/skin/preferences-icons.png");
+}
+
+radio[pane="paneGeneral"],
+radio[pane="paneGeneral"]:hover,
+radio[pane="paneGeneral"][selected="true"] {
+  -moz-image-region:rect(0px 96px 32px 64px);
+}
+
+radio[pane="paneBookmarks"],
+radio[pane="paneBookmarks"]:hover,
+radio[pane="paneBookmarks"][selected="true"] {
+  -moz-image-region:rect(0px 64px 32px 32px);
+}
+
+radio[pane="paneOthers"],
+radio[pane="paneOthers"]:hover,
+radio[pane="paneOthers"][selected="true"] {
+  -moz-image-region:rect(0px 32px 32px 0px);
+}
+
+radio[pane="paneTemplates"],
+radio[pane="paneTemplates"]:hover,
+radio[pane="paneTemplates"][selected="true"] {
+  -moz-image-region:rect(32px 32px 64px 0px);
+}
+
+
+/**
+ * Other styles
+ */
+#useCustomViewType radio {
+  margin-left: 25px;
+  font-style: italic;
+}
+
+
+/* Modeless Window Dialogs */
+.windowDialog,
+.windowDialog prefpane {
+  padding: 0px;
+}
+
+.contentPane {
+  margin: 9px 8px 5px 8px;
+}
+
+.actionButtons {
+  margin: 0px 3px 6px 3px !important;
+}
+
+description.warning {
+  color:#f30;
+  font-weight:bold;
+}

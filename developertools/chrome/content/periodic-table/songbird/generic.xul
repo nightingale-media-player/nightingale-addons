@@ -1,0 +1,112 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+
+<window title="Songbird Generic Controls"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   
+    <!-- Load the interface code -->
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/songbirdInterfaces.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/sbDataRemoteUtils.js"/>
+
+<script>
+<![CDATA[
+]]>
+</script>
+
+<description><html:h1>Songbird Generic Controls</html:h1></description>
+
+<vbox style="overflow: auto">
+
+  <hbox height="200">
+
+    <groupbox>
+      <caption label="progress slider (horizontal)" />
+      <vbox width="150">
+        <hbox><label value="normal"/><sb-progress-slider flex="1" orient="horizontal" maxpos="100"/></hbox>
+        <hbox><label value="reverse"/><sb-progress-slider flex="1" orient="horizontal" dir="reverse" maxpos="100"/></hbox>
+        <spacer flex="1"/>
+      </vbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="progress slider (vertical)" />
+      <hbox>
+        <vbox><label value="normal"/><sb-progress-slider flex="1" orient="vertical" maxpos="100"/></vbox>
+        <vbox><label value="reverse"/><sb-progress-slider flex="1" orient="vertical" dir="reverse" maxpos="100"/></vbox>
+      </hbox>
+    </groupbox>
+
+  </hbox>
+
+  <hbox>
+
+    <groupbox>
+      <caption label="autoscroll" />
+      <hbox>
+        <sb-autoscroll width="600">
+          <hbox>
+            <sb-sys-icon/>
+            <label value="Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur non lorem. Morbi vehicula mattis lacus."/>
+            <sb-sys-icon/>
+            <label value="Integer a libero. Duis rhoncus lacus pellentesque sem. In tristique nisi non odio. Morbi nibh metus, viverra sed, rutrum convallis, tincidunt id, lacus."/>
+          </hbox>
+        </sb-autoscroll>
+      </hbox>
+    </groupbox>
+
+  </hbox>
+  
+  <hbox>
+  
+    <groupbox>
+      <caption label="clickhold button" />
+      <hbox>
+        <sb-clickhold-button label="click and hold the mouse down" popupanchor="topleft" popupalign="bottomleft">
+          <menuitem label="Choice 1"/>
+          <menuitem label="Choice 2"/>
+          <menuitem label="Choice 3"/>
+          <menuitem label="Choice 4"/>
+        </sb-clickhold-button>
+      </hbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="hotkey textbox" />
+      <hbox>
+        <sb-hotkey-textbox />
+      </hbox>
+    </groupbox>
+
+  </hbox>
+  
+  <hbox>
+  
+    <groupbox>
+      <caption label="drawers" />
+      <hbox>
+        <button label="open drawer window" oncommand="openDrawer();"/>
+        <button label="open multi drawer window" oncommand="openMultiDrawer();"/>
+      </hbox>
+    </groupbox>
+
+  </hbox>
+
+</vbox>
+
+<script>
+<![CDATA[
+  function openDrawer() {
+    window.openDialog("chrome://sbdevtools/content/periodic-table/songbird/drawer-single.xul", "_blank", "chrome,modal=no,titlebar=no,resizable=no", null);
+  }
+  function openMultiDrawer() {
+    window.openDialog("chrome://sbdevtools/content/periodic-table/songbird/drawer-multi.xul", "_blank", "chrome,modal=no,titlebar=no,resizable=no", null);
+  }
+]]>
+</script>
+
+</window>

@@ -1,0 +1,182 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://xpcomviewer/skin/jsshell.css" type="text/css"?>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+  <!ENTITY % jsshellDTD SYSTEM "chrome://xpcomviewer/locale/jsshell.dtd" >
+  %jsshellDTD;
+]>
+
+<window id="jsshell"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        xmlns:html="http://www.w3.org/1999/xhtml" 
+        contenttitlesetting="true"
+        title="JavaScript Shell"
+        onload="init();">
+  
+  <script type="application/x-javascript;version=1.8"><![CDATA[
+/**
+ * Main controlling object for JavaScript Shell window
+ */
+var gJSShellWindow = {
+  
+  get mStrBundle() { return document.getElementById("xv-jsshell-strbundle"); },
+  
+  toggleQuickHelp : function()
+  {
+    var quickhelp_cont = document.getElementById("xv-jsshell-quickhelp-cont");
+    
+    if(quickhelp_cont)
+      quickhelp_cont.collapsed = !quickhelp_cont.collapsed;
+  }, // end toggleQuickHelp()
+  
+  
+  goToHelpTopic : function(aEvent)
+  {
+    var target = aEvent.originalTarget;
+    if(!target) return;
+    if(target.nodeName.toLowerCase() != "html:code") return;
+    if(!target.hasAttribute("value")) return;
+    
+    switch(target.getAttribute("value").toLowerCase())
+    {
+      case "ans": // The result of the previous expression.
+        shellCommands.ansHelp();
+        break;
+      
+      case "blink": // Or Alt+B: makes a node blink for a second.
+        shellCommands.blinkHelp();
+        break;
+      
+      case "clear": // Clears shell
+        shellCommands.clearHelp();
+        break;
+      
+      case "load": //
+        shellCommands.loadHelp();
+        break;
+      
+      case "math":
+        // Constants: E, LN2, LN10, LOG2E, LOG10E, PI, SQRT1_2, SQRT2
+        // Methods:   abs, acos, asin, atan, atan2, ceil, cos, exp, floor,
+        //            log, max, min, pow, random, round, sin, sqrt, tan
+        shellCommands.mathHelp();
+        break;
+      
+      case "pr":
+        // Prints and returns its input, so you can use it to print 
+        // intermediate results in the middle of an expression.
+        //   function fact(n) { return n>0 ? pr(n*fact(n-1)) : 1 }
+        shellCommands.prHelp();
+        break;
+      
+      case "print":
+        // Prints expr on its own line.
+        //   for(i = 0; i < 6; ++i) print(i * i)
+        shellCommands.printHelp();
+        break;
+      
+      case "props":
+        // Or Alt+P: lists the methods and fields of an object.
+        // In Firefox, props also shows which properties belong to the object
+        // itself and which belong to objects in its prototype chain.
+        shellCommands.propsHelp();
+        break;
+      
+      case "scope":
+        // Set given object as the current scope.
+        //   scope(Math); // we are now can write abs instead of Math.abs
+        shellCommands.scopeHelp();
+        break;
+      
+      // Links
+      case "#about":
+      case "#features":
+      case "#functions":
+      case "usage":
+        break;
+    }
+  } // end goToHelpTopic(aE<><vent)
+  
+}; // End of gJSShellWindow
+]]></script>
+  
+  <script type="application/x-javascript;version=1.8"
+          src="chrome://xpcomviewer/content/jsshell/jsshell.js"/>
+  <!-- for http://ted.mielczarek.org/code/mozilla/extensiondev/ -->
+  <script type="application/x-javascript;version=1.8"
+          src="chrome://xpcomviewer/content/jsshell/rdfhistory.js"/>
+  <script type="application/x-javascript;version=1.8"
+          src="chrome://xpcomviewer/content/jsshell/chromeShellExtras.js"/>
+  
+  <stringbundleset>
+    <stringbundle id="xv-jsshell-strbundle"
+                  src="chrome://xpcomviewer/locale/jsshell.properties"/>
+  </stringbundleset>
+  
+  <toolbox id="xv-jsshell-toolbox">
+    <toolbar id="xv-jsshell-toolbar">
+      <toolbarbutton label="Attach…" accesskey="t"
+                     tooltiptext="Attach JavaScript code to the current JSSHell's scope"
+                     disabled="true"/>
+      <toolbarspacer flex="1"/>
+      <toolbarbutton label="Help" type="checkbox"
+                     tooltiptext="Show/Hide pane with short help"
+                     oncommand="gJSShellWindow.toggleQuickHelp();"/>
+    </toolbar>
+  </toolbox>
+  
+  <vbox id="xv-jsshell-workspace" flex="1">
+    <description id="xv-jsshell-quickhelp-cont" collapsed="true"
+                 onclick="gJSShellWindow.goToHelpTopic(event);">
+      <html:div id="xv-jsshell-help-page1">
+        <!-- Main help page -->
+        <html:p>
+          <html:strong>Features:</html:strong><html:br/>
+          autocompletion of property names with <html:code>Tab</html:code>,
+          multiline input with  <html:code>Shift+Enter</html:code>,
+          input history with <html:code>Ctrl + Up/Down</html:code>,
+          <html:code value="math" class="active">Math</html:code>.
+        </html:p>
+        <html:p>
+          <html:strong>Values and functions:</html:strong><html:br/>
+          <html:code value="ans" class="active">ans</html:code>,
+          <html:code value="print" class="active">print(string)</html:code>,
+          <html:code value="props" class="active">props(object)</html:code>,
+          <html:code value="blink" class="active">blink(node)</html:code>,
+          <html:code value="clear" class="active">clear(history)</html:code>,
+          <html:code value="load" class="active">load(scriptURL)</html:code>,
+          <html:code value="scope" class="active">scope(object)</html:code>.
+        </html:p>
+        <html:p style="text-align:right;padding-top:5px;margin-top:5px;border-top:1px dotted #000;">
+          [<html:code value="#main" class="active"><html:strong>Main</html:strong></html:code>, 
+          <html:code value="#features" class="active">Features</html:code>,
+          <html:code value="#functions" class="active">Built-In Functions</html:code>,
+          <html:code value="#usage" class="active">Suggested Usage</html:code>,
+          <html:code value="#about" class="active">About</html:code>]
+        </html:p>
+      </html:div>
+      <html:div id="xv-jsshell-help-page2" style="display:none;">
+        <!-- XXX Features help page -->
+      </html:div>
+      <html:div id="xv-jsshell-help-page3" style="display:none;">
+        <!-- XXX Built-In functions help page -->
+      </html:div>
+      <html:div id="xv-jsshell-help-page4" style="display:none;">
+        <!-- XXX Suggested usage help page -->
+      </html:div>
+      <html:div id="xv-jsshell-help-page5" style="display:none;">
+        <!-- XXX About help page -->
+      </html:div>
+    </description>
+    
+    <vbox id="xv-jsshell-cont" flex="1" onclick="keepFocusInTextbox(event);">
+      <html:div id="output" class="output"></html:div>
+      <html:div>
+        <html:textarea id="input" class="input" wrap="off" spellcheck="false"
+                       onkeydown="inputKeydown(event);" rows="1"></html:textarea>
+      </html:div>
+    </vbox>
+  </vbox>
+  
+</window>

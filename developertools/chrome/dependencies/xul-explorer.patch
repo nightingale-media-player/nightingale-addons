@@ -1,0 +1,963 @@
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/extension-project.css
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/extension-project.css	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/extension-project.css	(working copy)
+@@ -10,5 +10,5 @@
+ }
+ 
+ .required {
+-  list-style-image: url(chrome://explorer/skin/images/exclamation.png);
++  list-style-image: url(chrome://explorer/skin/images/back.png);
+ }
+\ No newline at end of file
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/application-project.css
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/application-project.css	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/tools/application-project.css	(working copy)
+@@ -10,5 +10,5 @@
+ }
+ 
+ .required {
+-  list-style-image: url(chrome://explorer/skin/images/exclamation.png);
++  list-style-image: url(chrome://explorer/skin/images/back.png);
+ }
+\ No newline at end of file
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/explorer.css
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/explorer.css	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/skin/standard/explorer.css	(working copy)
+@@ -178,7 +178,7 @@
+   border-top:1px solid #000 !important;
+   border-left:1px solid #000 !important;
+   border-right:1px solid #000 !important;
+-  border-bottom:2px solid #fff !important;
++ border-bottom:2px solid #fff !important;
+ }
+ 
+ #workspace_tabs .tabs-left {
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/utils/io.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/utils/io.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/utils/io.js	(working copy)
+@@ -1,4 +1,14 @@
++const IO_MODE_RDONLY   = 0x01;
++const IO_MODE_WRONLY   = 0x02;
++const IO_MODE_CREATE   = 0x08;
++const IO_MODE_APPEND   = 0x10;
++const IO_MODE_TRUNCATE = 0x20;
+ 
++const IO_PERMS_FILE      = 0644;
++const IO_PERMS_DIRECTORY = 0755;
++
++
++
+ // Prompts the user for a file. returns the path or null
+ function promptFile(title) {
+     var ref = Components.classes["@mozilla.org/filepicker;1"];
+@@ -19,9 +29,9 @@
+ }
+ 
+ function fileFromPath(path) {
+-  var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
+-  file.initWithPath(path);
+-  return file;
++    var file = Components.classes["@mozilla.org/file/local;1"].createInstance(Components.interfaces.nsILocalFile);
++    file.initWithPath(path);
++    return file;
+ }
+ 
+ // prompts the user for a directory. returns path or null
+@@ -42,6 +52,14 @@
+     return path;
+ }
+ 
++// Make sure that the given nsIFile directory
++// exists.  If it doesn't, create it.
++function ensureDirectory(directory) {
++    if (!directory.exists()) {
++        directory.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, IO_PERMS_DIRECTORY);
++    }
++}
++
+ // returns the text content of a given nsIFile
+ function fileToString(file) {
+     // Get a nsIFileInputStream for the file
+@@ -74,7 +92,7 @@
+     // Get a nsIFileOutputStream for the file
+     var fos = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                         .createInstance(Components.interfaces.nsIFileOutputStream);
+-    fos.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write | create | truncate
++    fos.init(file, IO_MODE_WRONLY | IO_MODE_CREATE | IO_MODE_TRUNCATE, IO_PERMS_FILE, 0); 
+     
+     // Get an intl-aware nsIConverterOutputStream for the file
+     var os = Components.classes["@mozilla.org/intl/converter-output-stream;1"]
+@@ -88,3 +106,102 @@
+     os.close();
+     fos.close();
+ }
++ 
++// Append a string path to a given nsIFile directory
++function appendPathToDirectory(directory, path) {
++    directory = directory.clone();
++    var parts = path.split("/");
++    for (var i = 0; i < parts.length; ++i)
++        directory.append(parts[i]);
++    return directory;
++} 
++
++// Extract files below the given root path within
++// zipFile into the destination nsILocalFile directory
++function extractZip(zipFile, root, destination) {
++    root = root || "";
++  
++    try {
++        var zipReader = Components.classes["@mozilla.org/libjar/zip-reader;1"]
++                                  .createInstance(Components.interfaces.nsIZipReader);
++        zipReader.open(zipFile);
++    
++        // create directories first
++        var entries = zipReader.findEntries(root + "*/");
++        while (entries.hasMore()) {
++            var entryName = entries.getNext();
++            var target = appendPathToDirectory(destination, entryName.substr(root.length));
++            if (!target.exists()) {
++                target.create(Components.interfaces.nsILocalFile.DIRECTORY_TYPE,
++                          IO_PERMS_DIRECTORY);
++            }
++        }
++  
++        entries = zipReader.findEntries(root + "*");
++        while (entries.hasMore()) {
++            var entryName = entries.getNext();    
++            target = appendPathToDirectory(destination, entryName.substr(root.length));
++            if (target.exists())
++                continue;
++  
++            target.create(Components.interfaces.nsILocalFile.NORMAL_FILE_TYPE,
++                          IO_PERMS_FILE);
++            zipReader.extract(entryName, target);
++        }
++    } 
++    finally {
++        zipReader.close(); 
++    }
++}
++
++// Copy the contents of chrome:// URI to an nsILocalFile directory
++function copyChromeFolder(chromeURI, destination) {
++    
++    // Convert the URI into a file:// url
++    var reg = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
++                        .getService(Components.interfaces.nsIChromeRegistry);
++    var url = reg.convertChromeURL(chromeURI);
++
++    // Chrome files may be on disk or may be inside a jar file.
++    if (url instanceof Components.interfaces.nsIJARURI) {
++        copyJarFolder(url, destination);
++    } else {
++        var source = url.QueryInterface(Components.interfaces.nsIFileURL).file;
++        // If for some reason the source is not a folder, copy the parent.
++        if (!source.exists() || !source.isDirectory()) {
++          source = source.parent;
++        }
++        source = source.QueryInterface(Components.interfaces.nsILocalFile);
++        source.copyTo(destination.parent, destination.leafName);
++    }
++}
++
++// Copy the contents of a jar URI directory (jar:file://.../jar!/something/)  
++// to an nsILocalFile directory
++function copyJarFolder(jarURI, destination) {
++
++    jarURI = jarURI.QueryInterface(Components.interfaces.nsIJARURI);
++  
++    // Get an nsILocalFile for the containing jar
++    var jarFile = jarURI.JARFile
++                        .QueryInterface(Components.interfaces.nsIFileURL)
++                        .file
++                        .QueryInterface(Components.interfaces.nsILocalFile);
++
++    // Get the subfolder within the jar
++    var jarEntry = jarURI.JAREntry;
++                    
++    // Remove the extra filename that may have been added by the chrome registry.
++    // For example:  
++    //    chrome://global/content/   ->   content/global/global.xul
++    //    chrome://global/skin/   ->   skin/global/global.css
++  
++    var lastSlash = jarEntry.lastIndexOf("/");
++    if (lastSlash > 0 && jarEntry.length > lastSlash) {
++        jarEntry = jarEntry.substring(0, lastSlash + 1);
++    }
++
++    extractZip(jarFile, jarEntry, destination);  
++}
++
++
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/abstract-generator-wizard.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/abstract-generator-wizard.js	(revision 0)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/abstract-generator-wizard.js	(revision 0)
+@@ -0,0 +1,99 @@
++
++// Base prototype containing functionality common to all 
++// file generating wizards.
++var AbstractGeneratorWizard = {
++  
++  _assertEmpty : function(control, msg) {
++    if (control.value.length == 0) {
++      var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
++                                    .getService(Components.interfaces.nsIPromptService);
++      promptService.alert(null, "Invalid Input", msg);
++      control.focus();
++      throw Components.results.NS_ERROR_FAILURE;
++    }
++  },
++    
++  _checkDestination: function() {
++    var folder = this.getDestination();
++      
++    // Make sure the folder is valid
++    if (folder == null || (folder.exists() && !folder.isDirectory())) {
++      alert("Invalid folder.");
++      throw("invalid destination folder");
++    }
++      
++    // Prompt if the folder exists and is not empty
++    if (folder.exists() && folder.isDirectory()) {
++      var folderContents = folder.directoryEntries;
++      if (folderContents.hasMoreElements()) {
++        var promptService = Components.classes["@mozilla.org/embedcomp/prompt-service;1"]
++                                      .getService(Components.interfaces.nsIPromptService);
++        
++        var confirmed = promptService.confirm(window,
++                          "The selected folder contains files",
++                          "There are files in '" + 
++                          folder.path + "'.  " +
++                          "You may overwrite existing add-on project files if you proceed.\n\n" +
++                          "Continue with the selected folder?");
++        if (!confirmed) {
++          throw("destination folder not empty");
++        }
++      }
++    }
++  },
++  
++  _checkID: function() {
++    // Check for valid ID
++    this._assertEmpty($("id"), "ID cannot be empty");
++    var idTest = /^(\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}|[a-z0-9-\._]*\@[a-z0-9-\._]+)$/i;
++    if (!idTest.test($("id").value)) {
++      alert("Please provide a GUID or email-style ID");
++      $("id").focus();
++      throw("invalid id");
++    }
++  },
++  
++  _checkPackage: function() {
++    // Check for a valid package name
++    this._assertEmpty($("package"), "Package cannot be empty");
++    var packageTest = /^[a-z0-9-\._]+$/i;
++    if (!packageTest.test($("package").value)) {
++      alert("Invalid package. Package name may not contain spaces or punctuation.");
++      $("package").focus();
++      throw("invalid package");
++    } 
++  },
++  
++  chooseFolder : function(event) {
++    var folder = promptDirectory("Select an existing empty folder or create a new one.");
++    if (folder) {
++      $("folder").value = folder;
++    }
++  },
++  
++  // Get the destination as an nsILocalFile
++  getDestination: function() {
++    var path = $("folder").value;
++    if (!path) {
++      return null;
++    }
++    
++    var file;
++    try {
++      file = fileFromPath(path);
++    } catch(e) {
++      file = null;
++    }
++    
++    return file;
++  },   
++  
++  validateDestination : function(event) {
++    try {
++      this._checkDestination();
++    }
++    catch (e) {
++      event.preventDefault();
++    }
++  }
++};
+\ No newline at end of file
+
+Property changes on: C:\Projects\devtools\developertools\chrome\dependencies\xul-explorer\app\chrome\content\tools\abstract-generator-wizard.js
+___________________________________________________________________
+Name: svn:executable
+   + *
+
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-generator.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-generator.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-generator.js	(working copy)
+@@ -24,8 +24,7 @@
+     var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                              .createInstance(Components.interfaces.nsIFileOutputStream);
+     
+-    // use 0x02 | 0x10 to open file for appending.
+-    foStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
++    foStream.init(file, IO_MODE_WRONLY | IO_MODE_CREATE | IO_MODE_TRUNCATE, IO_PERMS_FILE, 0);
+     foStream.write(data, data.length);
+     foStream.close();
+   },
+@@ -67,9 +66,18 @@
+ 
+   _copyResources : function(destFolder, sourceFolder, files) {
+     for (var index=0; index<files.length; index++) {
++      
++      // If the file already exists at the location, remove it.
++      // copyTo() throws an exception if the destination file exists.
++      var destFile = destFolder.clone();
++      destFile.append(files[index]);
++      if (destFile.exists() && destFile.isFile()) {
++        destFile.remove(false);
++      }
++      
+       var file = sourceFolder.clone();
+       file.append(files[index]);
+-      file.copyTo(destFolder, files[index]);
++      file.copyTo(destFolder, files[index]);      
+     }
+   },
+ 
+@@ -97,12 +105,12 @@
+   createContent : function() {
+     var chromeFolder = this.rootFolder.clone();
+     chromeFolder.append("chrome");
+-    chromeFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(chromeFolder);
+ 
+     // build the content files
+     var contentFolder = chromeFolder.clone();
+     contentFolder.append("content");
+-    contentFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(contentFolder);
+     
+     var contentTemplates = ["main-js.tmpl", "main-xul.tmpl", "controller-js.tmpl"];
+     var contentFiles = [this.source + ".js", this.source + ".xul", "controller.js"];
+@@ -128,11 +136,11 @@
+     // build the locale files
+     var localeFolder = chromeFolder.clone();
+     localeFolder.append("locale");
+-    localeFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(localeFolder);
+ 
+     var langFolder = localeFolder.clone();
+     langFolder.append("en-US");
+-    langFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(langFolder);
+ 
+     var langTemplates = ["main-dtd.tmpl"];
+     var langFiles = [this.source + ".dtd"];
+@@ -152,7 +160,7 @@
+     // build the skin files
+     var skinFolder = chromeFolder.clone();
+     skinFolder.append("skin");
+-    skinFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(skinFolder);
+ 
+     var skinTemplates = ["main-css.tmpl"];
+     var skinFiles = [this.source + ".css"];
+@@ -171,7 +179,7 @@
+ 
+     var imagesFolder = skinFolder.clone();
+     imagesFolder.append("images");
+-    imagesFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(imagesFolder);
+ 
+     var sourceFolder = this.templateFolder.clone();
+     sourceFolder.append("images");
+@@ -208,11 +216,11 @@
+     // build the preference files
+     var defaultsFolder = this.rootFolder.clone();
+     defaultsFolder.append("defaults");
+-    defaultsFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(defaultsFolder);
+     
+     var prefsFolder = defaultsFolder.clone();
+     prefsFolder.append("preferences");
+-    prefsFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(prefsFolder);
+ 
+     var prefsTemplates = ["prefs-js.tmpl"];
+     var prefsFiles = ["prefs.js"];
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.js	(working copy)
+@@ -2,13 +2,7 @@
+ window.addEventListener("load", function() { ApplicationWizard.init(); }, false);
+ 
+ var ApplicationWizard = {
+-  _assertEmpty : function(control, msg) {
+-    if (control.value.length == 0) {
+-      alert(msg);
+-      control.focus();
+-      throw Components.results.NS_ERROR_FAILURE;
+-    }
+-  },
++  __proto__: AbstractGeneratorWizard,  
+   
+   init : function() {
+     var self = this;
+@@ -30,44 +24,14 @@
+     window.addEventListener("wizardfinish", function() { self.finish() }, false);
+   },
+   
+-  chooseFolder : function(event) {
+-    var ref = Components.classes["@mozilla.org/filepicker;1"];
+-    var dirpicker = ref.createInstance(Components.interfaces.nsIFilePicker);
+-
+-    dirpicker.init(window, title, dirpicker.modeGetFolder);
+-
+-    var choice = dirpicker.show();
+-    if (choice == dirpicker.returnOK) {
+-        var nsIfile = dirpicker.file.QueryInterface(Components.interfaces.nsIFile);
+-        var path = nsIfile.path;
+-        $("folder").value = path;
+-    }
+-  },
+   
+-  validateDestination : function(event) {
+-    try {
+-      this._assertEmpty($("folder"), "Destination folder cannot be empty");
+-      // XXX could check for valid folder name (but not existence, since we create it later)
+-    }
+-    catch (e) {
+-      event.preventDefault();
+-    }
+-  },
+-  
+   validateGeneral : function(event) {
+     try {
+       this._assertEmpty($("name"), "Name cannot be empty");
+-      this._assertEmpty($("package"), "Package cannot be empty");
+-      this._assertEmpty($("id"), "ID cannot be empty");
+       this._assertEmpty($("version"), "Version cannot be empty");
+-  
+-      // Check for valid ID
+-      var idTest = /^(\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}|[a-z0-9-\._]*\@[a-z0-9-\._]+)$/i;
+-      if (!idTest.test($("id").value)) {
+-        alert("invalid id");
+-        $("id").focus();
+-        throw Components.results.NS_ERROR_FAILURE;
+-      }
++
++      this._checkID();
++      this._checkPackage();
+       
+       // add a default to other fields based on entered data
+       if ($("source").value.length == 0)
+@@ -81,69 +45,73 @@
+   },
+   
+   validateTarget : function(event) {
+-      this._assertEmpty($("target-minver"), "Minimum version cannot be empty");
+-      this._assertEmpty($("target-maxver"), "Maximum version cannot be empty");
++    this._assertEmpty($("target-minver"), "Minimum version cannot be empty");
++    this._assertEmpty($("target-maxver"), "Maximum version cannot be empty");
+   },
+   
+   finish : function() {
+-    var folder = Components.classes["@mozilla.org/file/local;1"]
+-                         .createInstance(Components.interfaces.nsILocalFile);
+-    folder.initWithPath($("folder").value);
+-    if (folder.exists()) {
+-      folder.remove(true);
+-    }
+-    // XXX what if the remove fails?
+-    folder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    try {
++      var folder = this.getDestination();
++      ensureDirectory(folder);
+ 
+-    var uri = Components.classes["@mozilla.org/network/io-service;1"]
+-                        .getService(Components.interfaces.nsIIOService).newURI("chrome://explorer/locale/explorer.dtd", null, null);
+-    var reg = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
+-                        .getService(Components.interfaces.nsIChromeRegistry);
+-    uri = reg.convertChromeURL(uri);
+-    var template = uri.QueryInterface(Components.interfaces.nsIFileURL).file.parent;
+-    template.append("templates");
+-    template.append("application");
+-    
+-    var appgen = new ApplicationGenerator();
+-    appgen.rootFolder = folder;
+-    appgen.templateFolder = template;
++      var uri = Components.classes["@mozilla.org/network/io-service;1"]
++                          .getService(Components.interfaces.nsIIOService).newURI("chrome://explorer/locale/explorer.dtd", null, null);
++      var reg = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
++                          .getService(Components.interfaces.nsIChromeRegistry);
++      uri = reg.convertChromeURL(uri);
++      var template = uri.QueryInterface(Components.interfaces.nsIFileURL).file.parent;
++      template.append("templates");
++      template.append("application");
++      
++      var appgen = new ApplicationGenerator();
++      appgen.rootFolder = folder;
++      appgen.templateFolder = template;
+ 
+-    appgen.package = $("package").value;
+-    appgen.source = $("source").value;
+-    appgen.title = $("title").value;
++      appgen.package = $("package").value;
++      appgen.source = $("source").value;
++      appgen.title = $("title").value;
+ 
+-    appgen.name = $("name").value;
+-    appgen.id = $("id").value;
+-    appgen.version = $("version").value;
+-    appgen.build = $("build").value;
+-    appgen.vendor = $("vendor").value;
++      appgen.name = $("name").value;
++      appgen.id = $("id").value;
++      appgen.version = $("version").value;
++      appgen.build = $("build").value;
++      appgen.vendor = $("vendor").value;
+ 
+-    appgen.target = { minVersion: "", maxVersion: "" };
+-    appgen.target.minVersion = $("target-minver").value;
+-    appgen.target.maxVersion = $("target-maxver").value;
+-    
+-    // Check desired UI pieces
+-    if ($("ui-toolbar").checked) {
+-      appgen.ui.push("toolbar");
+-    }
+-    if ($("ui-mainmenu").checked) {
+-      appgen.ui.push("mainmenu");
+-    }
+-    if ($("ui-contextmenu").checked) {
+-      appgen.ui.push("contextmenu");
+-    }
+-    if ($("ui-sidebar").checked) {
+-      appgen.ui.push("sidebar");
+-    }
+-    if ($("ui-options").checked) {
+-      appgen.ui.push("options");
+-    }
+-    if ($("ui-about").checked) {
+-      appgen.ui.push("about");
+-    }
++      appgen.target = { minVersion: "", maxVersion: "" };
++      appgen.target.minVersion = $("target-minver").value;
++      appgen.target.maxVersion = $("target-maxver").value;
++      
++      // Check desired UI pieces
++      if ($("ui-toolbar").checked) {
++        appgen.ui.push("toolbar");
++      }
++      if ($("ui-mainmenu").checked) {
++        appgen.ui.push("mainmenu");
++      }
++      if ($("ui-contextmenu").checked) {
++        appgen.ui.push("contextmenu");
++      }
++      if ($("ui-sidebar").checked) {
++        appgen.ui.push("sidebar");
++      }
++      if ($("ui-options").checked) {
++        appgen.ui.push("options");
++      }
++      if ($("ui-about").checked) {
++        appgen.ui.push("about");
++      }
+ 
+-    appgen.workspace = $("workspace").selectedItem.value;
+-    
+-    appgen.run();
++      appgen.workspace = $("workspace").selectedItem.value;
++      
++      appgen.run();
++      
++      // Show the files to the user
++      folder.reveal();      
++      
++    } catch (e) {
++      alert("Sorry, an error occurred while generating your application.  \n" +
++            "Please report the following error to http://bugzilla.mozilla.org:\n\n" +
++            e.toString());            
++    }
+   }
+ };
+\ No newline at end of file
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.xul
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.xul	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.xul	(working copy)
+@@ -8,7 +8,9 @@
+ 
+   <script type="application/x-javascript" src="chrome://explorer/content/utils/template.js"/>
+   <script type="application/x-javascript" src="chrome://explorer/content/utils/dom.js"/>
++  <script type="application/x-javascript" src="chrome://explorer/content/utils/io.js"/>
+   <script type="application/x-javascript" src="chrome://explorer/content/tools/extension-generator.js"/>
++  <script type="application/x-javascript" src="chrome://explorer/content/tools/abstract-generator-wizard.js"/>  
+   <script type="application/x-javascript" src="chrome://explorer/content/tools/extension-project.js"/>
+ 
+   <wizardpage id="destination" label="&destination.label;" description="&destination.description;">
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-generator.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-generator.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-generator.js	(working copy)
+@@ -27,8 +27,7 @@
+     var foStream = Components.classes["@mozilla.org/network/file-output-stream;1"]
+                              .createInstance(Components.interfaces.nsIFileOutputStream);
+     
+-    // use 0x02 | 0x10 to open file for appending.
+-    foStream.init(file, 0x02 | 0x08 | 0x20, 0664, 0); // write, create, truncate
++    foStream.init(file, IO_MODE_WRONLY | IO_MODE_CREATE | IO_MODE_TRUNCATE, IO_PERMS_FILE, 0);
+     foStream.write(data, data.length);
+     foStream.close();
+   },
+@@ -72,6 +71,8 @@
+     if (this.rootFolder == null)
+       return;
+ 
++    // TODO: Is this desirable? Only do this if options enabled
++      
+     // auto-add the options url if left blank
+     if (!this.optionsURL || this.optionsURL.length == 0) {
+       this.optionsURL = "chrome://" + this.package + "/content/options.xul";
+@@ -114,12 +115,12 @@
+   createContent : function() {
+     var chromeFolder = this.rootFolder.clone();
+     chromeFolder.append("chrome");
+-    chromeFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
+-
++    ensureDirectory(chromeFolder);
++    
+     // build the content files
+     var contentFolder = chromeFolder.clone();
+     contentFolder.append("content");
+-    contentFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(contentFolder);
+     
+     var contentTemplates = ["overlay-js.tmpl", "ff-overlay-xul.tmpl", "ff-overlay-js.tmpl"];
+     var contentFiles = ["overlay.js", "ff-overlay.xul", "ff-overlay.js"];
+@@ -145,11 +146,11 @@
+     // build the locale files
+     var localeFolder = chromeFolder.clone();
+     localeFolder.append("locale");
+-    localeFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(localeFolder);
+ 
+     var langFolder = localeFolder.clone();
+     langFolder.append("en-US");
+-    langFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(langFolder);
+ 
+     var langTemplates = ["overlay-dtd.tmpl", "overlay-properties.tmpl"];
+     var langFiles = ["overlay.dtd", "overlay.properties"];
+@@ -169,7 +170,7 @@
+     // build the skin files
+     var skinFolder = chromeFolder.clone();
+     skinFolder.append("skin");
+-    skinFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(skinFolder);
+ 
+     var skinTemplates = ["overlay-css.tmpl"];
+     var skinFiles = ["overlay.css"];
+@@ -178,11 +179,11 @@
+     // build the preference files
+     var defaultsFolder = this.rootFolder.clone();
+     defaultsFolder.append("defaults");
+-    defaultsFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(defaultsFolder);
+     
+     var prefsFolder = defaultsFolder.clone();
+     prefsFolder.append("preferences");
+-    prefsFolder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    ensureDirectory(prefsFolder);
+ 
+     var prefsTemplates = ["prefs-js.tmpl"];
+     var prefsFiles = ["prefs.js"];
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-project.js	(working copy)
+@@ -2,13 +2,7 @@
+ window.addEventListener("load", function() { ExtensionWizard.init(); }, false);
+ 
+ var ExtensionWizard = {
+-  _assertEmpty : function(control, msg) {
+-    if (control.value.length == 0) {
+-      alert(msg);
+-      control.focus();
+-      throw Components.results.NS_ERROR_FAILURE;
+-    }
+-  },
++  __proto__: AbstractGeneratorWizard,
+   
+   init : function() {
+     var self = this;
+@@ -27,44 +21,13 @@
+     window.addEventListener("wizardfinish", function() { self.finish() }, false);
+   },
+   
+-  chooseFolder : function(event) {
+-    var ref = Components.classes["@mozilla.org/filepicker;1"];
+-    var dirpicker = ref.createInstance(Components.interfaces.nsIFilePicker);
+-
+-    dirpicker.init(window, title, dirpicker.modeGetFolder);
+-
+-    var choice = dirpicker.show();
+-    if (choice == dirpicker.returnOK) {
+-        var nsIfile = dirpicker.file.QueryInterface(Components.interfaces.nsIFile);
+-        var path = nsIfile.path;
+-        $("folder").value = path;
+-    }
+-  },
+-  
+-  validateDestination : function(event) {
+-    try {
+-      this._assertEmpty($("folder"), "Destination folder cannot be empty");
+-      // XXX could check for valid folder name (but not existence, since we create it later)
+-    }
+-    catch (e) {
+-      event.preventDefault();
+-    }
+-  },
+-  
+   validateGeneral : function(event) {
+     try {
+       this._assertEmpty($("name"), "Name cannot be empty");
+-      this._assertEmpty($("package"), "Package cannot be empty");
+-      this._assertEmpty($("id"), "ID cannot be empty");
+       this._assertEmpty($("version"), "Version cannot be empty");
+-  
+-      // Check for valid ID
+-      var idTest = /^(\{[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\}|[a-z0-9-\._]*\@[a-z0-9-\._]+)$/i;
+-      if (!idTest.test($("id").value)) {
+-        alert("invalid id");
+-        $("id").focus();
+-        throw Components.results.NS_ERROR_FAILURE;
+-      }
++
++      this._checkID();
++      this._checkPackage();
+     }
+     catch (e) {
+       event.preventDefault();
+@@ -104,57 +67,53 @@
+   },
+   
+   finish : function() {
+-    var folder = Components.classes["@mozilla.org/file/local;1"]
+-                         .createInstance(Components.interfaces.nsILocalFile);
+-    folder.initWithPath($("folder").value);
+-    if (folder.exists()) {
+-      folder.remove(true);
+-    }
+-    folder.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++    try {
++      var folder = this.getDestination();
++      ensureDirectory(folder);
+ 
+-    var uri = Components.classes["@mozilla.org/network/io-service;1"]
+-                        .getService(Components.interfaces.nsIIOService).newURI("chrome://explorer/locale/explorer.dtd", null, null);
+-    var reg = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
+-                        .getService(Components.interfaces.nsIChromeRegistry);
+-    uri = reg.convertChromeURL(uri);
+-    var template = uri.QueryInterface(Components.interfaces.nsIFileURL).file.parent;
+-    template.append("templates");
+-    template.append("extension");
+-    
+-    var extgen = new ExtensionGenerator();
+-    extgen.rootFolder = folder;
+-    extgen.templateFolder = template;
+-    extgen.name = $("name").value;
+-    extgen.package = $("package").value;
+-    extgen.id = $("id").value;
+-    extgen.version = $("version").value;
+-    extgen.description = $("description").value;
++      var uri = Components.classes["@mozilla.org/network/io-service;1"]
++                          .getService(Components.interfaces.nsIIOService).newURI("chrome://explorer/locale/explorer.dtd", null, null);
++      var reg = Components.classes["@mozilla.org/chrome/chrome-registry;1"]
++                          .getService(Components.interfaces.nsIChromeRegistry);
++      uri = reg.convertChromeURL(uri);
++      var template = uri.QueryInterface(Components.interfaces.nsIFileURL).file.parent;
++      template.append("templates");
++      template.append("extension");
++      
++      var extgen = new ExtensionGenerator();
++      extgen.rootFolder = folder;
++      extgen.templateFolder = template;
++      extgen.name = $("name").value;
++      extgen.package = $("package").value;
++      extgen.id = $("id").value;
++      extgen.version = $("version").value;
++      extgen.description = $("description").value;
+ 
+-    extgen.homeURL = $("homeurl").value;
+-    extgen.updateURL = $("updateurl").value;
+-    extgen.optionsURL = $("optionsurl").value;
+-    extgen.iconURL = $("iconurl").value;
++      extgen.homeURL = $("homeurl").value;
++      extgen.updateURL = $("updateurl").value;
++      extgen.optionsURL = $("optionsurl").value;
++      extgen.iconURL = $("iconurl").value;
+ 
+-    extgen.author = $("author").value;
++      extgen.author = $("author").value;
+ 
+-    // Add contributors
+-    if ($("contributors").value) {
+-      var contributors = $("contributors").value.split("\n");
+-      for (var contributorIndex=0; contributorIndex<contributors.length; contributorIndex++) {
+-        var contributor = {};
+-        contributor.name = contributors[contributorIndex];
+-        
+-        extgen.contributors.push(contributor);
++      // Add contributors
++      if ($("contributors").value) {
++        var contributors = $("contributors").value.split("\n");
++        for (var contributorIndex=0; contributorIndex<contributors.length; contributorIndex++) {
++          var contributor = {};
++          contributor.name = contributors[contributorIndex];
++          
++          extgen.contributors.push(contributor);
++        }
+       }
+-    }
+ 
+-    // Check desired targets
+-    if ($("target-firefox").checked) {
+-      var target = {id:"{ec8030f7-c20a-464f-9b0e-13a3a9e97384}", name:"Firefox", minVersion:"", maxVersion:""};
+-      target.minVersion = $("target-firefox-minver").value;
+-      target.maxVersion = $("target-firefox-maxver").value;
+-      extgen.targets.push(target);
+-    }
++      // Check desired targets
++      if ($("target-firefox").checked) {
++        var target = {id:"{ec8030f7-c20a-464f-9b0e-13a3a9e97384}", name:"Firefox", minVersion:"", maxVersion:""};
++        target.minVersion = $("target-firefox-minver").value;
++        target.maxVersion = $("target-firefox-maxver").value;
++        extgen.targets.push(target);
++      }
+ /*
+     if ($("target-thunderbird").checked) {
+       var target = {id:"{3550f703-e582-4d05-9a08-453d09bdfdc6}", name:"Thunderbird", minVersion:"", maxVersion:""};
+@@ -163,34 +122,43 @@
+       extgen.targets.push(target);
+     }
+ */
+-    if ($("target-xulexplorer").checked) {
+-      var target = {id:"xulexplorer@developer.mozilla.org", name:"XUL Explorer", minVersion:"", maxVersion:""}
+-      target.minVersion = $("target-xulexplorer-minver").value;
+-      target.maxVersion = $("target-xulexplorer-maxver").value;
+-      extgen.targets.push(target);
+-    }
++      if ($("target-xulexplorer").checked) {
++        var target = {id:"xulexplorer@developer.mozilla.org", name:"XUL Explorer", minVersion:"", maxVersion:""}
++        target.minVersion = $("target-xulexplorer-minver").value;
++        target.maxVersion = $("target-xulexplorer-maxver").value;
++        extgen.targets.push(target);
++      }
+ 
+ 
+-    // Check desired UI pieces
+-    if ($("ui-toolbarbutton").checked) {
+-      extgen.ui.push("toolbarbutton");
++      // Check desired UI pieces
++      if ($("ui-toolbarbutton").checked) {
++        extgen.ui.push("toolbarbutton");
++      }
++      if ($("ui-mainmenu").checked) {
++        extgen.ui.push("mainmenu");
++      }
++      if ($("ui-contextmenu").checked) {
++        extgen.ui.push("contextmenu");
++      }
++      if ($("ui-sidebar").checked) {
++        extgen.ui.push("sidebar");
++      }
++      if ($("ui-options").checked) {
++        extgen.ui.push("options");
++      }
++      if ($("ui-about").checked) {
++        extgen.ui.push("about");
++      }
++      
++      extgen.run();
++      
++      // Show the files to the user
++      folder.reveal();
++      
++    } catch (e) {
++      alert("Sorry, an error occurred while generating your extension.  \n" +
++            "Please report the following error to http://bugzilla.mozilla.org:\n\n" +
++            e.toString());            
+     }
+-    if ($("ui-mainmenu").checked) {
+-      extgen.ui.push("mainmenu");
+-    }
+-    if ($("ui-contextmenu").checked) {
+-      extgen.ui.push("contextmenu");
+-    }
+-    if ($("ui-sidebar").checked) {
+-      extgen.ui.push("sidebar");
+-    }
+-    if ($("ui-options").checked) {
+-      extgen.ui.push("options");
+-    }
+-    if ($("ui-about").checked) {
+-      extgen.ui.push("about");
+-    }
+-    
+-    extgen.run();
+   }
+ };
+\ No newline at end of file
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-tester.js
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-tester.js	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/extension-tester.js	(working copy)
+@@ -62,7 +62,7 @@
+       dir.append("extensions");
+   
+       if (!dir.exists()) {
+-          dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, 0755);
++          dir.create(Components.interfaces.nsIFile.DIRECTORY_TYPE, IO_PERMS_DIRECTORY);
+       }
+       
+       if (!dir.isDirectory()) {
+@@ -90,7 +90,7 @@
+           }
+       }
+       
+-      file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, 0755);
++      file.create(Components.interfaces.nsIFile.NORMAL_FILE_TYPE, IO_PERMS_DIRECTORY);
+       stringToFile(this.rootFolder.path, file);
+ 
+       return file;
+Index: C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.xul
+===================================================================
+--- C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.xul	(revision 5635)
++++ C:/Projects/devtools/developertools/chrome/dependencies/xul-explorer/app/chrome/content/tools/application-project.xul	(working copy)
+@@ -8,7 +8,9 @@
+ 
+   <script type="application/x-javascript" src="chrome://explorer/content/utils/template.js"/>
+   <script type="application/x-javascript" src="chrome://explorer/content/utils/dom.js"/>
++  <script type="application/x-javascript" src="chrome://explorer/content/utils/io.js"/>  
+   <script type="application/x-javascript" src="chrome://explorer/content/tools/application-generator.js"/>
++  <script type="application/x-javascript" src="chrome://explorer/content/tools/abstract-generator-wizard.js"/>  
+   <script type="application/x-javascript" src="chrome://explorer/content/tools/application-project.js"/>
+ 
+   <wizardpage id="destination" label="&destination.label;" description="&destination.description;">

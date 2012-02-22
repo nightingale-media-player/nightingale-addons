@@ -1,0 +1,45 @@
+<!ENTITY prefWindow.title "Nastavení">
+
+<!-- Main preferences -->
+<!ENTITY paneGeneral.label "Obecné">
+<!ENTITY paneGeneral.key "b">
+<!ENTITY selectStartupView.desc "Vyberte, který pohled má být zvolen po startu:">
+<!ENTITY useLastView.label "Naposledy použitý z předchozího spuštění rozšíření XPCOMViewer">
+<!ENTITY useLastView.key "P">
+<!ENTITY useCustomView.label "Vlastní:">
+<!ENTITY useCustomView.key "V">
+<!ENTITY useCustomViewType1.label "Components.classes">
+<!ENTITY useCustomViewType1.key "C">
+<!ENTITY useCustomViewType2.label "Components.interfaces">
+<!ENTITY useCustomViewType2.key "m">
+<!ENTITY useCustomViewType3.label "Components.results">
+<!ENTITY useCustomViewType3.key "n">
+<!ENTITY chooseLxrServer.caption "Dostupné služby LXR">
+<!ENTITY chooseLxrServer.description "Zde si můžete vybrat, kterou LXR službu chcete využívat jako defaultní.">
+<!ENTITY preferedSourcesLocationLXR.label "Služby LXR:">
+<!ENTITY preferedSourcesLocationLXR.key "X">
+<!ENTITY othersGeneralPrefs.caption "Ostatní:">
+<!ENTITY enableXPCOMViewerSidebar.label "Povolit zobrazení bočního panelu?">
+<!ENTITY enableXPCOMViewerSidebar.key "o">
+
+<!-- Bookmark preferences -->
+<!ENTITY paneBookmarks.label "Záložky">
+<!ENTITY paneBookmarks.key "Z">
+<!ENTITY allowBookmarks.label "Povolit záložky">
+<!ENTITY allowBookmarks.key "z">
+<!ENTITY bookmarsDisabledByPlatform.label "Záložky nejsou povoleny, protože aplikace, na kterou jste XPCOMViewer jako nainstalovali, nepodporuje typ databáze, který je vyžadován.">
+
+<!-- Templates preferences -->
+<!ENTITY paneTemplates.label "Šablony">
+<!ENTITY paneTemplates.key "b">
+<!ENTITY paneTemplates.desc "Zde můžete editovat šablony, které jsou používány ke generování zdrojových kódů.">
+<!ENTITY availableTemplates.label "Dostupné šablony:">
+<!ENTITY availableTemplates.key "D">
+<!ENTITY templateClass.label "Objekt třídy">
+<!ENTITY templateIface1.label "Inicializované rozhraní">
+<!ENTITY templateIface2.label "Neinicializované rozhraní">
+<!ENTITY templateProperty.label "Metoda nebo vlastnost rozhraní">
+<!ENTITY templateIfaceConst.label "Konstanta rozhraní">
+<!ENTITY templateResult.label "Výsledek">
+<!ENTITY templateSource.label "Zdrojový kód šablony:">
+<!ENTITY templateSource.key "Z">

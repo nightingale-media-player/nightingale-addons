@@ -1,0 +1,49 @@
+<!ENTITY prefWindow.title "Preferences">
+
+<!-- Main preferences -->
+<!ENTITY paneGeneral.label "General">
+<!ENTITY paneGeneral.key "G">
+<!ENTITY selectStartupView.desc "Select with which view has to be shown after startup:">
+<!ENTITY useLastView.label "The last view from previous XPCOMViewer's run">
+<!ENTITY useLastView.key "T">
+<!ENTITY useCustomView.label "Custom view (specify which one):">
+<!ENTITY useCustomView.key "m">
+<!ENTITY useCustomViewType1.label "Components.classes">
+<!ENTITY useCustomViewType1.key "e">
+<!ENTITY useCustomViewType2.label "Components.interfaces">
+<!ENTITY useCustomViewType2.key "n">
+<!ENTITY useCustomViewType3.label "Components.results">
+<!ENTITY useCustomViewType3.key "r">
+<!ENTITY chooseLxrServer.caption "LXR servers:">
+<!ENTITY chooseLxrServer.description "Choose default LXR server:">
+<!ENTITY preferedSourcesLocationLXR.label "LXR server:">
+<!ENTITY preferedSourcesLocationLXR.key "X">
+<!ENTITY chooseBugzillaServer.caption "Bugzilla servers:">
+<!ENTITY chooseBugzillaServer.description "Choose default Bugzilla server:">
+<!ENTITY preferedSourcesLocationBugzilla.label "Bugzilla server:">
+<!ENTITY preferedSourcesLocationBugzilla.key "B">
+<!ENTITY othersGeneralPrefs.caption "Others:">
+<!ENTITY enableXPCOMViewerSidebar.label "Enable showing of XPCOMViewer's sidebar in the target application?">
+<!ENTITY enableXPCOMViewerSidebar.key "a">
+
+<!-- Bookmark preferences -->
+<!ENTITY paneBookmarks.label "Bookmarks">
+<!ENTITY paneBookmarks.key "B">
+<!ENTITY allowBookmarks.label "Allow bookmarks">
+<!ENTITY allowBookmarks.key "b">
+<!ENTITY bookmarsDisabledByPlatform.label "Bookmarks are disabled because of application on which you installed XPCOMViewer doesn't support storage type which is needed.">
+
+<!-- Templates preferences -->
+<!ENTITY paneTemplates.label "Templates">
+<!ENTITY paneTemplates.key "T">
+<!ENTITY paneTemplates.desc "Here you can edit (or restore original) templates for generated source code.">
+<!ENTITY availableTemplates.label "Available templates:">
+<!ENTITY availableTemplates.key "A">
+<!ENTITY templateClass.label "Class object">
+<!ENTITY templateIface1.label "Initialized interface">
+<!ENTITY templateIface2.label "Not-initialized interface">
+<!ENTITY templateProperty.label "Interface property/method">
+<!ENTITY templateIfaceConst.label "Interface's constant">
+<!ENTITY templateResult.label "Result">
+<!ENTITY templateSource.label "Template's source:">
+<!ENTITY templateSource.key "T">

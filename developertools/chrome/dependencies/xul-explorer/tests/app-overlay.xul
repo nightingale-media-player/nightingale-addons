@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<overlay id="appOverlay" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <!-- Bring up the harness in a new window once the main window has opened -->
+  <script type="application/javascript"><![CDATA[
+    function openTests() {
+      window.openDialog("chrome://mochikit/content/app-harness.xul", "", "chrome,all,width=800,height=600");
+    }
+    window.addEventListener("load", openTests, false)
+  ]]>
+  </script>
+
+</overlay>

@@ -1,0 +1,11 @@
+[: if ($_.ui.indexOf("options") != -1) { :]
+pref("extensions.[:= $_.package :].boolpref", false);
+pref("extensions.[:= $_.package :].intpref", 0);
+pref("extensions.[:= $_.package :].stringpref", "A string");
+[: } :]
+
+// Used to detect the first time the extension is run 
+pref("extensions.[:= $_.package :].firstrun", true);
+
+// See http://kb.mozillazine.org/Localize_extension_descriptions
+// pref("extensions.[:= $_.id :].description", "chrome://[:= $_.package :]/locale/[:= $_.package :].properties");

@@ -1,0 +1,13 @@
+<!ENTITY dialog.title "Add bookmark">
+
+<!ENTITY itemTitle.label "Title:">
+<!ENTITY itemTitle.key "T">
+<!ENTITY itemTarget.label "Target:">
+<!ENTITY itemTarget.key "a">
+<!ENTITY itemCategory.label "Category:">
+<!ENTITY itemCategory.key "C">
+<!ENTITY itemText.label "Text:">
+<!ENTITY itemText.key "e">
+
+<!ENTITY commonCategory.label "Common">
+<!ENTITY commonCategory.key "m">

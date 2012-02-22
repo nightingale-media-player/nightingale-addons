@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<!--
+//
+// BEGIN SONGBIRD GPL
+// 
+// This file is part of the Songbird web player.
+//
+// Copyright(c) 2005-2012 POTI, Inc.
+// http://songbirdnest.com
+// 
+// This file may be licensed under the terms of of the
+// GNU General Public License Version 2 (the "GPL").
+// 
+// Software distributed under the License is distributed 
+// on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
+// express or implied. See the GPL for the specific language 
+// governing rights and limitations.
+//
+// You should have received a copy of the GPL along with this 
+// program. If not, go to http://www.gnu.org/licenses/gpl.html
+// or write to the Free Software Foundation, Inc., 
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+// 
+// END SONGBIRD GPL
+//
+-->
+
+<?xml-stylesheet href="chrome://sbdevtools/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay [
+<!ENTITY % overlayDTD SYSTEM "chrome://sbdevtools/locale/overlay.dtd">
+<!ENTITY % songbirdDTD SYSTEM "chrome://songbird/locale/songbird.dtd">
+%overlayDTD;
+%songbirdDTD;
+]>
+<overlay id="sbdevtools-menu-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <commandset id="mainCommandSet">
+    <command id="sbdevtools-launch-debugger" oncommand="SBDevTools.Controller.launchJavascriptDebugger();"/>
+    <command id="sbdevtools-restart" oncommand="SBDevTools.Controller.restart();"/>
+    <command id="sbdevtools-refresh-ui" oncommand="SBDevTools.Controller.refreshUI();"/>
+  </commandset>
+  
+  <keyset id="mainKeyset">
+    <key id="sbdevtools-debugger-key"
+         modifiers="accel shift"
+         key="&sbdevtools.menu.debugger.key;"
+         command="sbdevtools-launch-debugger"/>
+    <key id="sbdevtools-refresh-ui-key"
+         modifiers="accel shift"
+         key="&sbdevtools.menu.refreshui.key;"
+         command="sbdevtools-refresh-ui"/>
+    <key id="sbdevtools-restart-key"
+         modifiers="accel shift"
+         key="&sbdevtools.menu.restart.key;"
+         command="sbdevtools-restart"/>
+  </keyset>
+
+  <menupopup id="menu_ToolsPopup"> 
+
+    <menuitem id="sbdevtools-jsshell-menuitem"
+            label="&sbdevtools.menu.jsshell;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchJavascriptShell();"/>
+
+    <menuitem id="sbdevtools-venkman-menuitem"
+            label="&sbdevtools.menu.venkman;" 
+            insertafter="devToolsSeparator"
+            key="sbdevtools-debugger-key"
+            command="sbdevtools-launch-debugger"/>
+
+    <menuitem id="sbdevtools-xul-table-menuitem"
+            label="&sbdevtools.menu.xultable;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchXULTable();"/> 
+
+    <menuitem id="sbdevtools-xuledit-menuitem"
+            label="&sbdevtools.menu.xuledit;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchXULEditor();"/>
+ 
+    <menuseparator id="sbdevtools-actions-separator"  insertafter="devToolsSeparator"/>
+ 
+    <menuitem id="sbdevtools-xulcache-menuitem"
+            label="&sbdevtools.menu.xulcache;" 
+            type="checkbox"
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.setXULCacheDisabled(this.getAttribute('checked') == 'true');"/>     
+
+    <menuitem id="sbdevtools-profilemanager-menuitem"
+            label="&sbdevtools.menu.profilemanager;" 
+            type="checkbox"
+            accesskey="&sbdevtools.menu.profilemanager.accesskey;"
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.setShowProfileManager(this.getAttribute('checked') == 'true');"/>   
+
+    <menuitem id="sbdevtools-restart-menuitem"
+            label="&sbdevtools.menu.restart;" 
+            insertafter="devToolsSeparator"
+            accesskey="&sbdevtools.menu.restart.accesskey;"
+            key="sbdevtools-restart-key"
+            command="sbdevtools-restart"/>
+   
+    <menuitem id="sbdevtools-refreshui-menuitem"
+            label="&sbdevtools.menu.refreshui;" 
+            accesskey="&sbdevtools.menu.refreshui.accesskey;"
+            insertafter="devToolsSeparator"
+            key="sbdevtools-refresh-ui-key"
+            command="sbdevtools-refresh-ui"/>
+                <!--
+    <menuitem id="sbdevtools-test-extension-menuitem"
+            label="TODO" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.doExtensionTest();"/>
+    -->
+    <menuseparator id="sbdevtools-wizard-separator"  insertafter="devToolsSeparator"/>
+    
+    <menuitem id="sbdevtools-create-feathers-menuitem"
+            label="&sbdevtools.menu.createfeathers;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchFeathersWizard();"/>  
+    <menuitem id="sbdevtools-create-extension-menuitem"
+            label="&sbdevtools.menu.createextension;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchExtensionWizard();"/>           
+    <menuitem id="sbdevtools-link-existing-extension"
+            label="&sbdevtools.menu.linkexistingextension;"
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.linkExistingExtension();"/>
+  </menupopup>
+  
+
+  <toolbarpalette id="control_pane_toolbar_palette">
+      <toolbarbutton label="&menu.help.bugz;" id="sbdevtools-bug-toolbarbutton" tooltiptext="&menu.help.bugz;" 
+          class="sb-player-button toolbarbutton-1 chromeclass-toolbar-additional" 
+          oncommand="SBDevTools.Controller.launchBugzilla();" />
+  </toolbarpalette>
+  
+  <script type="application/x-javascript" src="restart-helper.js"/>
+  <script type="application/x-javascript" src="overlay-check.js"/>
+  <script type="application/x-javascript" src="main.js"/>
+
+</overlay>

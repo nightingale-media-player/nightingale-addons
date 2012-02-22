@@ -1,0 +1,139 @@
+<!-- XPCOMViewer's commands -->
+<!ENTITY quitCmd.label "Zavřít">
+<!ENTITY quitCmd.key "Z">
+<!ENTITY quitCmd.tip "Zavře &appFullName;">
+<!ENTITY showAboutCmd.label "O rozšíření…">
+<!ENTITY showAboutCmd.key "O">
+<!ENTITY showAboutCmd.tip "Zobraz dialog O rozšíření &appFullName;">
+<!ENTITY showHelpCmd.label "Nápověda">
+<!ENTITY showHelpCmd.key "N">
+<!ENTITY showHelpCmd.tip "Zobraz nápovědu k rozšíření &appFullName;">
+<!ENTITY showHomePageCmd.label "Domovské stránky">
+<!ENTITY showHomePageCmd.key "o">
+<!ENTITY showHomePageCmd.tip "Zobraz domovské stránky rozšíření">
+<!ENTITY toggleFullscreenCmd.label "Celá obrazovka">
+<!ENTITY toggleFullscreenCmd.key "C">
+<!ENTITY toggleFullscreenCmd.tip "Přepni pohled na plnou obrazovku">
+<!ENTITY showJSConsoleCmd.label "Chybová konzole">
+<!ENTITY showJSConsoleCmd.key "h">
+<!ENTITY showJSConsoleCmd.tip "Zobraz konzoli s přehledem chyb CSS nebo JavaScriptu">
+<!ENTITY showPreferencesCmd.label "Možnosti…">
+<!ENTITY showPreferencesCmd.key "M">
+<!ENTITY showPreferencesCmd.tip "Zobraz dialog s možnostmi nastavení aplikace">
+<!ENTITY saveAsXMLCmd.label "Ulož jako XML">
+<!ENTITY saveAsXMLCmd.key "M">
+<!ENTITY saveAsXMLCmd.tip "Ulož výpis jako XML dokument">
+<!ENTITY saveAsHTMLCmd.label "Ulož jako HTML">
+<!ENTITY saveAsHTMLCmd.key "H">
+<!ENTITY saveAsHTMLCmd.tip "Ulož výpis jako HTML dokument">
+<!ENTITY saveAsTXTCmd.label "Ulož jako TXT">
+<!ENTITY saveAsTXTCmd.key "T">
+<!ENTITY saveAsTXTCmd.tip "Ulož výpis jako textový dokument">
+<!ENTITY showClassesCmd.label "Třídy">
+<!ENTITY showClassesCmd.key "T">
+<!ENTITY showClassesCmd.tip "Zobraz dostupné XPCOM třídy">
+<!ENTITY showIfacesCmd.label "Rozhraní">
+<!ENTITY showIfacesCmd.key "R">
+<!ENTITY showIfacesCmd.tip "Zobraz dostupné XPCOM rozhraní">
+<!ENTITY showResultsCmd.label "Výsledky">
+<!ENTITY showResultsCmd.key "r">
+<!ENTITY showResultsCmd.tip "Zobraz dostupné výsledky (předdefinované XPCOM)">
+<!ENTITY showFilteredCmd.label "Aplikuj filtr">
+<!ENTITY showFilteredCmd.key "A">
+<!ENTITY showFilteredCmd.tip "Aplikuj zadaný řetězec na zobrazené položky">
+<!ENTITY showAllCmd.label "Zobraz vše">
+<!ENTITY showAllCmd.key "a">
+<!ENTITY showAllCmd.tip "Zobraz všechny položky (odstraní aplikovaný filtr)">
+<!ENTITY showWithBookmarkCmd.label "Se záložkou">
+<!ENTITY showWithBookmarkCmd.key "z">
+<!ENTITY showWithBookmarkCmd.tip "Zobraz všechny položky s připojenou záložkou">
+<!ENTITY addBookmarkCmd.label "Přidej záložku">
+<!ENTITY addBookmarkCmd.key "z">
+<!ENTITY addBookmarkCmd.tip "Přidej novou záložku">
+<!ENTITY editBookmarkCmd.label "Edituj záložku">
+<!ENTITY editBookmarkCmd.key "E">
+<!ENTITY editBookmarkCmd.tip "Edituj vybranou záložku">
+<!ENTITY removeBookmarkCmd.label "Smaž záložku">
+<!ENTITY removeBookmarkCmd.key "S">
+<!ENTITY removeBookmarkCmd.tip "Smaž vybranou záložku">
+<!ENTITY copyNameOfSelCmd.label "Kopíruj název">
+<!ENTITY copyNameOfSelCmd.key "o">
+<!ENTITY copyNameOfSelCmd.tip "Kopíruj název označené položky do schránky">
+<!ENTITY generateCppCodeCmd.label "Generuj C++ kód">
+<!ENTITY generateCppCodeCmd.key "C">
+<!ENTITY generateCppCodeCmd.tip "Generuj C++ kód pro označené rozhraní do schránky">
+<!ENTITY generateJsCodeCmd.label "Generuj JavaScript kód">
+<!ENTITY generateJsCodeCmd.key "J">
+<!ENTITY generateJsCodeCmd.tip "Generuj JavaScript kód pro označené rozhraní do schránky">
+<!ENTITY generatePythonCodeCmd.label "Generuj Python kód">
+<!ENTITY generatePythonCodeCmd.key "J">
+<!ENTITY generatePythonCodeCmd.tip "Generuj Python kód pro označené rozhraní do schránky">
+<!ENTITY ifaceLxrLookupCmd.label "Vyhledej na LXR serveru">
+<!ENTITY ifaceLxrLookupCmd.key "L">
+<!ENTITY ifaceLxrLookupCmd.tip "Vyhledá zvolenou položku na LXR serveru">
+<!ENTITY showLxrSearchPage.label "LXR vyhledávání">
+<!ENTITY showLxrSearchPage.key "X">
+<!ENTITY showLxrSearchPage.tip "Zobraz/skryj stránku s vyhledáváním na LXR serveru">
+<!ENTITY showBugzillaSearchPage.label "Bugzilla vyhledávání">
+<!ENTITY showBugzillaSearchPage.key "B">
+<!ENTITY showBugzillaSearchPage.tip "Zobraz/skryj stránku s vyhledáváním na Bugzilla serveru">
+<!ENTITY showBookmarksPaneCmd.label "Zobraz panel s poznámkami">
+<!ENTITY showBookmarksPaneCmd.key "o">
+<!ENTITY closeBookmarksPaneCmd.label "Skryj panel s poznámkami">
+<!ENTITY closeBookmarksPaneCmd.key "o">
+<!ENTITY showJSShellCmd.label "JavaScript konzole">
+<!ENTITY showJSShellCmd.key "h">
+<!ENTITY showJSShellCmd.tip "Zobraz JavaScript Shell">
+
+<!-- Tab context menu -->
+<!ENTITY closeTabboxTabCmd.label "Zavři panel">
+<!ENTITY closeTabboxTabCmd.key "Z">
+
+<!-- Keyset -->
+<!ENTITY quitCmd.commandkey "Q"> <!-- accel -->
+<!ENTITY addBookmarkCmd.commandkey "B"> <!-- accel+shift -->
+
+<!-- Main menubar -->
+<!ENTITY mainMenubar.toolbarname "Hlavní menu">
+<!ENTITY mainMenubar.key "m">
+<!ENTITY fileMenu.label "Soubor">
+<!ENTITY fileMenu.key "S">
+<!ENTITY fileMenuSave.label "Výpisy">
+<!ENTITY fileMenuSave.key "V">
+<!ENTITY showMenu.label "Zobraz">
+<!ENTITY showMenu.key "Z">
+<!ENTITY helpMenu.label "Nápověda">
+<!ENTITY helpMenu.key "N">
+
+<!-- Main toolbar -->
+<!ENTITY mainToolbar.toolbarname "Hlavní panel ">
+<!ENTITY mainToolbar.key "o">
+
+<!-- Filter toolbar -->
+<!ENTITY filterToolbar.toolbarname "Panel pro filtrování">
+<!ENTITY filterToolbar.key "e">
+<!ENTITY filterTextbox.label "Filtr">
+<!ENTITY filterTextbox.key "F">
+
+<!-- Workspace tabbox -->
+<!ENTITY xpcomTreeTab.label "…">
+<!ENTITY xpcomTreeTab.key ".">
+<!ENTITY lxrLookupTab.label "LXR">
+<!ENTITY lxrLookupTab.key "L">
+<!ENTITY bugzillaLookupTab.label "Bugzilla">
+<!ENTITY bugzillaLookupTab.key "B">
+<!ENTITY jsshellTab.key "S">
+<!ENTITY jsshellTab.tip "JavaScript Shell">
+
+<!-- Main trees cols labels -->
+<!ENTITY xpcomTree.bookmarkCol.label "B.">
+<!ENTITY xpcomTree.bookmarkCol.tip "Má položka přiřazenu záložku?">
+<!ENTITY xpcomTree.nameCol.label "Název">
+<!ENTITY xpcomTree.valueCol.label "Hodnota">
+
+<!-- Bookmars tree -->
+<!ENTITY bookmarksTree.titleCol.label "Název">
+<!ENTITY bookmarksTree.notesCol.label "Poznámka">
+<!ENTITY bookmarksTree.targetCol.label "Cíl">
+<!ENTITY bookmarksTree.sinceCol.label "Vytvořeno kdy">
+<!ENTITY bookmarksTree.lastEditedCol.label "Naposledy změněno">

@@ -1,0 +1,24 @@
+content	sbdevtools	chrome/content/
+skin	sbdevtools	classic/1.0	chrome/skin/
+locale	sbdevtools	en-US	chrome/locale/en-US/
+
+content  explorer                chrome/dependencies/xul-explorer/chrome/content/
+skin     explorer  standard/1.0  chrome/dependencies/xul-explorer/chrome/skin/standard/
+locale   explorer  en-US         chrome/dependencies/xul-explorer/chrome/locale/en-US/
+
+content extensiondev jar:chrome/dependencies/extensiondev/chrome/extensiondev.jar!/content/ xpcnativewrappers=no
+locale extensiondev en-US jar:chrome/dependencies/extensiondev/chrome/extensiondev.jar!/locale/en-US/
+skin extensiondev classic/1.0 jar:chrome/dependencies/extensiondev/chrome/extensiondev.jar!/skin/
+
+overlay	chrome://songbird/content/xul/layoutWithBrowserOverlay.xul	chrome://sbdevtools/content/main-overlay.xul
+
+overlay	chrome://sbdevtools/content/periodic-table/top.xul chrome://sbdevtools/content/periodic-table/songbird/overlay.xul
+
+style chrome://extensiondev/content/xuledit.xul chrome://sbdevtools/skin/ede-overlay.css
+
+content xpcomviewer chrome/dependencies/xpcomviewer/chrome/content/ xpcnativewrappers=yes
+locale xpcomviewer en-US chrome/dependencies/xpcomviewer/chrome/locale/en-US/
+locale xpcomviewer cs-CZ chrome/dependencies/xpcomviewer/chrome/locale/cs-CZ/
+skin xpcomviewer classic/1.0 chrome/dependencies/xpcomviewer/chrome/skin/classic/
+style chrome://global/content/customizeToolbar.xul chrome://xpcomviewer/skin/overlays.css
+overlay chrome://songbird/content/xul/menuOverlay.xul chrome://xpcomviewer/content/overlays/songbird.xul application=songbird@songbirdnest.com

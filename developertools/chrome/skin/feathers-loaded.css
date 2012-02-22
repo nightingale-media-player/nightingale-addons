@@ -1,0 +1,57 @@
+
+body 
+{
+  font-family: Georgia, helvetica, arial, sans-serif;
+  font-size: medium;
+  color: white;
+  background-color: #2f2b3a;
+}
+
+h1 
+{
+ font-weight: normal;
+ font-size: 1.6em;
+}
+
+#image 
+{
+
+}
+
+#content-div
+{
+  width: 675px;
+  height: 475px;
+  margin-left: 50px;
+  margin-top: 40px;
+  background-image: url(featherer.png);
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+#text-div
+{
+  padding-left: 20px;
+  width: 380px;
+  line-height: 25px;
+}
+
+a
+{
+  color: #8f67b3;
+  text-decoration: none;
+}
+
+a:hover
+{
+  color: #a588c0;
+  text-decoration: underline;
+}
+
+p 
+{
+  margin-bottom: 25px;
+}
+
+
+

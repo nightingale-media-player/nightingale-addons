@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+<window title="Songbird Data Remotes"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/songbirdInterfaces.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/sbDataRemoteUtils.js"/>
+
+<description><html:h1>Songbird Data Remotes</html:h1></description>
+
+<description><html:h2>Generic Remote Labels</html:h2></description>
+
+<vbox flex="1" style="overflow: auto">
+
+  <hbox>
+
+    <groupbox>
+      <caption label="remote label"/>
+      <label value="these labels show the content of the 'faceplate.volume' remote"/>
+      <hbox>
+        <label value="sb-remote-label: "/>
+        <sb-remote-label data="faceplate.volume"/>
+      </hbox>
+      <hbox>
+        <label value="label with observer: "/>
+        <label>
+          <observes type="dataremote"
+                    key="faceplate.volume" 
+                    attribute="value" />  
+        </label>
+      </hbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="remote multi label"/>
+      <label value="this label shows the content of the last updated remote within a list."/>
+      <label value=" - faceplate.volume"/>
+      <label value=" - faceplate.play.url"/>
+      <sb-remote-multi-label data="faceplate.volume;faceplate.play.url"/>
+    </groupbox>
+  </hbox>
+
+  <hbox>
+    <groupbox>
+      <caption label="remote compound label"/>
+      <label value="this label takes a 'value' attribute of the form"/>
+      <label value="value=&quot;the volume is %faceplate.volume% and the last played file is '%faceplate.play.url%'&quot;:"/>
+      <sb-remote-compound-label value="the volume is %faceplate.volume% and the last played file is '%faceplate.play.url%'."/>
+    </groupbox>
+  </hbox>
+
+  <description><html:h2>Metadata Labels</html:h2></description>
+
+  <hbox>
+    <groupbox>
+      <caption label="artist label"/>
+      <sb-player-artist-label/>
+    </groupbox>
+    <groupbox>
+      <caption label="title label"/>
+      <sb-player-title-label/>
+    </groupbox>
+    <groupbox>
+      <caption label="album label"/>
+      <sb-player-album-label/>
+    </groupbox>
+    <groupbox>
+      <caption label="genre label"/>
+      <sb-player-genre-label/>
+    </groupbox>
+  </hbox>
+
+  <description><html:h2>Player State Labels</html:h2></description>
+
+  <hbox>
+    <groupbox>
+      <caption label="time elapsed label"/>
+      <sb-player-timeelapsed-label/>
+    </groupbox>
+    <groupbox>
+      <caption label="total time label"/>
+      <sb-player-totaltime-label/>
+    </groupbox>
+    <groupbox>
+      <caption label="numplaylistitems label"/>
+      <sb-player-numplaylistitems-label default="n/a"/>
+    </groupbox>
+  </hbox>
+  <hbox>
+    <groupbox>
+      <caption label="scanning label"/>
+      <vbox>
+        <sb-player-scanning-label/>
+        <hbox>
+          <button oncommand="scanningOff();" label="stop"/>
+          <button oncommand="scanningOn();" label="scanning"/>
+        </hbox>
+      </vbox>
+    </groupbox>
+    <groupbox>
+      <caption label="status progressmeter"/>
+      <sb-status-progressmeter/>
+      <hbox>
+        <button oncommand="statusProgressReset();" label="stop"/>
+        <button oncommand="statusProgressUndetermined();" label="loading"/>
+      </hbox>
+    </groupbox>
+  </hbox>
+  <hbox>
+    <groupbox>
+      <caption label="status label"/>
+      <sb-status-label/>
+      <hbox>
+        <button oncommand="statusLabelReset();" label="reset"/>
+        <button oncommand="statusLabelSet();" label="set"/>
+        <button oncommand="statusLabelSetOverride();" label="set override"/>
+      </hbox>
+    </groupbox>
+  </hbox>
+  
+</vbox>
+
+<script>
+<![CDATA[
+  function statusProgressReset() {
+    SBDataSetIntValue("faceplate.loading", "0");
+  }
+  function statusProgressUndetermined() {
+    SBDataSetIntValue("faceplate.loading", "1");
+  }
+  function scanningOn() {
+    SBDataSetStringValue("backscan.status", "Scanning...");
+    SBDataSetIntValue("backscan.concurrent", "1024");
+  }
+  function scanningOff() {
+    SBDataSetStringValue("backscan.status", "");
+    SBDataSetIntValue("backscan.concurrent", 0);
+  }
+  function statusLabelReset() {
+    SBDataSetStringValue("faceplate.status.text", "");
+    SBDataSetStringValue("faceplate.status.style", "");
+  }
+  function statusLabelSet() {
+    SBDataSetStringValue("faceplate.status.text", "Status text ...");
+    SBDataSetStringValue("faceplate.status.style", "");
+  }
+  function statusLabelSetOverride() {
+    SBDataSetStringValue("faceplate.status.override.text", "Status text override...");
+    SBDataSetStringValue("faceplate.status.override.style", "font-weight: bold;");
+  }
+]]>
+</script>
+
+</window>

@@ -1,0 +1,154 @@
+<?xml version="1.0"?>
+<!--
+//
+// BEGIN SONGBIRD GPL
+// 
+// This file is part of the Songbird web player.
+//
+// Copyright(c) 2005-2012 POTI, Inc.
+// http://songbirdnest.com
+// 
+// This file may be licensed under the terms of of the
+// GNU General Public License Version 2 (the "GPL").
+// 
+// Software distributed under the License is distributed 
+// on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
+// express or implied. See the GPL for the specific language 
+// governing rights and limitations.
+//
+// You should have received a copy of the GPL along with this 
+// program. If not, go to http://www.gnu.org/licenses/gpl.html
+// or write to the Free Software Foundation, Inc., 
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+// 
+// END SONGBIRD GPL
+//
+-->
+
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://explorer/skin/tools/extension-project.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://sbdevtools/skin/wizards.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % devtoolsDTD SYSTEM "chrome://sbdevtools/locale/wizard-common-overlay.dtd">
+<!ENTITY % songbirdDTD SYSTEM "chrome://songbird/locale/songbird.dtd">
+%devtoolsDTD;
+%songbirdDTD;
+]>
+<!-- Scripts and panes common to all add-on wizards -->
+<overlay id="wizard-common-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+  <script type="application/x-javascript" src="chrome://explorer/content/utils/io.js"/>  
+  <script type="application/x-javascript" src="chrome://explorer/content/utils/template.js"/>
+  <script type="application/x-javascript" src="chrome://explorer/content/utils/dom.js"/>
+  <script type="application/x-javascript" src="chrome://explorer/content/tools/extension-generator.js"/>
+  <script type="application/x-javascript" src="chrome://sbdevtools/content/utils.js"/>
+  <script type="application/x-javascript" src="chrome://sbdevtools/content/restart-helper.js"/>
+  <script type="application/x-javascript" src="chrome://sbdevtools/content/extension-generator.js"/>
+    
+  <wizardpage id="general" label="&general.label;" description="&general.description;">
+    <grid flex="1">
+      <columns>
+        <column/>
+        <column flex="1"/>
+        <column/>
+      </columns>
+
+      <rows>
+        <row>
+          <label control="name" value="&name.label;"/>
+          <textbox id="name" flex="1"/>
+          <image class="required"/>
+        </row>
+        <row>
+          <label control="description" value="&description.label;"/>
+          <textbox id="description" flex="1"/>
+          <image class="required"/>
+        </row>       
+        <row>
+          <separator />
+        </row>
+        <row>
+          <label control="homeurl" value="&homeurl.label;"/>
+          <textbox id="homeurl" flex="1"/>
+        </row>
+        <row hidden="true">
+          <label control="iconurl" value="Icon URL:"/>
+          <textbox id="iconurl" flex="1"/>
+        </row> 
+        <row>
+          <separator />
+        </row>
+        <row>
+          <label control="version" value="&version.label;"/>
+          <textbox id="version" value="1.0.0.0" flex="1"/>
+          <image class="required"/>
+        </row>
+      </rows>
+    </grid>
+    <vbox flex="1"/>
+    <label class="text-link" value="&general.link;" href="https://developer.mozilla.org/en/Install_Manifests"/>
+  </wizardpage>
+  
+
+  <wizardpage id="package-page" label="&general.label;" description="&package.description;">
+    <grid flex="1">
+      <columns>
+        <column/>
+        <column flex="1"/>
+        <column/>
+      </columns>
+      <rows>
+        <description>&package.hint;</description>
+        <row><separator /></row>
+        <row>
+          <label control="package" value="&package.label;"/>
+          <textbox id="package" flex="1"/>
+          <image class="required"/>
+        </row>
+      </rows>
+    </grid>
+    <vbox flex="1"/>
+    <label class="text-link" value="&package.link;" href="https://developer.mozilla.org/en/XUL_Tutorial/The_Chrome_URL"/>
+  </wizardpage>
+  
+
+  <wizardpage id="contributors" label="&general.label;" description="&contributors.description;">
+    <grid flex="1">
+      <columns>
+        <column/>
+        <column flex="1"/>
+        <column/>
+      </columns>
+
+      <rows>
+        <row>
+          <label control="author" value="Author:"/>
+          <textbox id="author" flex="1"/>
+          <image class="required"/>
+        </row>
+        <row align="left">
+          <label control="contributors" value="Contributors:"/>
+          <textbox id="contributors" multiline="true" rows="6" flex="1"/>
+        </row>
+      </rows>
+    </grid>
+    <vbox flex="1"/>
+    <label class="text-link" value="&contributors.link;" href="https://developer.mozilla.org/en/Install_Manifests"/>
+  </wizardpage>
+
+  <wizardpage id="destination" label="&destination.label;" description="&destination.description;">
+    <description>&destination.hint;</description>
+    <separator />
+    <description>&folder.hint;</description>
+    <hbox align="center">
+      <label value="&folder.label;" accesskey="&folder.accesskey;" control="folder"/>
+      <textbox id="folder" flex="1"/>
+      <button id="choosefolder" label="&chooseFolder.label;" accesskey="&chooseFolder.accesskey;"/>
+      <image class="required"/>
+    </hbox>
+  </wizardpage>
+
+</overlay>

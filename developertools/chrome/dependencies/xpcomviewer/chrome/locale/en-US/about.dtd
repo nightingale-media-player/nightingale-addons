@@ -1,0 +1,22 @@
+<!-- About dialog itself -->
+<!ENTITY dialog.title "About extension">
+<!ENTITY locales.dir "ltr">
+<!ENTITY btnAccept.label "Close">
+<!ENTITY btnAccept.key "C">
+<!ENTITY btnExtra1.label "Credits">
+<!ENTITY btnExtra1.key "r">
+<!ENTITY btnExtra2.label "License">
+<!ENTITY btnExtra2.key "L">
+<!ENTITY appCopyright "© 2005-2006">
+
+<!-- About-Credits dialog -->
+<!ENTITY dialogCredits.title "About extension - Credits">
+<!ENTITY writtenByTab.title "Written By">
+<!ENTITY writtenByTab.key "W">
+<!ENTITY thanksTab.title "Thanks">
+<!ENTITY thanksTab.key "T">
+
+<!-- About-License dialog -->
+<!ENTITY dialogLicense.title "About extension - License">
+<!ENTITY licenseTab.title "License">
+<!ENTITY licenseTab.key "L">

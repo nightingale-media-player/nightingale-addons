@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window title="XUL Periodic Table"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        persist="width height"
+        onload="doInit()">
+
+<script>
+<![CDATA[
+
+function doInit()
+{
+  var item, label, value;
+  var listBox = document.getElementById("working-list");
+  var itemCount = listBox.itemCount;
+  for (var i = 0; i < itemCount; i++)
+  {
+    item = listBox.getItemAtIndex(itemCount - 1);
+    label = item.getAttribute("label");
+    value = item.getAttribute("value");
+    if (value.indexOf("songbird/") != 0)
+      break;
+    listBox.insertItemAt(0, label, value);
+    listBox.removeItemAt(itemCount);
+  }
+  listBox.selectItem(listBox.getItemAtIndex(0));
+  setFrame();
+}
+
+function setFrame()
+{
+  var originUrl = window.location.href;
+  originUrl = originUrl.substr(0, originUrl.lastIndexOf('/') + 1);
+
+  var listBox = document.getElementById("working-list");
+  var selectedItem = listBox.getSelectedItem(0);
+  var newPage = selectedItem.getAttribute("value");
+  
+  var contentUrl = originUrl + newPage;
+  document.getElementById("working-frame").setAttribute("src", contentUrl);
+  
+  var sourceUrl = "view-source:" + originUrl + newPage;
+  document.getElementById("source-frame").setAttribute("src", sourceUrl);
+}
+
+]]>
+</script>
+
+ <hbox flex="1">
+    <listbox id="working-list" style="width:10em" 
+             onselect="setFrame();">
+      <listitem value="layout.xul"        label="Box Layout" />
+      <listitem value="browser.xul"       label="Browsers" />
+      <listitem value="button.xul"        label="Buttons" />
+      <listitem value="checkbox.xul"      label="Checkboxes" />
+      <listitem value="colorpicker.xul"   label="Colorpickers" />
+      <listitem value="cropping.xul"      label="Cropping" />
+      <listitem value="dateinput.xul"     label="Date/Time pickers" />
+      <listitem value="grid.xul"          label="Grids" />
+      <listitem value="image.xul"         label="Images" />
+      <listitem value="label.xul"         label="Labels" />
+      <listitem value="list.xul"          label="Lists" />
+      <listitem value="menubar.xul"       label="Menubars, etc." />
+      <listitem value="notification.xul"  label="Notifications" />
+      <listitem value="popup.xul"         label="Popups" />
+      <listitem value="progressmeter.xul" label="Progressmeters" />
+      <listitem value="radio.xul"         label="Radiobuttons" />
+      <listitem value="resizer.xul"       label="Resizer" />
+      <listitem value="scale.xul"         label="Scales" />
+      <listitem value="scrolling.xul"     label="Scrolling" />
+      <listitem value="splitter.xul"      label="Splitters" />
+      <listitem value="stack.xul"         label="Stacks and Decks" />
+      <listitem value="tab.xul"           label="Tabs" />
+      <listitem value="textbox.xul"       label="TextBoxes" />
+      <listitem value="tree-simple.xul"   label="Trees, Simple" />
+      <listitem value="tree-nested.xul"   label="Trees, Nested" />
+      <listitem value="wizard.xul"        label="Wizard" />
+    </listbox>
+
+    <splitter collapse="before" resizebefore="closest" resizeafter="grow">
+     <grippy />
+    </splitter>
+
+    <tabbox  flex="1" >
+      <tabs>
+         <tab label="Examples" />
+         <tab label="Source" />
+         <tab label="Change log" />
+      </tabs>
+      <tabpanels flex="1" >
+         <iframe id="working-frame" type="content-primary" src="" />
+         <iframe id="source-frame"  type="content-primary" src="" />
+         <iframe type="content-primary" src="ChangeLog.txt" />
+      </tabpanels>
+    </tabbox>
+
+  </hbox>
+
+</window>

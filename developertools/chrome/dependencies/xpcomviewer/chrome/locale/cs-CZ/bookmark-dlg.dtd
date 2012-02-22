@@ -1,0 +1,13 @@
+<!ENTITY dialog.title "Nová záložka">
+
+<!ENTITY itemTitle.label "Název záložky:">
+<!ENTITY itemTitle.key "N">
+<!ENTITY itemTarget.label "Cílový objekt:">
+<!ENTITY itemTarget.key "C">
+<!ENTITY itemCategory.label "Kategorie:">
+<!ENTITY itemCategory.key "K">
+<!ENTITY itemText.label "Text záložky:">
+<!ENTITY itemText.key "T">
+
+<!ENTITY commonCategory.label "Běžná">
+<!ENTITY commonCategory.key "B">

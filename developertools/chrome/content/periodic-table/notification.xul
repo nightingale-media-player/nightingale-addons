@@ -1,0 +1,78 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window title="XUL Notifications"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="onLoad()">
+
+<script>
+ <![CDATA[
+  var notificationPriorities = [
+        "an Information [Low]",
+        "an Information [Medium]",
+        "an Information [High]",
+        "a Warning [Low]",
+        "a Warning [Medium]",
+        "a Warning [High]",
+        "a Critical [Low]",
+        "a Critical [Medium]",
+        "a Critical [High]",
+        "a Critical [Block]"
+      ];
+  
+  function notificationCallback(notificationElement, notifcationButton) {
+    alert("Ouch!");
+  }
+  
+  function addNotification(notificationBoxElement, notificationPriority) {
+    var mTop = document.getElementById(notificationBoxElement);
+    
+    var notificationValue = notificationPriority;
+    var notificationImage = "images/betty_boop.xbm";
+    var notificationButtons = [{accessKey: null,
+                                callback: notificationCallback,
+                                label: "Click Me",
+                                popup: null}]
+
+    var notificationLabel = "This is a notification with " +
+                            notificationPriorities[notificationPriority - 1];
+
+    notificationLabel = notificationLabel + " priority";
+    
+    if (notificationImage != null) {
+      notificationLabel = notificationLabel + ", an image";
+    }
+    notificationLabel = notificationLabel + ", and a button.";
+    
+    mTop.removeAllNotifications(false);
+    mTop.appendNotification(notificationLabel,
+                            notificationValue,
+                            notificationImage,
+                            notificationPriority,
+                            notificationButtons);
+  }
+
+  function onLoad() {
+    for (nCount = 1; nCount < 10; nCount++) {
+      addNotification("topnotifications_" + nCount, nCount);
+    }
+  }
+  ]]>
+</script>
+
+<description><html:h1>XUL Notifications</html:h1></description>
+
+<notificationbox id="topnotifications_1" flex="1"/>
+<notificationbox id="topnotifications_2" flex="1"/>
+<notificationbox id="topnotifications_3" flex="1"/>
+<notificationbox id="topnotifications_4" flex="1"/>
+<notificationbox id="topnotifications_5" flex="1"/>
+<notificationbox id="topnotifications_6" flex="1"/>
+<notificationbox id="topnotifications_7" flex="1"/>
+<notificationbox id="topnotifications_8" flex="1"/>
+<notificationbox id="topnotifications_9" flex="1"/>
+<notificationbox id="topnotifications_10" flex="1"/>
+
+<button oncommand="onLoad()" label="Restore Notifications"/>
+</window>

@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window title="XUL Scales"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        onload="onLoad()">
+<description><html:h1>XUL Scales</html:h1></description>
+
+  <hbox>
+    <groupbox>
+      <caption label="Scale (horizontal)" />
+      <vbox width="150">
+        <hbox><label value="normal"/>
+          <scale flex="1" orient="horizontal"/>
+        </hbox>
+        <hbox><label value="reverse"/>
+          <scale flex="1" orient="horizontal" dir="reverse"/>
+        </hbox>
+      </vbox>
+    </groupbox>
+
+    <groupbox>
+      <caption label="Scale (vertical)" />
+      <hbox>
+        <vbox>
+          <label value="normal"/>
+          <scale flex="1" orient="vertical"/>
+        </vbox>
+        <vbox>
+          <label value="reverse"/>
+          <scale flex="1" orient="vertical" dir="reverse"/>
+        </vbox>
+      </hbox>
+    </groupbox>
+  </hbox>
+
+</window>

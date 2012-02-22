@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        title="Test Harness">
+
+  <!-- Intercept clicks on links and open them in the display frame. This allows
+       for loading chrome urls even if the application does not claim to be a
+       browser -->
+  <script type="application/javascript"><![CDATA[
+    function linkClicked(event) {
+      if (event.target.href) {
+        document.getElementById("iframe").setAttribute("src", event.target.href);
+        event.preventDefault();
+      }
+    }
+
+    function loadAllTests() {
+      document.getElementById("iframe").setAttribute("src", "chrome://mochikit/content/harness.xul");
+    }
+
+    function init() {
+      var iframe = document.getElementById("iframe");
+      iframe.addEventListener("DOMActivate", linkClicked, false);
+      var prefs = Components.classes["@mozilla.org/preferences-service;1"]
+                            .getService(Components.interfaces.nsIPrefBranch);
+      iframe.setAttribute("src", prefs.getCharPref("tests.testURL"));
+    }
+
+    window.addEventListener("load", init, false);
+  ]]>
+  </script>
+
+  <hbox>
+    <label class="text-link" value="All tests" onclick="loadAllTests()"/>
+  </hbox>
+
+  <!-- The real test harness -->
+  <iframe id="iframe" flex="1"/>
+</window>

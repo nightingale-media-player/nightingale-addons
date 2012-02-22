@@ -1,0 +1,469 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd" >
+    %brandDTD;
+]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>About XPCOM</title>
+  <!-- for simplicity I used style for html files in Firefox help -->
+  <link rel="stylesheet" type="text/css"
+        href="chrome://help/skin/helpFileLayout.css"/>
+</head>
+<body>
+
+<div class="contentsBox" style="float:right;">Contents:
+ <ul>
+   <li><a href="#_introduction">Introduction</a></li>
+   <li><a href="#_classes">Components.classes</a></li>
+   <li><a href="#_classesByID">Components.classesByID</a></li>
+   <li><a href="#_interfaces">Components.interfaces</a></li>
+   <li><a href="#_interfacesByID">Components.interfacesByID</a></li>
+   <li><a href="#_lastResult">Components.lastResult</a></li>
+   <li><a href="#_manager">Components.manager</a></li>
+   <li><a href="#_results">Components.results</a></li>
+   <li><a href="#_returnCode">Components.returnCode</a></li>
+   <li><a href="#_stack">Components.stack</a></li>
+   <li><a href="#_isSuccessCode">Components.isSuccessCode(code)</a></li>
+   <li><a href="#_Constructor">Components.Constructor</a></li>
+   <li><a href="#_Exception">Components.Exception</a></li>
+   <li><a href="#_ID">Components.ID</a></li>
+ </ul>
+</div>
+
+<h1>XPConnect 'Components' Object Reference<!--1-->
+
+</h1><h2 id="_introduction">Introduction</h2>
+
+<p>The Components Object is the object through which <a href="http://www.mozilla.org/scriptable/">XPConnect</a> functionality is reflected into JavaScript.
+
+The Components Object is actually a native instance of the <a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/idl/xpccomponents.idl">nsIXPCComponents</a>
+interface which is reflected into JavaScript as a top level object using XPConnect.
+
+</p><p>
+The Components Object has the following members:
+
+</p><p>
+<table border="1" cellpadding="1" cellspacing="0">
+
+
+<tbody><tr><td><a href="#_classes">classes</a></td>            <td>array of classes by ContractID</td></tr>
+<tr><td><a href="#_classesByID">classesByID</a></td>    <td>array of classes by CLSID</td></tr>
+<tr><td><a href="#_interfaces">interfaces</a></td>      <td>array of interfaces by interface name</td></tr>
+<tr><td><a href="#_interfacesByID">interfacesbyID</a></td><td>array of interfaces by IID</td></tr>
+<tr><td><a href="#_lastResult">lastResult</a></td>      <td>result code of most recent xpconnect call</td></tr>
+<tr><td><a href="#_manager">manager</a></td>            <td>the global xpcom component manager</td></tr>
+<tr><td><a href="#_results">results</a></td>            <td>array of known result codes by name</td></tr>
+<tr><td><a href="#_returnCode">returnCode</a></td>      <td>pending result for current call</td></tr>
+<tr><td><a href="#_stack">stack</a></td>                <td>current JavaScript call stack</td></tr>
+<tr><td><a href="#_isSuccessCode">isSuccessCode</a></td><td>function to determine if a given result code is a success code</td></tr>
+<tr><td><a href="#_Constructor">Constructor</a></td>    <td>constructor for constructor of components</td></tr>
+<tr><td><a href="#_Exception">Exception</a></td>        <td>constructor for xpconnect exceptions</td></tr>
+<tr><td><a href="#_ID">ID</a></td>                      <td>constructor for xpcom nsIDs</td></tr>
+</tbody></table>
+
+
+</p><h2><a id="_classes" name="_classes"></a>
+Components.classes - <small>array of classes by ProgID</small>
+</h2>
+
+<p>Components.classes is a read only array of objects which implement the <a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/idl/xpcjsid.idl">nsIJSCID</a>
+interface. Each object represents one of the classes of xpcom components that
+can be constructed or accessed as an xpcom service.
+
+</p><p>The elements in this array are indexed by the 'ContractID' (or human readable
+name) of the component class.
+
+</p><pre>   Components.classes['@mozilla.org/preferences;1'];
+   Components.classes['@mozilla.org/messenger;1'];
+</pre>
+
+<p>All of the properties and methods of nsIJSCID and its ancestor interface nsIJSID
+are available for use. The most interesting and useful methods are those that
+facilitate the creation of new xpcom component instances and access to existing
+instances as services
+
+</p><pre>   var clazz = Components.classes['@mozilla.org/preferences;1'];
+   var obj = clazz.getService();
+   // or...
+   var clazz = Components.classes['@mozilla.org/messenger;1'];
+   var obj = clazz.createInstance();
+</pre>
+
+In today's XPConnect these getService and createInstance calls will return
+XPConnect 'wrappers' for these native objects which only expose the methods of
+the nsISupports interface. This is because the specific interface on the
+component that the caller desires has not been specified. Specifying that
+interface is done using the elements of the <a href="#_interfaces">Components.interfaces</a> array.
+
+<pre>   var clazz = Components.classes['@mozilla.org/preferences;1']
+   var iface = Components.interfaces.nsIPref;
+
+   var obj = clazz.getService();
+   var srv = obj.QueryInterface(iface);
+
+   // or this can be done in one step...
+   var srv = clazz.getService(iface);
+</pre>
+
+The same rules apply to 'createInstance'...
+
+<pre>   var clazz = Components.classes['@mozilla.org/supports-array;1'];
+   var iface = Components.interfaces.nsISupportsArray;
+
+   var obj = clazz.createInstance();
+   var inst = obj.QueryInterface(iface);
+
+   // or this can be done in one step...
+   var inst = clazz.createInstance(iface);
+
+   // createInstance can be implicitly called using 'new'...
+   var inst = new clazz(iface);
+</pre>
+
+Components.classes reflects only those component classes that have been
+previously installed and registered with the component manager using ProgIDs.
+So, it is possible that a given addon component with a given ProgID will be
+present on one machine but not have been installed on another machine.
+
+<p>
+If the given element in the Components.classes array is not registered on the
+machine then trying to access it will generate a JavaScript warning
+in strict mode and the value returned will be the JavaScript value
+<i>undefined</i>. You should use the 'in' operator to test for the element...
+</p><pre>   if(!('@some/bogus/class;1' in Components.classes))
+      // do something...
+</pre>
+
+The elements of the Components.classes array can be enumerated using a for-in loop.
+
+<h2>
+<a name="_classesByID"></a>
+Components.classesByID - <small>array of classes by CLSID</small>
+</h2>
+
+Components.classesByID is exactly like
+<a href="#_classes">Components.classes</a> except that the elements are indexed
+by the 'canonical' form of their CLSID.
+<pre>   var clazz = Components.classesByID['{ed132c20-eed1-11d2-baa4-00805f8a5dd7}'];
+</pre>
+
+<p>Components.classesByID represents the component classes that have been
+registered with the component manager using a ProgID <b>and</b> those registered
+using a plain CLSID.
+
+</p><h2>
+<a name="_interfaces"></a>
+Components.interfaces - <small>array of interfaces by classname</small>
+</h2>
+
+<p>Components.interfaces is a read only array of objects which implement the <a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/idl/xpcjsid.idl">nsIJSIID</a>
+interface. Each object represents one of the xpcom interfaces - that some
+component or another might implement. It reflects only those interfaces which
+have been designated in their .idl declaration as '[scriptable]'. i.e. the
+interfaces which XPConnect is capable of reflecting into JavaScript.
+
+</p><p>Elements in the Components.interfaces array are indexed by interface name...
+</p><pre>   var iface = Components.interfaces.nsISupportsArray;
+</pre>
+
+<p>
+Elements in the Components.interfaces array are used where xpcom methods expect
+a parameter of type <i>nsID</i>. This includes nsISupports::QueryInterface, and
+the optional parameter accepted by nsICID::getService and nsICID::createInstance
+when called from JavaScript.
+
+</p><p>
+Interface constants are reflected into the elements in the
+Components.interfaces array. e.g...
+
+</p><pre>    // idl for an interface that has a constant...
+    interface nsIFoo : nsISupports {
+      const PRUint32 MYFLAG = 5;
+    };
+
+   // the constant can be accessed from JavaScript as...
+   var foo = Components.interfaces.nsIFoo.MYFLAG;
+</pre>
+
+<p>
+The elements of the Components.interfaces array can be enumerated using a for-in loop.
+
+
+</p><h2>
+<a name="_interfacesByID"></a>
+Components.interfacesByID - <small>array of interfaces by IID</small>
+</h2>
+
+<p>Components.interfacesByID is exactly like
+<a href="#_interfaces">Components.interfaces</a> except that the elements are indexed
+by the 'canonical' form of their IID.
+</p><pre>   var clazz = Components.interfacesByID['{aa610f20-a889-11d3-8c81-000064657374}'];
+</pre>
+
+
+<h2>
+<a name="_lastResult"></a>
+Components.lastResult - <small>result code of most recent xpconnect call</small>
+</h2>
+
+<p>
+Components.lastResult returns the numeric nsresult code that was the result code
+of the last xpcom method called via xpconnect. Generally, this is only useful
+for testing the result of xpcom methods that can return interesting 'success'
+codes. This is because failure result codes get converted by xpconnect into
+exceptions that are thrown into the calling JS method. Most interfaces only
+return one success code - NS_OK - so Components.lastResult is rarely necessary.
+
+</p><p>
+In cases where Components.lastResult <i>is</i> used, it is best to get it right
+away after the target call is made and save it in a local variable to test its
+value rather than doing multiple tests against Components.lastResult. This is
+because many 'Components' properties and methods are themselves implemented using
+xpconnect and subsequent calls to Components.lastResult might reflect the result
+of 'implicit' xpconnect calls rather than the result of the target call.
+
+</p><pre>   // given that foo.bar is a method that might return
+   // the success codes NS_OK, '5', and '6' OR some error code...
+   try {
+      i = foo.bar()
+      switch(Components.lastResult) {
+        case Components.results.NS_OK:
+          // NS_OK is good!
+          break;
+        case 5:
+          // do something with 5 here
+          break;
+        case 6:
+          // do something with 6 here
+          break;
+        default:
+          // this was a success code we did not expect. Bad component!
+          break;
+      }
+      // and so on....
+
+   } catch(e) {
+      // the call threw an exception or a native component returned
+      // a failure code!
+      if(e instanceof Components.interfaces.nsIXPCException) {
+        // we might do something interesting here with the exception object
+        var rv = e.result;
+      } else {
+         // if we don't know how to handle it then rethrow
+         throw e;
+      }
+   }
+</pre>
+
+
+<h2>
+<a name="_manager"></a>
+Components.manager - the global xpcom component manager
+</h2>
+
+<p>Components.manager is a convenience reflection of the global native component
+manager service. The scriptable methods on the
+<a href="http://lxr.mozilla.org/seamonkey/source/xpcom/components/nsIComponentManager.idl">nsIComponentManager</a>
+interface can be called directly on this object.
+
+</p><h2>
+<a name="_results"></a>
+Components.results - <small>array of known result codes by name</small>
+</h2>
+
+<p>Components.results is an array of name value pairs that represent some well
+known nsresult codes. Elements in this array can be used to test against unknown
+nsresult variables or they can be 'thrown' to indicate failure...
+
+</p><pre>   if(something_unexpected_happened)
+      throw Components.results.NS_ERROR_UNEXPECTED;
+</pre>
+
+<p>Currently only the 'global' codes declared in
+<a href="http://lxr.mozilla.org/seamonkey/source/xpcom/base/nsError.h">nsError.h</a>
+and the xpconnect specific codes declared in
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/public/nsIXPConnect.h">nsIXPConnect.h</a>
+are included.
+
+</p><p>
+At some future point we would like to have a mechanism for automatically
+including error codes declared in all modules.
+
+</p><p>
+The elements of the Components.results array can be enumerated using a for-in loop.
+
+
+</p><h2>
+<a name="_returnCode"></a>
+Components.returnCode - <small>pending result for current call</small>
+</h2>
+
+<p>Components.returnCode is a property that can be used to indicate to an xpcom
+caller of the JS method that the method is returning a specific nsresult code.
+Generally, xpconnect does a fine job of making it unnecessary for JavaScript code
+to worry about nsresult codes. By default the successful completion of the JS
+method will cause xpconnect to return a result code of 'NS_OK' to the caller. If
+the JS code needs to signal failure then that is done by throwing an exception.
+However, there are a very few xpcom interfaces that specify success code return
+values. Components.returnCode exists in order to make it possible to implement
+these rare interfaces in JavaScript.
+
+</p><pre>   var foo = {
+      bar : function(i) {
+         if(yada_yada)
+            Components.returnCode = 5;
+         return i * 2;
+      }
+   };
+</pre>
+
+
+<h2>
+<a name="_stack"></a>
+Components.stack - <small>current JavaScript call stack</small>
+</h2>
+
+<p>
+Components.stack is a readonly property of type
+<a href="http://lxr.mozilla.org/mozilla/source/xpcom/base/nsIException.idl#50">nsIStackFrame</a>
+that represents a snapshot of the current JavaScript callstack. This can be used
+for various diagnostic purposes.
+
+
+</p><h2>
+<a name="_isSuccessCode"></a>
+Components.isSuccessCode(code) - <small>function to determine if a given result code is a success code</small>
+</h2>
+
+<p>Components.isSuccessCode is a function that is used to determine if a result code is
+a success or failure code. In general, calls to native xpcom objects that
+fail will cause exceptions to be thrown in JavaScript. However, some xpcom
+functions can be written to explicitly return nsresult codes to JavaScript
+callers. Components.isSuccessCode allows a caller to such a function to detect
+if the result code represents success or failure.
+
+
+</p><h2>
+<a name="_Constructor"></a>
+Components.Constructor - <small>constructor for constructor of components</small>
+</h2>
+
+<p>
+Components.Constructor is a JavaScript constructor object that is used to create
+new instances of customized JavaScript constructor objects which can then be
+used to construct xpcom component instances.
+
+</p><p>
+The call signature of the constuctor is:
+</p><p>
+<tt><i>Components.Constructor(progid, iface, function)</i> // <i>iface</i> and <i>function</i> are optional</tt>
+</p><blockquote>
+<i>progid</i> - progid string of component to create<br/>
+<i>iface</i> - interface name string for desired interface on new component (optional)<br/>
+<i>function</i> - init function to call after creation (optional)<br/>
+</blockquote>
+
+Usage:
+
+<blockquote>
+
+[Assuming that there is a registered factory for an xpcom component
+with the contractID "mymod.mycomp.1" that implements the scriptable interface "nsIFoo"...]
+<p>
+</p><pre>    // create the constructor
+    var Foo = new Components.Constructor("mymod.mycomp.1", "nsIFoo");
+
+    // use the constructor to create xpcom component instances
+    var foo1 = new Foo();
+    var foo2 = new Foo();
+</pre>
+
+The line above that creates the constructor is equivelent to:
+<pre>    var Foo = function(progid, iface) {
+        var clazz = Components.classes[progid];
+        var iid = Components.interfaces[iface];
+        return clazz.createInstance(iid);
+    }
+</pre>
+
+<p>The (optional) <i>function</i> parameter can be used if there is some sort of
+initialization method in the requested interface that you would like to call
+each time an instance is created.
+
+</p><p>
+For instance if the nsIFoo interface has a method called 'init' that takes a
+string and an integer then one could do:
+</p><pre>    // create the constructor and specify an initialization method
+    var Foo = new Components.Constructor("mymod.mycomp.1", "nsIFoo", "init");
+
+    // use the constructor to create xpcom component instances
+    var foo1 = new Foo("some string", 1);
+    var foo2 = new Foo("some other string", 2);
+</pre>
+</blockquote>
+
+
+<h2>
+<a name="_Exception"></a>
+Components.Exception - <small>constructor for xpconnect exceptions</small>
+</h2>
+
+<p>
+Components.Exception is a JavaScript constuctor to create
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/idl/xpcexception.idl">nsIXPCException</a>
+objects. These exception objects are the preferred types of exceptions when
+implementing xpcom interfaces in JavaScript.
+</p><p>
+The call signature of the constuctor is:
+</p><p>
+<tt><i>Components.Exception(message, result, stack, data)</i> // all parameters are optional</tt>
+</p><blockquote>
+<i>message</i> - the message string (defaults to 'exception')<br/>
+<i>result</i> - the result code (defaults to NS_ERROR_FAILURE)<br/>
+<i>stack</i> - the stack chain (defaults to the current stack)<br/>
+<i>data</i> - additional data object of your choice (defaults to null)<br/>
+</blockquote>
+
+
+<h2>
+<a name="_ID"></a>
+Components.ID - <small>constructor for xpcom nsIDs</small>
+</h2>
+
+<p>
+Components.ID is a constuctor that creates native objects that conform to the
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/idl/xpcjsid.idl">nsIJSID</a>
+interface.
+<a href="#_classes">Components.classes</a>,
+<a href="#_classesByID">Components.classesByID</a>,
+<a href="#_interfaces">Components.interfaces</a>
+provide pretty much all the nsIDs that most JavaScript code would ever need to
+deal with. The exception to this is the case where a component is written in
+JavaScript and needs to register itself with the component manager using its
+own nsID - an ID that is not already registered and thus does not appear in <a href="#_classes">Components.classes</a>.
+
+</p><p> Components.ID takes one (required) parameter as input - a string in the
+canonical nsID form. e.g...
+
+</p><pre>   var myid = new Components.ID('{c9fc3520-4f93-11d3-9894-006008962422}');
+</pre>
+
+
+<hr/>
+<b>document history&#8230;</b>
+
+<ul>
+<li><code>21 Sep 1999 - <a href="mailto:jband@netscape.com">John Bandhauer &lt;jband@netscape.com&gt;</a> - </code>initial creation of document</li>
+<li><code>18 Nov 1999 - <a href="mailto:jband@netscape.com">John Bandhauer &lt;jband@netscape.com&gt;</a> - </code>document reflection of interface constants to Components.interfaces</li>
+<li><code>25 Jan 2000 - <a href="mailto:jband@netscape.com">John Bandhauer &lt;jband@netscape.com&gt;</a> - </code>Added info on Components.Constructor</li>
+<li><code>04 May 2001 - <a href="mailto:jband@netscape.com">John Bandhauer &lt;jband@netscape.com&gt;</a> - </code>Added info on Components.isSuccessCode</li>
+<li><code>07 Jan 2004 - <a href="mailto:bsmedberg@covad.net">Benjamin Smedberg &lt;bsmedberg@covad.net&gt;</a> - </code>Added info on Components.interfacesByID, s/progID/contractID/, fixed .stack links, and minor cleanup.</li>
+<li><code>21 Aug 2006 - <a href="mailto:ondrejd@gmail.com">Ondrej Donek &lt;ondrejd@gmail.com&gt;</a> - </code>revisition</li></ul>
+
+
+<div class="contentsBox"><em>November 7, 2005</em></div>
+<p>Copyright &copy; 2005-2006 &vendorName;</p>
+
+</body>
+</html>

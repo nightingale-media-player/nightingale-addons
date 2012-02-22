@@ -1,0 +1,19 @@
+<?xml version="1.0"?> 
+
+<?xml-stylesheet href="chrome://[:= $_.package :]/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://[:= $_.package :]/locale/overlay.dtd">
+<overlay
+  id="[:= $_.package :]-toolbar-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Add the toolbar button into the browser toolbar palette so that
+         the user can show/hide it as desired -->
+    <toolbarpalette id="BrowserToolbarPalette">
+        <toolbarbutton  id="[:= $_.package :]-toolbarbutton" 
+            label="&[:= $_.package :].helloworld.label;"
+            tooltiptext="&[:= $_.package :].helloworld.label;" 
+            class="toolbarbutton-1 chromeclass-toolbar-additional" 
+            command="[:= $_.package :]-helloworld-cmd" />
+    </toolbarpalette>
+
+</overlay>

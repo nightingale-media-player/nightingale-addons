@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay [
+  <!ENTITY % overlayDTD SYSTEM "chrome://xpcomviewer/locale/preferences.dtd">
+  %overlayDTD;
+]>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+            type="prefwindow" id="xpcomviewerPreferences"
+            windowtype="xpcomviewer-dialog" title="&prefWindow.title;"
+            onload="gPrefWin.onLoad();"
+            width="640" height="480"
+            persist="screenX,screenY">
+
+	<!-- Templates preferences -->
+	<vbox id="xpcomviewerPreferencesTemplatesPane">
+    <preferences/>
+
+		<script type="application/javascript"
+            src="chrome://xpcomviewer/content/preferences/templates.js"/>
+
+		<vbox>
+			<description flex="1">&paneTemplates.desc;</description>
+			<hbox flex="1">
+				<vbox flex="1">
+					<label control="availableTemplates-listbox" value="&availableTemplates.label;"
+						   accesskey="&availableTemplates.key;"/>
+					<listbox id="availableTemplatesListbox" flex="1">
+						<listitem label="&templateClass.label;" value="class"/>
+						<listitem label="&templateIface1.label;" preference="iface1"/>
+						<listitem label="&templateIface2.label;" preference="iface2"/>
+						<listitem label="&templateProperty.label;" preference="property"/>
+						<listitem label="&templateIfaceConst.label;" preference="constant"/>
+						<listitem label="&templateResult.label;" preference="result"/>
+					</listbox>
+				</vbox>
+				<vbox flex="3">
+					<label control="templateSource-textbox" value="&templateSource.label;"
+						   accesskey="&templateSource.key;"/>
+          <radiogroup id="template-language-selector">
+            <radio value="javascript" label="C++" accesskey="C"/>
+            <radio value="javascript" label="Java" accesskey="a"/>
+            <radio value="javascript" label="JavaScript" accesskey="J"/>
+            <radio value="javascript" label="Python" accesskey="P"/>
+          </radiogroup>
+					<textbox id="templateSource-textbox" value="" multiline="true" flex="1"/>
+				</vbox>
+			</hbox>
+		</vbox>
+	</vbox>
+
+</overlay>

@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd" >
+    %brandDTD;
+]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>Používáme &appFullName;</title>
+  <!-- for simplicity I used style for html files in Firefox help -->
+  <link rel="stylesheet" type="text/css"
+        href="chrome://help/skin/helpFileLayout.css"/>
+  <style type="text/css">
+.table1 {width:100%;}
+.table1 td {vertical-align:middle;}
+
+pre, code {border:1px solid #ddd;background-color:#eee;margin:2px 0px 2px 0px;padding:3px 5px 3px 5px;}
+
+pre.javascript .keyword, code.javascript .keyword {color:blue;font-weight:bold;}
+pre.javascript .string, code.javascript .string {color:blue;}
+pre.javascript .comment, code.javascript .comment {color:green;font-style:italic;}
+
+pre.xml .tag, code.xml .tag {color:blue;}
+  </style>
+</head>
+<body>
+<div class="contentsBox">Obsah:
+<ul>
+#ifdef USE_BOOKMARKS_SRV
+  <li><a href="#bookmarks">Záložky</a></li>
+#endif
+  <li><a href="#reports">Výpisy</a></li>
+  <li><a href="#codegeneration">Generování kódu</a></li>
+</ul>
+</div>
+
+<h2>Používáme &appFullName;</h2>
+
+#ifdef USE_BOOKMARKS_SRV
+<h3 id="bookmarks">Záložky</h3>
+<p style="font-style:italic;background-color:#fcf;">TODO</p>
+#endif
+
+<h3 id="reports">Výpisy</h3>
+<p style="font-style:italic;background-color:#fcf;">TODO</p>
+<p>Ukázka pro formát XML:</p>
+<pre class="xml">
+...
+</pre>
+<p>Ukázka pro formát HTML:</p>
+<pre class="xml">
+<span class="tag">&lt;html&gt;</span>
+<span class="tag">&lt;head&gt;</span>
+<span class="tag">&lt;title&gt;</span>Components.interfaces<span class="tag">&lt;/title&gt;</span>
+<span class="tag">&lt;/head&gt;</span>
+<span class="tag">&lt;body&gt;</span>
+<span class="tag">&lt;h1&gt;</span>Components.interfaces<span class="tag">&lt;/h1&gt;</span>
+<span class="tag">&lt;ul&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIDOMStyleSheet - {a6cf9080-15b3-11d2-932e-00805f8add32}<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIWSDLPart - {0458dac4-65de-11d5-9b42-00104bdf5339}<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIUnicharStreamListener - {4a7e9b62-fef8-400d-9865-d6820f630b4c}<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIContentSniffer - {a5710331-74ec-45fb-aa85-ed3bc7c36924}<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIXmlRpcClient - {4d7d15c0-3747-4f7f-b6b3-792a5ea1a9aa}<span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;li&gt;</span>nsIInterfaceInfoToIDL - {b01eb40c-026b-49c9-af55-25e8c9d034c8}<span class="tag">&lt;/li&gt;</span>
+...
+</pre>
+<p>Ukázka pro textový formát:</p>
+<pre>
+Components.interfaces
+
+Interface: "nsIDOMStyleSheet" "{a6cf9080-15b3-11d2-932e-00805f8add32}"
+Interface: "nsIWSDLPart" "{0458dac4-65de-11d5-9b42-00104bdf5339}"
+Interface: "nsIContentSniffer" "{a5710331-74ec-45fb-aa85-ed3bc7c36924}"
+Interface: "nsIDOMMediaList" "{9b0c2ed7-111c-4824-adf9-ef0da6dad371}"
+Interface: "nsISHContainer" "{65281ba2-988a-11d3-bdc7-0050040a9b44}"
+Interface: "nsITimer" "{436a83fa-b396-11d9-bcfa-00112478d626}"
+Interface: "nsIWebServiceProxyFactory" "{693611be-bb38-40e0-a98e-b46ff8a5bcca}"
+...
+</pre>
+
+<h3 id="codegeneration">Generování kódu</h3>
+<p>Následující tabulka obsahuje
+přehled příkladů kódu, který <strong>&appFullName;</strong>
+uloží do schránky při provádění příkazů <em>Generuj C++ kód</em> a 
+<em>Generuj JavaScript kód</em>:</p>
+<table border="1" cellpadding="0" cellspacing="0" class="table1">
+  <thead style="font-weight:bold;text-align:center;">
+    <tr>
+      <td>Typ</td>
+      <td>C++</td>
+      <td>JavaScript</td>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><img style="width: 210px; height: 20px;" alt="Components.classes" src="type_class.gif"/></td>
+      <td><p style="font-style:italic;background-color:#fcf;">TODO</p></td>
+      <td><code class="javascript">Components.classes[<span class="string">"@mozilla.org/xtf/xml-contentbuilder;1"</span>]</code></td>
+    </tr>
+    <tr>
+      <td><img style="width: 210px; height: 20px;" alt="Components.interfaces" src="type_iface.gif"/></td>
+      <td><p style="font-style:italic;background-color:#fcf;">TODO</p></td>
+      <td><p>Pokud je aktivní pohled <em>Components.classes</em>:</p>
+      <pre class="javascript"><span class="keyword">var</span> insc = Components.classes[<span class="string">"@mozilla.org/properties;1"</span>].
+    createInstance(Components.interfaces.nsIProperties);</pre>
+<p>Pokud je aktivní pohled <em>Components.interfaces</em>:</p>
+      <code class="javascript">Components.interfaces.nsIProperties</code></td>
+    </tr>
+    <tr>
+      <td><img style="width: 210px; height: 20px;" alt="Property/Method of interface's instance" src="type_property.gif"/><br/>
+      <img style="width: 210px; height: 20px;" alt="Implementation of base interfaces (nsISupports, nsIClassInfo etc.)" src="type_property1.gif"/></td>
+      <td><p style="font-style:italic;background-color:#fcf;">TODO</p></td>
+      <td><pre class="javascript"><span class="keyword">var</span> insc = Components.classes[<span class="string">"@mozilla.org/xmlextras/domparser;1"</span>].
+    createInstance(Components.interfaces.nsIDOMParser);
+<span class="keyword">var</span> res = insc.parseFromString(<span class="comment">/* Dopln atributy */</span>);</pre></td>
+    </tr>
+    <tr>
+      <td><img style="width: 210px; height: 20px;" alt="Constant of interface" src="type_constant.gif"/></td>
+      <td><p style="font-style:italic;background-color:#fcf;">TODO</p></td>
+      <td><code class="javascript">Components.interfaces.nsITimer.TYPE_REPEATING_PRECISE)</code></td>
+    </tr>
+    <tr>
+      <td><img style="width: 210px; height: 20px;" alt="Components.results" src="type_result.gif"/></td>
+      <td><p style="font-style:italic;background-color:#fcf;">TODO</p></td>
+      <td><code class="javascript">Components.results.NS_ERROR_XPC_BAD_CID<span style="font-family: sans-serif;"></span></code></td>
+    </tr>
+  </tbody>
+</table>
+<div class="contentsBox"><em>6.října 2006</em></div>
+<p>Copyright &copy; 2005-2006 Ondřej Doněk</p>
+</body>
+</html>

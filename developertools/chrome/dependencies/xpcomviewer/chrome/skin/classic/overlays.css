@@ -1,0 +1,16 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+.icon-xpcomviewer16 {
+	list-style-image: url("chrome://xpcomviewer/skin/xpcomviewer16.png");
+}
+
+#xpcomviewer-toolbarbutton {
+	list-style-image: url("chrome://xpcomviewer/skin/xpcomviewer22.png");
+}
+toolbar[iconsize="small"] #xpcomviewer-toolbarbutton {
+	list-style-image: url("chrome://xpcomviewer/skin/xpcomviewer16.png");
+}
+
+#mini-xpcomviewer {
+  list-style-image: url("chrome://xpcomviewer/skin/xpcomviewer16.png");
+}

@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+  
+    <em:id>developer-tools@getnightingale.com</em:id>
+    <em:name>Nightingale Developer Tools</em:name>
+    <em:version>0.7.20120222</em:version>
+    <em:description>A collection of essential utilities for feathers designers and extension developers.</em:description>
+    <em:creator>POTI Inc.</em:creator>
+    
+    <em:contributor>Mark Finkle (XUL Explorer)</em:contributor>
+    <em:contributor>Ted Mielczarek (Extension Developer's Extension)</em:contributor>
+    <em:contributor>Jesse Ruderman (JS Environment)</em:contributor>
+    <em:contributor>Ondrej Donek (XPCOM Viewer)</em:contributor>
+    <em:contributor>Antoine Turmel (Several improvements)</em:contributor>
+
+    <em:iconURL>chrome://sbdevtools/skin/developer-tools.png</em:iconURL>
+
+    <!-- Songbird -->
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.8.0a</em:minVersion>
+        <em:maxVersion>1.11.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+    <!-- Nightingale -->
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+        <em:minVersion>1.9.0a</em:minVersion>
+        <em:maxVersion>1.11.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>    
+
+  </Description>
+
+</RDF>

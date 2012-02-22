@@ -1,0 +1,35 @@
+<!ENTITY wizard.title    "Extension Wizard">
+
+
+<!ENTITY overview.label                "New Extension">
+<!ENTITY overview.description          "Create an Songbird add-on">
+<!ENTITY overview.purpose              "This wizard will help you create a Songbird extension.  It will generate the necessary project files, and then register the project folder as a test add-on.">
+<!ENTITY overview.requirements         "To build an extension we recommend you have:">
+<!ENTITY overview.requirements.b1      "A text editor such as MetaPad or TextMate">
+<!ENTITY overview.requirements.b2      "A basic understanding of JavaScript, XUL, and CSS">
+<!ENTITY overview.requirements.b3      "An image manipulation tool such as Photoshop or GIMP">
+<!ENTITY overview.link                 "Learn about creating extensions">
+
+<!ENTITY ready.label                "Ready to Generate">
+<!ENTITY ready.description          "We now have enough information to create your extension.">
+<!ENTITY ready.nextstep             "Completing this wizard will:">
+<!ENTITY ready.nextstep.b1          "Create manifest files with your information">
+<!ENTITY ready.nextstep.b2          "Generate JavaScript, XUL, and CSS for the selected UI items">
+<!ENTITY ready.nextstep.b3          "Register your project folder as a test add-on">
+<!ENTITY ready.mustrestart          "To load your extension, restart Songbird.">
+<!ENTITY ready.restart.checkbox     "Restart Songbird automatically">
+<!ENTITY ready.instructions         "Then, you can make changes to your project files and see the changes in your Songbird by simply selecting 'Refresh UI' from the Tools menu.">
+<!ENTITY ready.link                 "Learn about creating extensions">
+
+<!ENTITY ui.label                               "UI Options">
+<!ENTITY ui.description                         "What UI components should your extension support?">
+<!ENTITY ui.option.preferences                  "Preferences">
+<!ENTITY ui.option.about                        "About box">
+<!ENTITY ui.option.mainmenu                     "Main menu">
+<!ENTITY ui.option.toolbarbutton                "Toolbar button">
+<!ENTITY ui.option.displaypane-rightsidebar     "Display pane : Right Sidebar">
+<!ENTITY ui.option.displaypane-contentpane      "Display pane : Content Pane Bottom">
+<!ENTITY ui.option.displaypane-servicepane      "Display pane : Service Pane Bottom">
+<!ENTITY ui.option.servicepane-radio            "Service Pane : Radio node">
+<!ENTITY ui.option.servicepane-services         "Service Pane : Services node">
+<!ENTITY ui.option.mediapage                    "Media page">

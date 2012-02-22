@@ -1,0 +1,10 @@
+<!ENTITY [:= $_.package :].helloworld.label "Do HelloWorld">
+<!ENTITY [:= $_.package :].helloworld.accesskey "H">
+[: if ($_.ui.indexOf("displaypane") != -1) { :]
+<!ENTITY [:= $_.package :].pane.label "This is a Display Pane">
+<!ENTITY [:= $_.package :].pane.button "Learn More">
+[: } :]
+[: if ($_.ui.indexOf("servicepane") != -1) { :]
+<!ENTITY [:= $_.package :].servicepane.label "This is a Main View">
+<!ENTITY [:= $_.package :].servicepane.link  "Learn More about Service Pane">
+[: } :]

@@ -1,0 +1,27 @@
+
+
+<!ENTITY general.label            "General Information">
+<!ENTITY general.description      "Enter add-on manifest information.">
+<!ENTITY general.link             "Learn about install manifest entries">
+<!ENTITY name.label               "Add-On Name:">
+<!ENTITY description.label        "Description:">
+<!ENTITY homeurl.label            "Homepage URL:">
+<!ENTITY version.label            "Version:">
+
+<!ENTITY package.description  "Identify your add-on.">
+<!ENTITY package.hint        "Files in Songbird are referenced using chrome package URLs such as chrome://packagename/content/example.html.  Enter a unique package name for your add-on.">
+<!ENTITY package.label            "Package Name:">
+<!ENTITY package.link             "Learn about chrome package URLs">
+
+<!ENTITY contributors.description "Who will work on this add-on?">
+<!ENTITY contributors.link        "Learn about install manifest entries">
+
+<!ENTITY destination.label        "Add-On Project Folder">
+<!ENTITY destination.description  "Where should the add-on be created?">
+<!ENTITY destination.hint         "This wizard will generate the content and manifest files needed for an add-on.">
+<!ENTITY folder.hint              "Please select a project folder. We recommend you use an empty folder to make development and packaging easier.">
+<!ENTITY folder.label             "Folder:">
+<!ENTITY folder.accesskey         "F">
+<!ENTITY chooseFolder.label       "Browse...">
+<!ENTITY chooseFolder.accesskey   "B">
+

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:nc="http://home.netscape.com/NC-rdf#">
+  <Description rdf:about="urn:root">
+    <nc:subheadings>
+      <Seq>
+        <!-- These nodes are used for searching purposes. -->
+        <li><Description nc:name="XPCOM" 
+                         nc:link="aboutxpcom.xhtml"/></li>
+        <li><Description nc:name="window" 
+                         nc:link="mainwindow.xhtml"/></li>
+        <li><Description nc:name="Using" 
+                         nc:link="using.xhtml"/></li>
+      </Seq>
+    </nc:subheadings>
+  </Description>
+</RDF>

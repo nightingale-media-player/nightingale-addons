@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?xml-stylesheet href="chrome://global/skin/global.css" type="text/css"?>
+<?xml-stylesheet href="chrome://xpcomviewer/skin/about.css" type="text/css"?>
+
+<!DOCTYPE dialog [
+<!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd">
+	%brandDTD;
+<!ENTITY % aboutDTD SYSTEM "chrome://xpcomviewer/locale/about.dtd">
+	%aboutDTD;
+]>
+
+<dialog xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+        id="xpcomviewer-about" 
+        windowtype="xpcomviewer-dialog" 
+        title="&dialog.title;"
+        buttons="extra1,extra2,accept" 
+        buttonlabelaccept="&btnAccept.label;"
+        buttonaccesskeyaccept="&btnAccept.key;" 
+        buttonlabelextra1="&btnExtra1.label;"
+        buttonaccesskeyextra1="&btnExtra1.key;" 
+        buttonlabelextra2="&btnExtra2.label;"
+        buttonaccesskeyextra2="&btnExtra2.key;" 
+        buttondir="&locales.dir;"
+        defaultButton="accept" 
+        ondialogaccept="gAboutDialog.onAccept();"
+        ondialogextra1="gAboutDialog.onButtonExtra1();"
+        ondialogextra2="gAboutDialog.onButtonExtra2();">
+  
+  <script type="application/javascript"><![CDATA[
+/**
+ * Main object of about dialog
+ */
+var gAboutDialog = 
+{
+  uriprefix : "chrome://xpcomviewer/content/",
+  credits   : null,
+  license   : null,
+
+  onAccept : function() 
+  {
+   if(this.credits != null) this.credits.close();
+   if(this.license != null) this.license.close();
+   
+   return true;
+  },
+  
+  onButtonExtra1 : function() 
+  {
+   this.credits = window.openDialog(this.uriprefix + "about-credits.xul",
+                                    "xpcomviewer:aboutCredits", 
+                                    "chrome,all,centerscreen");
+    this.credits.focus ();
+  },
+  
+  onButtonExtra2 : function() 
+  {
+   this.license = window.openDialog(this.uriprefix + "about-license.xul",
+                                    "xpcomviewer:aboutLicense", 
+                                    "chrome,all,centerscreen");
+    this.license.focus ();
+  }
+}; // End of gAboutDialog
+	]]></script>
+  
+	<vbox flex="1" pack="center" align="center">
+    <image class="appIcon" 
+           src="chrome://xpcomviewer/skin/xpcomviewer32.png"/>
+    <description class="appTitle">&appFullName; &appVersion;</description>
+    <description class="appDescriptin">&appDescription;</description>
+    <spacer style="width: 10px;"/>
+    <description class="appCopyright">&appCopyright; &vendorName;</description>
+  </vbox>
+  
+</dialog>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://mochikit/content/tests/SimpleTest/test.css" type="text/css"?>
+
+<window title="Key Service Tests"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script type="application/javascript" src="chrome://mochikit/content/MochiKit/packed.js" />
+  <script type="application/javascript" src="chrome://mochikit/content/tests/SimpleTest/SimpleTest.js"/>
+
+  <!-- test results are displayed in the html:body -->
+  <body xmlns="http://www.w3.org/1999/xhtml">
+    Main UI Tests
+  </body>
+
+  <!-- test code goes here -->
+  <script type="application/javascript"><![CDATA[
+    const Cc = Components.classes;
+    const Ci = Components.interfaces;
+
+    var mainWindow = window.top.opener;
+    is(mainWindow.location.href, "chrome://explorer/content/explorer.xul", "Did not get main window");
+
+    mainWindow.focus();
+
+    var sidebar = mainWindow.document.getElementById("sidebar_snippets");
+    var sidebarDeck = mainWindow.document.getElementById("sidebar_deck");
+    is(sidebarDeck.selectedPanel.id, sidebar.id, "Sidebar should be snippets");
+    var sidebarTitle = mainWindow.document.getElementById("sidebar_title");
+    is(sidebarTitle.value, sidebar.getAttribute("label"), "Sidebar title should be snippet title");
+
+    var categoryList = mainWindow.document.getElementById("snippet-type");
+    isnot(categoryList.childNodes.length, 0, "Snippet category list should have some items");
+    var snippetList = mainWindow.document.getElementById("snippets-list");
+    isnot(snippetList.childNodes.length, 0, "Snippet list for default category should have some items");
+
+    var tabbox = mainWindow.document.getElementById("workspace_tabbox");
+    is(tabbox.tabs.itemCount, 1, "Editor should have 1 tab open");
+    is(tabbox.tabpanels.childNodes.length, 1, "Editor should have 1 tab panel open")
+  ]]></script>
+</window>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd" >
+    %brandDTD;
+]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <title>&appFullName; - Hlavní okno</title>
+  <!-- for simplicity I used style for html files in Firefox help -->
+  <link rel="stylesheet" type="text/css"
+        href="chrome://help/skin/helpFileLayout.css"/>
+</head>
+<body>
+
+<div class="contentsBox">Obsah:
+ <ul>
+   <li><a href="#introduction">Úvod</a></li>
+   <li><a href="#mainmenu">Hlavní menu</a></li>
+   <li><a href="#maintoolbar">Hlavní panel nástrojů</a></li>
+   <li><a href="#filtrtoolbar">Panel <code>Filtr</code></a></li>
+   <li><a href="#maintree">Hlavní strom</a></li>
+   <li><a href="#preferences">Dialog <code>Nastavení</code></a></li>
+ </ul>
+</div>
+
+<h2>&appFullName; - Hlavní okno</h2>
+
+<h3 id="introduction">Úvod</h3>
+<p><strong>&appFullName;</strong> je především prohlížeč <abbr title="...">XPCOM</abbr> 
+komponent a jejich rozhraní, umožňuje ale také vyhledat příslušné zdrojové kódy na 
+<a href="http://lxr.mozilla.org/">lxr.mozilla.org</a>, ukládat poznámky, generovat 
+kód pro různé programovací jazyky a vypisovat seznamy označených položek.</p>
+
+<h3 id="mainmenu">Hlavní menu</h3>
+<p>Hlavní menu má tuto strukturu:</p>
+<ul>
+<li><code>Soubor</code><ul>
+<li><code>Výpisy</code><ul>
+<li><code>Ulož jako XML</code> - uloží vybrané (nebo celý strom) vybraného pohledu 
+jako XML soubor</li>
+<li><code>Ulož jako HTML</code> - uloží vybrané (nebo celý strom) vybraného pohledu 
+jako HTML soubor</li>
+<li><code>Ulož jako TXT</code> - uloží vybrané (nebo celý strom) vybraného pohledu 
+jako TXT soubor</li>
+</ul></li>
+<li><code>Konec</code> - ukončí &appFullName;</li>
+</ul></li>
+<li><code>Zobraz</code><ul>
+<li><code>Zobraz panel s poznámkami</code> - zobrazí spodní panel s poznámkami</li>
+<li><code>Celá obrazovka</code> - přepne do/z celoobrazovkového zobrazení</li>
+<li><code>LXR vyhledávání</code> - zobrazí panel se stránkou vyhledávání na 
+zvoleném LXR serveru</li>
+<li><code>JavaScript konzole</code> - zobrazí konzoli s výpisem chyb</li>
+<li><code>Možnosti</code> - zobrazí dialog Možnosti (nastavení)</li>
+</ul></li>
+<li><code>Nápověda</code><ul>
+<li><code>Nápověda</code> - zobrazí tuto nápovědu</li>
+<li><code>Domovské stránky</code> - zobrazí domovské stránky rozšíření v defaultním prohlížeči</li>
+<li><code>O rozšíření</code> - zobrazí dialog s informacemi o rozšíření a jeho autorovi, 
+přispěvovatelích a použité licenci</li>
+</ul></li>
+</ul>
+
+<h3 id="maintoolbar">Hlavní panel nástrojů</h3>
+<img src="chrome://xpcomviewer/locale/help/mainwindow1.png" alt="Hlavní panel nástrojů"/>
+<ul class="mainToolbar">
+<li><code>Výpisy</code> - uloží výpis právě zobrazených položek hlavního 
+stromu do Vámi zvoleného typu souboru.<br/>
+Více informací najdete v kapitole <a href="using.xhtml#reports">Výpisy</a> 
+na stránce <a href="using.xhtml">Používáme &appFullName;</a>.</li>
+<li><code>Přidej záložku</code> - přidá záložku na vybranou položku hlavního 
+stromu</li>
+<li><code>Components.classes</code> - zobrazí všechny dostupné třídy</li>
+<li><code>Components.interfaces</code> - zobrazí všechny dostupná rozhraní</li>
+<li><code>Components.results</code> - zobrazí předdefinované výsledky</li>
+<li><code>LXR vyhledávání</code> - zobrazí panel se stránkou vyhledávání na 
+zvoleném LXR serveru</li>
+<li><code>Nápověda</code> - zobrazí tuto nápovědu</li>
+</ul>
+
+<h3 id="filtrtoolbar">Panel <code>Filtr</code></h3>
+<img src="chrome://xpcomviewer/locale/help/mainwindow2.png" alt="Hlavní panel nástrojů"/>
+<ul class="filtrToolbar">
+<li><strong>Vstupní pole</strong> - ...</li>
+<li><strong>Zobraz vše</strong> - odstraní filtr a zobrazí veškeré položky daného 
+pohledu</li>
+<li><strong>Zobraz se záložkou</strong> - zobrazí všechny položky daného pohledu, 
+které mají připojenu záložku</li>
+</ul>
+
+<h3 id="maintree">Hlavní strom</h3>
+<img src="chrome://xpcomviewer/locale/help/mainwindow3.png" alt="Hlavní strom"/>
+<p>...<br/>
+</p>
+
+<h3 id="preferences">Dialog <code>Nastavení</code></h3>
+<img src="chrome://xpcomviewer/locale/help/mainwindow4.png" alt="Dialog Nastavení"/>
+<p>...<br/>
+</p>
+
+<div class="contentsBox"><em>30. září 2006</em></div>
+<p>Copyright &copy; 2005-2006 &vendorName;</p>
+
+</body>
+</html>

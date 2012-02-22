@@ -1,0 +1,117 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window title="XUL Datepicker"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   
+  <script type="application/x-javascript"
+	  src="chrome://global/content/dialogOverlay.js" />
+
+<description><html:h1>XUL Datepicker</html:h1></description>
+
+<vbox flex="1" style="overflow: auto">
+  <groupbox>
+    <caption label="Datepickers" />
+    <vbox>
+      <caption label="Grid" />
+      <hbox>
+        <groupbox>
+          <caption label="Normal" />
+          <datepicker type="grid" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Disabled" />
+          <datepicker type="grid" disabled="true" value="2007/12/31"/>
+        </groupbox>
+      </hbox>
+      <hbox>
+        <groupbox>
+          <caption label="First day of week=Monday" />
+          <datepicker type="grid" firstdayofweek="1" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Readonly" />
+          <datepicker type="grid" readonly="true" />
+        </groupbox>
+      </hbox>
+    </vbox>
+  
+    <vbox>
+      <caption label="Normal" />
+      <hbox>
+        <groupbox>
+          <caption label="Normal" />
+          <datepicker type="normal" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Normal (disabled)" />
+          <datepicker type="normal" disabled="true" value="2007/12/31"/>
+        </groupbox>
+      </hbox>
+      <hbox>
+        <groupbox>
+          <caption label="Normal (First day of week=Monday)" />
+          <datepicker type="normal" firstdayofweek="1" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Normal (Readonly)" />
+          <datepicker type="normal" readonly="true" />
+        </groupbox>
+      </hbox>
+    </vbox>
+    
+    <vbox>
+      <hbox>
+        <groupbox>
+          <caption label="Popup" />
+          <datepicker type="popup" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Popup (disabled)" />
+          <datepicker type="popup" disabled="true" value="2007/12/31"/>
+        </groupbox>
+      </hbox>
+      <hbox>
+        <groupbox>
+          <caption label="Popup (First day of week=Monday)" />
+          <datepicker type="popup" firstdayofweek="1" value="2007/12/31"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Popup (Readonly)" />
+          <datepicker type="popup" readonly="true" value="2007/12/31"/>
+        </groupbox>
+      </hbox>
+    </vbox>
+  </groupbox>
+  
+  <groupbox>
+    <caption label="Timepickers" />
+    <vbox>
+      <caption label="Normal" />
+      <hbox>
+        <groupbox>
+          <caption label="Normal" />
+          <timepicker  value="14:25"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Normal (disabled)" />
+          <timepicker disabled="true"  value="14:25"/>
+        </groupbox>
+      </hbox>
+      <hbox>
+        <groupbox>
+          <caption label="Normal (Hide Seconds)" />
+          <timepicker hideseconds="true"  value="14:25"/>
+        </groupbox>
+        <groupbox>
+          <caption label="Normal (Readonly)" />
+          <timepicker readonly="true"  value="14:25"/>
+        </groupbox>
+      </hbox>
+    </vbox>
+  </groupbox>
+  
+</vbox>
+
+</window>

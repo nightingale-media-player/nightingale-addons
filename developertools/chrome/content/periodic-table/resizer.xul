@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+
+<window title="XUL Images"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+   <script type="application/x-javascript"
+     src="chrome://global/content/dialogOverlay.js" />
+	
+  <script type="application/x-javascript">
+  <![CDATA[
+    function showDirection(resizeObject) {
+      var dirElement = document.getElementById("resizeDir");
+      var resizerElement = document.getElementById("resizer");
+      if (dirElement && resizerElement) {
+        if (resizerElement.getAttribute('dir') != "") {
+          dirElement.value = resizerElement.getAttribute('dir');
+        }
+      }
+    }
+  ]]>
+  </script>
+  
+<description><html:h1>XUL Resizer</html:h1></description>
+
+<vbox flex="1" style="overflow: auto">
+  <resizer id="resizer" oncommand="showDirection(this);">
+    <button label="Drag Me"
+            image="images/betty_boop.xbm"/>
+  </resizer>
+  <label id="resizeDir" value="Drage the button to resize." />
+</vbox>
+
+</window>

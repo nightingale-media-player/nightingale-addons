@@ -1,0 +1,22 @@
+<!-- About dialog itself -->
+<!ENTITY dialog.title "O rozšíření">
+<!ENTITY locales.dir "ltr">
+<!ENTITY btnAccept.label "Zavřít">
+<!ENTITY btnAccept.key "Z">
+<!ENTITY btnExtra1.label "Autoři">
+<!ENTITY btnExtra1.key "A">
+<!ENTITY btnExtra2.label "Licence">
+<!ENTITY btnExtra2.key "L">
+<!ENTITY appCopyright "© 2005-2006">
+
+<!-- About-Credits dialog -->
+<!ENTITY dialogCredits.title "O rozšíření - Autoři">
+<!ENTITY writtenByTab.title "Autoři">
+<!ENTITY writtenByTab.key "A">
+<!ENTITY thanksTab.title "Poděkování">
+<!ENTITY thanksTab.key "P">
+
+<!-- About-License dialog -->
+<!ENTITY dialogLicense.title "O rozšíření - Licence">
+<!ENTITY licenseTab.title "Licence">
+<!ENTITY licenseTab.key "L">

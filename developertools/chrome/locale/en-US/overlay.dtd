@@ -1,0 +1,17 @@
+<!ENTITY sbdevtools.menu.jsshell "Javascript Environment">
+<!ENTITY sbdevtools.menu.venkman "Javascript Debugger">
+<!ENTITY sbdevtools.menu.debugger.key "B">
+<!ENTITY sbdevtools.menu.refreshui "Refresh UI">
+<!ENTITY sbdevtools.menu.refreshui.accesskey "U">
+<!ENTITY sbdevtools.menu.refreshui.key "R">
+<!ENTITY sbdevtools.menu.profilemanager "Enable Profile Manager">
+<!ENTITY sbdevtools.menu.profilemanager.accesskey "P">
+<!ENTITY sbdevtools.menu.xulcache "Disable XUL Cache">
+<!ENTITY sbdevtools.menu.restart "Restart">
+<!ENTITY sbdevtools.menu.restart.accesskey "R">
+<!ENTITY sbdevtools.menu.restart.key "Q">
+<!ENTITY sbdevtools.menu.xultable "XUL Periodic Table">
+<!ENTITY sbdevtools.menu.xuledit "XUL Editor">
+<!ENTITY sbdevtools.menu.createfeathers "Create Feathers...">
+<!ENTITY sbdevtools.menu.createextension "Create Extension...">
+<!ENTITY sbdevtools.menu.linkexistingextension "Link Extension in Test Mode...">

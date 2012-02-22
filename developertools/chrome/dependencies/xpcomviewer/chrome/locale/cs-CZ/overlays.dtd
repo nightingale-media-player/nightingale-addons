@@ -1,0 +1,5 @@
+<!ENTITY xpcomviewerCmd.label "XPCOMViewer">
+<!ENTITY xpcomviewerCmd.key "X">
+<!ENTITY xpcomviewerCmd.tip "XPCOMViewer - Prozkoumejte svět XPCOM!">
+<!ENTITY xpcomviewerCmd.commandkey "C">
+<!ENTITY xpcomviewerHelpCmd.label "XPCOMViewer Nápověda">

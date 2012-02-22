@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css" title="Skin"?>
+
+<?xml-stylesheet href="chrome://[:= $_.package :]/skin/pane.css" type="text/css"?>
+
+<!DOCTYPE page SYSTEM "chrome://[:= $_.package :]/locale/overlay.dtd">
+<page id="[:= $_.package :]-pane" title="&[:= $_.package :].pane.label;"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="pane.js"/>
+
+  <vbox flex="1">
+    <description value="&[:= $_.package :].pane.label;" />
+    <button id="action-button" label="&[:= $_.package :].pane.button;" />
+  </vbox>
+</page>

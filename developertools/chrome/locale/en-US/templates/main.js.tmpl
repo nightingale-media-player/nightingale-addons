@@ -1,0 +1,179 @@
+
+// Make a namespace.
+if (typeof [:= $_.namespace :] == 'undefined') {
+  var [:= $_.namespace :] = {};
+}
+
+/**
+ * UI controller that is loaded into the main player window
+ */
+[:= $_.namespace :].Controller = {
+
+  /**
+   * Called when the window finishes loading
+   */
+  onLoad: function() {
+
+[: if ($_.ui.indexOf("servicepane") != -1)  { :]
+    this.createServicepaneNode();
+[: } :]
+
+    // initialization code
+    this._initialized = true;
+    this._strings = document.getElementById("[:= $_.package :]-strings");
+    
+    // Perform extra actions the first time the extension is run
+    if (Application.prefs.get("extensions.[:= $_.package :].firstrun").value) {
+      Application.prefs.setValue("extensions.[:= $_.package :].firstrun", false);
+      this._firstRunSetup();
+    }
+
+[: if ($_.ui.indexOf("toolbarbutton") != -1)  { :]
+    // Add the toolbar button to the default item set of the browser toolbar.
+    // TODO: Should only do this on first run, but Bug 6778 requires doing it
+    // every load.
+    this._insertToolbarItem("nav-bar", "[:= $_.package :]-toolbarbutton", "subscription-button");
+[: } :]
+    
+[: if ($_.ui.indexOf("toolbarbutton") != -1 || $_.ui.indexOf("mainmenu") != -1) { :]
+    // Make a local variable for this controller so that
+    // it is easy to access from closures.
+    var controller = this;
+    
+    // Attach doHelloWorld to our helloworld command
+    this._helloWorldCmd = document.getElementById("[:= $_.package :]-helloworld-cmd");
+    this._helloWorldCmd.addEventListener("command", 
+         function() { controller.doHelloWorld(); }, false);
+[: } :]
+  },
+  
+
+  /**
+   * Called when the window is about to close
+   */
+  onUnLoad: function() {
+    this._initialized = false;
+  },
+  
+[: if ($_.ui.indexOf("toolbarbutton") != -1 || $_.ui.indexOf("mainmenu") != -1) { :]
+  /**
+   * Sample command action
+   */
+  doHelloWorld : function() {
+    var message = "[:= $_.namespace :]: " + this._strings.getString("helloMessage");
+    alert(message);
+  },
+[: } :]
+  
+  /**
+   * Perform extra setup the first time the extension is run
+   */
+  _firstRunSetup : function() {
+  
+    // Call this.doHelloWorld() after a 3 second timeout
+    setTimeout(function(controller) { controller.doHelloWorld(); }, 3000, this); 
+  
+  },
+
+[: if ($_.ui.indexOf("servicepane") != -1)  { :]
+  createServicepaneNode: function() {
+	  this._servicePaneService =
+      Components.classes['@songbirdnest.com/servicepane/service;1']
+                .getService(Components.interfaces.sbIServicePaneService);
+	try{
+[: if ($_.ui.indexOf("servicepane-services") != -1)  { :]	
+	var servicesNode = this._servicePaneService.getNode('SB:Services');
+    if (!servicesNode) {
+      servicesNode = this._servicePaneService.createNode();
+      servicesNode.id = 'SB:Services';
+      servicesNode.className = 'folder services';
+      servicesNode.editable = false;
+      servicesNode.name = SBString("servicesource.services");
+      servicesNode.setAttributeNS('http://songbirdnest.com/rdf/servicepane#',
+                                  'Weight',
+                                  1);
+      this._servicePaneService.root.appendChild(servicesNode);
+    } else {
+      servicesNode.hidden = false;
+    }
+[: } :]
+[: if ($_.ui.indexOf("servicepane-radio") != -1)  { :]	
+	var radioNode = this._servicePaneService.getNode('SB:RadioStations');
+    if (!radioNode) {
+      radioNode = this._servicePaneService.createNode();
+      radioNode.id = 'SB:RadioStations';
+      radioNode.className = 'folder radio';
+      radioNode.editable = false;
+      radioNode.name = SBString("servicesource.radio");
+      radioNode.setAttributeNS('http://songbirdnest.com/rdf/servicepane#',
+                               'Weight',
+                               1);
+      this._servicePaneService.root.appendChild(radioNode);
+    } else {
+      radioNode.hidden = false;
+    }
+[: } :]     
+	var addonNode = this._servicePaneService.getNode('SB:[:= $_.namespace :]');
+	if (!addonNode) {
+		var myNode = this._servicePaneService.createNode();
+		myNode.id = 'SB:[:= $_.namespace :]';
+		myNode.url = 'chrome://[:= $_.package :]/content/mainview.xul';
+		myNode.image = 'chrome://[:= $_.package :]/skin/node-icon.png';
+		myNode.className = '[:= $_.namespace :]';
+		myNode.name = '[:= $_.name :]';
+		myNode.setAttributeNS('http://songbirdnest.com/rdf/servicepane#',
+                          "addonID",
+                          "[:= $_.id :]");
+[: if ($_.ui.indexOf("servicepane-services") != -1)  { :]
+		servicesNode.appendChild(myNode);
+[: } :]
+[: if ($_.ui.indexOf("servicepane-radio") != -1)  { :]
+		radioNode.appendChild(myNode);
+[: } :]
+  }
+  else {
+     addonNode.hidden = false;
+  }
+	} catch (e) {
+    Cu.reportError(e);
+  }
+  },
+[: } :]  
+
+[: if ($_.ui.indexOf("toolbarbutton") != -1) { :]
+  /**
+   * Helper to add a toolbaritem within a given toolbar
+   * 
+   *   toolbar - the ID of a toolbar element
+   *   newItem - the ID of a toolbaritem element within the 
+   *            associated toolbarpalette
+   *   insertAfter - ID of an toolbaritem after which newItem should appear
+   */
+  _insertToolbarItem: function(toolbar, newItem, insertAfter) {
+    var toolbar = document.getElementById(toolbar);
+    var list = toolbar.currentSet || "";
+    list = list.split(",");
+    
+    // If this item is not already in the current set, add it
+    if (list.indexOf(newItem) == -1)
+    {
+      // Add to the array, then recombine
+      insertAfter = list.indexOf(insertAfter);
+      if (insertAfter == -1) {
+        list.push(newItem);
+      } else {
+        list.splice(insertAfter + 1, 0, newItem);
+      }
+      list = list.join(",");
+      
+      toolbar.setAttribute("currentset", list);
+      toolbar.currentSet = list;
+      document.persist(toolbar.id, "currentset");
+    }
+  }
+[: } :]
+  
+};
+
+window.addEventListener("load", function(e) { [:= $_.namespace :].Controller.onLoad(e); }, false);
+window.addEventListener("unload", function(e) { [:= $_.namespace :].Controller.onUnLoad(e); }, false);

@@ -1,0 +1,742 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"[
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd" >
+    %brandDTD;
+]>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head><title>XPConnect and XPIDL FAQ</title>
+  <!-- for simplicity I used style for html files in Firefox help -->
+  <link rel="stylesheet" type="text/css"
+        href="chrome://help/skin/helpFileLayout.css"/>
+</head>
+<body bgcolor="white" text="black">
+
+<center>
+<h2>Frequently Asked Questions about 
+<a href="http://www.mozilla.org/scriptable/">
+XPConnect</a>
+and 
+<a href="http://www.mozilla.org/scriptable/xpidl">
+XPIDL</a></h2>
+</center>
+
+<h3>Table of Contents</h3>
+<ul>
+<li>1) <a href="#i1">
+My component isn't scriptable from js!  What's going on?
+
+</a></li><li>2) <a href="#i2">
+I need to define a lot of constants in my interface.  Why can't I use enum instead?
+
+</a></li><li>3) <a href="#i3">
+How do I use interface methods with 'out' parameters from JavaScript?
+
+</a></li><li>4) <a href="#i4">
+How do I use in/out parameters in JavaScript?
+
+</a></li><li>5) <a href="#i5">
+My component builds but the interface doesn't show up through "Components.interfaces.Foo"
+
+</a></li><li>6) <a href="#i6">
+Where can I find some documentation on IDL? 
+
+</a></li><li>7) <a href="#i7">
+What's different between XPIDL and other IDLs?
+
+</a></li><li>8) <a href="#i8">
+Does xpidl support string constants?
+
+</a></li><li>9) <a href="#i9">
+How do I make 'out string' work right? Why does my implementation of this 
+crash when called from JavaScript?
+
+</a></li><li>10) <a href="#i10">
+I made my component scriptable and wrote some JavaScript code to test it. So, how do I run my tests?
+
+</a></li><li>11) <a href="#i11">
+How do I pass array parameters?
+
+</a></li><li>12) <a href="#i12">
+What happens when a native method called from Javascript expects nsIFoo and gets 
+passed something else? Does the native method receive NULL or is an exception  
+thrown or what?
+
+</a></li></ul>
+<dl>
+<dt><a name="i1"></a><b>1) 
+My component isn't scriptable from js!  What's going on?
+
+</b></dt><dd>
+Add the [scriptable] attribute.
+<br/><i><a href="mailto:mike+mozilla@meer.net">mccabe</a> - 7/17/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i2"></a><b>2) 
+I need to define a lot of constants in my interface.  Why can't I use enum instead?
+
+</b></dt><dd>
+See discussion in bug <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=8781">8781</a> and .xpcom.
+
+<p><i>here is some more text on the topic...</i>
+</p><pre>'enum' is real sticky. While powerful in C++ as sets of valid
+values and a 'types' for params, they are a mess in typelibs and,
+I think, should not be used as types for params in xpcom. A core
+problem is that the sizeof a given enum is something that the C++
+compiler can decide based on the range of values for the enum.
+This makes them hard to specify in the typelib or to use safely
+in xpconnect. I say that they are evil as part of the contract
+between xpcom components.
+
+Another issue is that corba idl (upon which the xpidl compiler is
+built) requires named enum (no anonymous enums) and does *not*
+allow setting individual values; e.g. 'enum foo{a,b};' is valid
+but 'enum {a,b};' and 'enum foo {a=-1,b=50};' are not valid.
+
+xpidl *had* supported writing enums into the generated C++
+headers, but not into typelibs. I removed that support and added
+stubs to the compiler that will do a -w warning if enums are used
+to let users know that they are being ignored.
+
+Instead of using enums for constant numerical identifiers in
+xpidl I propose that we use 'const's. shaver *had* support for
+many types of consts when generating typelibs (based on the
+typelib spec) and no support (yet) when generating headers. I
+decided that the *only* types of consts we need are those that
+can be supported in both headers and typelibs and that really
+important in the real world: integer consts.
+
+String consts are not supported - they are a pain to do safely in
+C++ without generating C++ implementation files, and would force
+linkage across modules (or duplication of strings). Any interface
+that wants the effect of string consts can declare string
+attributes and have some implementation of the interface return
+the strings. Yes, this does not declare the values in the
+interface declaration, but I argue that this is *good enough*.
+
+Floating point constants are messy in C++, not as common, and are
+not supported here.
+
+Integer constants are much more important and are supportable as
+part of the interface. I decided to implement support only for
+shorts and longs (16 and 32 bit integers) signed and unsigned.
+These are only supported *inside* interfaces (xpidl will -w warn
+when consts are seen outside interfaces). They look like:
+
+ const short some_name = -1;
+
+When generating the C++ header this generates:
+ enum { some_name = -1 };
+
+So, constants are always available in C++ as
+iface_name::const_name. They are written into the typelib and are
+available in JavaScript via xpconnect as named properties on any
+instance of the given interface.
+
+xpidl supports some arithmetic in const declarations. This is
+resolved *before* emitting C++ headers. This includes things
+like:
+
+ const short c1 = 1+1;
+ const short c2 = c1 * 5;
+ const short flag = 1 &lt;&lt; 5;
+
+which produces:
+
+ enum { c1 = 2 };
+ enum { c2 = 10 };
+ enum { flag = 32 }; 
+</pre>
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 7/17/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i3"></a><b>3) 
+How do I use interface methods with 'out' parameters from JavaScript?
+
+</b></dt><dd>
+JavaScript does not support reference or 'out' parameters in general,
+although objects can be thought of as references.  To get the value of
+an out parameter of an interface method exposed to JavaScript, pass
+any JavaScript object.  XPConnect will write the updated out parameter
+value to a property called 'value' on that object.
+
+Given an XPConnected object with this interface:
+
+<pre>[scriptable, uuid(some uuid)]
+interface nsIOutParam : nsISupports
+{
+    string methodHasOutParam(out PRInt32 oob);
+};
+</pre>
+
+you can get the method result and out parameter value by passing an
+object and examining the 'value' property:
+
+<pre>var nsio; // instance supporting nsIOutParam
+
+var outobj = new Object(); // make an empty JavaScript object
+
+// 'result' is the method's return value, a string;
+var result = nsio.methodHasOutParam(outobj);
+
+// 'outvalue' is the new value of the 'oob' out parameter, a number.
+var outvalue = outobj.value; // get the newly-set 'value' property.</pre>
+<br/><i><a href="mailto:mccabe@netscape.com">mccabe</a> - 9/19/00</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i4"></a><b>4) 
+How do I use in/out parameters in JavaScript?
+
+</b></dt><dd>
+<pre>inout params are reflected into JS, but the syntax is different from the syntax
+used for either in or out params. For out  params xpconnect remaps the C++
+result to be the return value when called by JS.  This is as expected. But JS
+has no smooth intrinsic way to do inout because JS has no pointers. So for inout
+params the rule is that JS callers must supply an object with a 'value'
+property. The caller can set that 'value' property to the 'in' value before the
+call and extract the 'out' param from the 'value' property of that object after
+the function returns.
+
+I have added a test of this. I'll show parts of it here for illustration.
+
+- testxpc.idl gets a new method:
+    void SetReceiverReturnOldReceiver(inout nsIEcho aReceiver);
+
+- TestXPC.cpp implements it:
+/* void SetReceiverReturnOldReceiver (inout nsIEcho aReceiver); */
+NS_IMETHODIMP
+MyEcho::SetReceiverReturnOldReceiver(nsIEcho **aReceiver)
+{
+    if(!aReceiver)
+        return NS_ERROR_NULL_POINTER;
+
+    nsIEcho* oldReceiver = mReceiver;
+    mReceiver = *aReceiver;
+    if(mReceiver)
+        NS_ADDREF(mReceiver);
+
+    /* don't release the reference, that is the caller's problem */
+    *aReceiver = oldReceiver;
+    return NS_OK;
+}
+
+- testxpc.js uses it and verifies that the results are correct:
+var e1 = new Object();
+var e2 = new Object();
+
+var v1 = new Object();
+var v2 = new Object();
+var v3 = new Object();
+var v4 = new Object();
+
+echo.SetReceiver(null);
+all_ok = true;
+
+v1.value = e1;
+echo.SetReceiverReturnOldReceiver(v1);
+all_ok = all_ok &amp;&amp; v1.value == null;
+
+v2.value = e2;
+echo.SetReceiverReturnOldReceiver(v2);
+all_ok = all_ok &amp;&amp; v2.value == e1;
+
+v3.value = null;
+echo.SetReceiverReturnOldReceiver(v3);
+all_ok = all_ok &amp;&amp; v3.value == e2;
+
+v4.value = e1;
+echo.SetReceiverReturnOldReceiver(v4);
+all_ok = all_ok &amp;&amp; v4.value == null;
+
+print("inout of interface tests - "+(all_ok ? "passed" : "failed"));
+</pre>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i5"></a><b>5) 
+My component builds but the interface doesn't show up through "Components.interfaces.Foo"
+
+</b></dt><dd>
+Make sure that you have the magic invocations in your makefile.  See the
+makefiles in <tt>
+<a href="http://lxr.mozilla.org/seamonkey/source/xpcom/sample/">mozilla/xpcom/sample/</a></tt>
+for examples.
+<br/><i><a href="mailto:mang@subcarrier.org">mang</a> - 8/03/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i6"></a><b>6) 
+Where can I find some documentation on IDL? 
+
+</b></dt><dd>
+XPIDL docs are at <a href="http://www.mozilla.org/scriptable/xpidl">
+http://www.mozilla.org/scriptable/xpidl</a> <i>The xpidl syntax stuff here is out of date.</i>
+Use <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=7864">this tracking bug</a>
+to add comments or questions.
+There is simple <a href="http://www.mozilla.org/scriptable/xpidl/notes/keywords.txt">
+types and keywords
+</a>
+list that <a href="mailto:jband@netscape.com">jband</a> wrote as a basis for 
+documentation. Hopefully this will be superceeded with better docs <i>soon</i>.
+<br/><i><a href="mailto:mang@subcarrier.org">mang</a> - 8/03/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i7"></a><b>7) 
+What's different between XPIDL and other IDLs?
+
+</b></dt><dd>
+XPIDL is based on Corba IDL. It is a simple subset of Corba IDL with some xpcom
+extensions added. 
+Use <a href="http://bugzilla.mozilla.org/show_bug.cgi?id=7864">this tracking bug</a>
+to enter your flames.
+<br/><i><a href="mailto:mang@subcarrier.org">mang</a> - 8/03/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i8"></a><b>8) 
+Does xpidl support string constants?
+
+</b></dt><dd>
+String consts are not supported - they are a pain to do safely in
+C++ without generating C++ implementation files, and would force
+linkage across modules (or duplication of strings). Any interface
+that wants the effect of string consts can declare string
+attributes and have some implementation of the interface return
+the strings. Yes, this does not declare the values in the
+interface declaration, but I argue that this is <b>good enough</b>.
+
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 7/28/99</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i9"></a><b>9) 
+How do I make 'out string' work right? Why does my implementation of this 
+crash when called from JavaScript?
+
+</b></dt><dd>
+
+XPConnect requires that objects follow the xpcom rules of transfer of ownership
+of pointer type 'out' params. I don't know that we have any definitive docs on
+this, but  this has been hashed out in some detail on the mozilla xpcom
+newsgroup more than  once. I'll try to explain...
+
+<p>
+
+The critical point is that when returning a pointer type (char*, PRUnichar*, 
+nsID*) from an xpcom call you need to use the nsIAllocator service to allocate a 
+copy of the thing and transfer ownership of the copy to the caller. This is 
+completely analogous to the AddRef rules when passing nsISupports* as 'out' or 
+'inout' params.
+
+</p><p>
+
+All callers to a compliant interface should be able to safely assume that you 
+did follow the transfer of ownership rule and thus they accept responsibility to 
+free the copy when they are done with it.
+
+</p><p>
+
+The common mistake is to do something like:
+
+</p><pre><font color="red">/* XXX incorrect implementation! */</font>
+
+/* string GetStringA (); */
+NS_IMETHODIMP
+xpcstringtest::GetStringA(char **_retval)
+{
+    *_retval = "result of xpcstringtest::GetStringA";
+    return NS_OK;
+}        
+</pre>
+
+
+This code is passing a pointer to static memory. However the caller expects an
+allocated block which it is expected to later free. So when free is called the
+heap manager complains.
+
+<p>
+
+While in this case xpconnect is the module tripping over this bit of 
+non-compliance in the implementation, it could just as well be any other 
+caller.
+
+</p><p>
+
+I just added some test code to xpconnect/idl and xpconnect/tests/components to 
+demostrate and to use for tests. 
+
+</p><p>
+
+given:
+
+</p><pre>[scriptable, uuid(d970e910-30d8-11d3-9885-006008962422)]
+interface nsIXPCTestString : nsISupports {
+    string GetStringA();
+    void GetStringB(out string s);
+};
+</pre>
+
+we get the header output:
+
+<pre>class nsIXPCTestString : public nsISupports {
+ public:
+  NS_DEFINE_STATIC_IID_ACCESSOR(NS_IXPCTESTSTRING_IID)
+
+  /* string GetStringA (); */
+  NS_IMETHOD GetStringA(char **_retval) = 0;
+
+  /* void GetStringB (out string s); */
+  NS_IMETHOD GetStringB(char **s) = 0;
+};
+</pre>
+
+When your native implemenation returns pointer  types it needs to use the shared
+allocator to make a copy. You can get the  nsIAllocator service from the service
+manager to do this, or use the static  nsMemory class. Here is an example
+from  xpconnect/tests/components/xpctests_string.cpp:
+
+<pre>/* string GetStringA (); */
+NS_IMETHODIMP
+xpcstringtest::GetStringA(char **_retval)
+{
+    const char myResult[] = "result of xpcstringtest::GetStringA";
+
+    if(!_retval)
+        return NS_ERROR_NULL_POINTER;
+
+    *_retval = (char*) nsMemory::Clone(myResult, 
+                                       sizeof(char)*(strlen(myResult)+1));
+    return *_retval ? NS_OK : NS_ERROR_OUT_OF_MEMORY;
+}        
+</pre>
+
+Yes, this is a pain. But, it is the way to have consistent rules about thransfer 
+of ownership. It looks overblown in this case where we have a static string that 
+is being returned. But the same interface could be returning a newly 
+allocated string on every call. By having a consistent convention and sticking 
+to it we can avoid errors. It is the sticking to it part that is hard.
+
+<p>
+
+The shared allocator can be found by asking the ServiceManager for the service
+with the progid: "@mozilla.org/xpcom/memory-service;1" and interface: nsIMemory.
+The simpler method is to use the 'nsMemory' object that exposes all static
+methods see 
+<a href="http://lxr.mozilla.org/mozilla/source/xpcom/base/nsIMemory.idl">
+http://lxr.mozilla.org/mozilla/source/xpcom/base/nsIMemory.idl</a> and
+<a href="http://lxr.mozilla.org/mozilla/source/xpcom/base/nsMemory.h">
+http://lxr.mozilla.org/mozilla/source/xpcom/base/nsMemory.h</a>.
+
+</p><p>
+
+For the *very* rare cases where you absolutely need to break the xpcom rules and 
+not do a transfer ownership, xpidl provides the [shared] keyword. This will let 
+xpconnect know that you are breaking the rules and not transfering ownership. 
+But this should never be used unless *every* possible caller also know that this 
+method breaks the rules. C++ has no standard way to convey this between 
+components. So if your component were used by some random other component in the 
+future that other component would have to know be some special means that this 
+method is *special*. Any 'generic' user of your method would crash just like 
+xpconnect did here. I strongly discourage the use of 'shared' in any public 
+interfaces. It is just a way of asking for future crashes.
+
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 7/30/99</i>
+
+
+</p></dd></dl>
+
+
+
+<dl>
+<dt><a name="i10"></a><b>10) 
+I made my component scriptable and wrote some JavaScript code to test it. So, how do I run my tests?
+
+</b></dt><dd>
+Start small and work up.
+
+<p>
+
+If you have a js file called <i>a.js</i> then you can write an html file called
+<i>a.html</i> that looks like:
+
+</p><pre>&lt;html&gt;
+&lt;script src="a.js"&gt;&lt;/script&gt;
+&lt;/html&gt;
+</pre>
+
+Start apprunner and load the following url (assuming that the html file is in
+c:\temp):
+
+<p>
+
+<code>file:///c|/temp/a.html</code>
+
+</p><p>
+
+This should load <i>a.js</i> and run it. This works fine if you only want to dump 
+stuff to the console to test your code.
+
+</p><p>
+
+For instance I have <i>a.js</i> with the contents:
+
+</p><pre>try {
+    var clazz = Components.classes["nsEcho"];
+    var iface = Components.interfaces.nsIEcho;
+
+    dump("clazz: "+clazz+"\n");
+    dump("iface: "+iface+"\n");
+
+    var supports = clazz.createInstance();
+    dump("supports: "+supports+"\n");
+
+    var echo = supports.QueryInterface(iface);
+    dump("echo: "+echo+"\n");
+
+    var result = echo.In2OutOneString("foo");
+    dump("call returned: "+result+"\n");
+
+} catch(e)  {
+    dump("caught exception: "+e+"\n");
+}
+</pre>
+
+
+When I load <code>file:///c|/temp/a.html</code> it prints to the console:
+
+<p>
+
+</p><pre>Going to reload
+FROM:chrome://navigator/skin/animthrob.gif
+TO:resource:/chrome/navigator/skin/default/animthrob.gif
+
+clazz: nsEcho
+iface: nsIEcho
+supports: [xpconnect wrapped nsISupports]
+echo: [xpconnect wrapped nsIEcho]
+call returned: foo
+Document file:///c|/temp/a.html loaded successfully
+Document: Done (0.271 secs)
+</pre>
+
+<b>Note:</b> if there is an error in your *.js file then apprunner will report
+that the error was in the *.html file that loaded the js file. This is a known
+bug on vidur's list.
+
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 7/31/99</i>
+
+</dd>
+</dl>
+
+
+
+
+<dl>
+<dt><a name="i11"></a><b>11) 
+How do I pass array parameters?
+
+</b></dt><dd>
+
+<pre>XPConnect now has some support for arrays.
+
+We are talking about plain C/C++ arrays mapped to/from JS Arrays.
+Not nsISupportsArrays and that ilk. Things that can go in the
+arrays are all the types that we can use as scriptable xpidl
+params.  This exclued 'natives'. Arrays of arrays are not
+supported. Arrays of interface pointers do work. Arrays are of
+homogenous type.
+
+Links to test code...
+<a href="http://lxr.mozilla.org/seamonkey/search?string=nsIXPCTestArray">http://lxr.mozilla.org/seamonkey/search?string=nsIXPCTestArray</a>
+
+nsIXPCTestArray -
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/idl/xpctest.idl#198">http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/idl/xpctest.idl#198</a>
+- with its eight methods is the one and only one interface I've
+written so far to test this. IDL syntax is as shown there. In
+addition to 'size_is' it should also respect 'length_is', but
+I've not really tested that (if you don't know what 'length_is'
+means then you probably don't need it). The typelib doc -
+<a href="http://www.mozilla.org/scriptable/typelib_file.html">http://www.mozilla.org/scriptable/typelib_file.html</a> - has some
+info on this.
+
+'size_is' is required for arrays. 'length_is' is optional.
+
+There is a sample C++ implementation of nsIXPCTestArray  in
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/components/xpctest_array.cpp">http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/components/xpctest_array.cpp</a>
+
+There is a JavaScript test of this in
+<a href="http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/js/old/xpctest_array.js">http://lxr.mozilla.org/seamonkey/source/js/src/xpconnect/tests/js/old/xpctest_array.js</a>
+
+This test includes a JS implementation of nsIXPCTestArray. So,
+the example shows and tests both a C++ version and a JS version
+of the same code. FWIW, this re-excited me about implementing
+interfaces in JS becasue the JS implementations were much neater
+and easier - no messy Alloc/Free or AddRef/Release.
+
+Arrays are pointer objects and follow all the regular transfer of
+ownership rules that I harp about. [shared] is not allowed.
+
+The params indicated by 'size_is' and 'length_is' *must* be of type
+PRUint32 (unsigned long).
+
+At present the JS side of this mapping is only for actual JS
+Arrays - no "objects with numbered properties" or mapping of
+char[] &lt;-&gt; JSString etc.
+
+</pre>
+
+See these <b>old</b> news articles... (Note that some of these articles are members of 
+long threads with additional information)<br/> 
+<a href="news://news.mozilla.org/37E9D66E.564E37E8%40netscape.com">news://news.mozilla.org/37E9D66E.564E37E8@netscape.com</a><br/>
+<a href="news://news.mozilla.org/38027C5D.793151CD%40netscape.com">news://news.mozilla.org/38027C5D.793151CD@netscape.com</a><br/>
+<a href="news://news.mozilla.org/387B8F3F.32095ECF%40netscape.com">news://news.mozilla.org/387B8F3F.32095ECF@netscape.com</a><br/>
+<a href="news://news.mozilla.org/3958DCDC.A529D2C8%40netscape.com">news://news.mozilla.org/3958DCDC.A529D2C8@netscape.com</a><br/>
+
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 9/19/01</i>
+
+</dd>
+</dl>
+
+
+
+<dl>
+<dt><a name="i12"></a><b>12) 
+What happens when a native method called from Javascript expects nsIFoo and gets 
+passed something else? Does the native method receive NULL or is an exception  
+thrown or what?
+
+</b></dt><dd>
+
+<p>
+
+Here you are calling a wrapped native interface that takes a
+particular interface as a param.
+
+</p><p>
+
+XPConnect will first check to see if the param was declared as
+nsIVariant. If so then it will package up whatever you passed
+into an nsIVariant container and pass that to the callee.
+
+</p><p>
+
+Otherwise, xpconnect will check to see if the param value is null
+or undefined. If so then it will pass nsnull to the callee.
+
+</p><p>
+
+Else, xpconnect will check to see if the param value is a JSObject (only a
+JSObject can represent an interface). If it is not a JSObject then xpconnect
+will throw a NS_ERROR_XPC_BAD_CONVERT_JS exception at the JS code that was
+trying to make the call. There is a special case for passing the number zero. In
+order to give a better error message that helps the JS programmer understand
+that 0 != null in JS we throw a NS_ERROR_XPC_BAD_CONVERT_JS_ZERO_ISNOT_NULL
+exception.
+
+</p><p>
+
+At this point xpconnect has detected that the passed param is in fact a
+JSObject. XPConnect then checks to see if the JSObject is in fact a wrapper for
+a native objects (usually a C++ implementation that was previously handed into
+JS code, but it could be actually implemented in Python or Java or whatever). If
+the JSObject does represent a wrapped native object then xpconnect unwraps the
+object and QIs it to the specified interface iid. If that succeeds then
+xpconnect passes the correct underlying interface pointer to the callee.
+Otherwise (in the case where the object *is* a wrapped native, but can't be QI'd
+to the specified interface) xpconnect throws a NS_ERROR_XPC_BAD_CONVERT_JS
+exception at the JS caller.
+
+</p><p>
+
+Otherwise, xpconnect does a hashtable lookup to discover if this JSObject has
+been previously wrapped to represent any xpcom interfaces. If so then xpconnect
+used the existing wrapper. Else, xpconnect makes a new wrapper. In either case
+the rest of the logic is pretty much the same.
+
+</p><p>
+
+The important thing to understand is that xpconnect is trying to make things
+easy for the JS programmer. It tries to require as little explicit declaration
+and implementation as possible. XPConnect accumulates 'assertions' about a given
+object and will happily represent the object as matching those assertions. For
+instance, if you pass a JSObject as an nsIFoo and later pass the same JSObject as
+an nsIBar, then xpconnect will have built a wrapper that a native caller can QI
+back and forth between nsIFoo and nsIBar. It will appear to have all the
+required methods etc.
+
+</p><p>
+
+The JSObject is not required to have a QueryInterface method for this to work.
+The JSObject *can* have a QueryInterface method. If so then xpconnect will call
+it in order to answer questions about support for interfaces that have not
+already been discovered on the object. The QI method is just another way for
+making 'assertions' about the interfaces that the JSObject supports.
+
+</p><p>
+
+The actual JSObject need not actually *have* all the methods and properties when
+the wrapper is built. It need not have any methods or properties at all for a
+wrapper to get built. The only checking that is done in this regard is when a
+specific method on the interface is actually *called*. At that point xpconnect
+will attempt to lookup the method on the object with the appropriate name. If
+the method is found then the call is made. Otherwise xpconnect will return  a
+NS_ERROR_XPC_JSOBJECT_HAS_NO_FUNCTION_NAMED error code to the caller.
+
+</p><p>
+
+This scheme allows for the dynamism of Javascript. It lets JS interface
+implementors implement only the parts of the interface they think they need to
+implement.
+
+<br/><i><a href="mailto:jband@netscape.com">jband</a> - 4/3/02</i>
+
+
+</p></dd></dl>
+
+<!-- GENERATED FILE - DO NOT EDIT - see faq.in and faq.js -->
+<!-- GENERATED FILE - DO NOT EDIT - see faq.in and faq.js -->
+<!-- GENERATED FILE - DO NOT EDIT - see faq.in and faq.js -->
+
+
+
+<hr/>Last Modified: Wed Apr 03 2002 13:48:08 GMT-0800 (Pacific Standard Time)<br/>
+
+<!-- End of Faq -->
+
+
+</body></html>

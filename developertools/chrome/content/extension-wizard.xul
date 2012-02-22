@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<!--
+//
+// BEGIN SONGBIRD GPL
+// 
+// This file is part of the Songbird web player.
+//
+// Copyright(c) 2005-2012 POTI, Inc.
+// http://songbirdnest.com
+// 
+// This file may be licensed under the terms of of the
+// GNU General Public License Version 2 (the "GPL").
+// 
+// Software distributed under the License is distributed 
+// on an "AS IS" basis, WITHOUT WARRANTY OF ANY KIND, either 
+// express or implied. See the GPL for the specific language 
+// governing rights and limitations.
+//
+// You should have received a copy of the GPL along with this 
+// program. If not, go to http://www.gnu.org/licenses/gpl.html
+// or write to the Free Software Foundation, Inc., 
+// 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+// 
+// END SONGBIRD GPL
+//
+-->
+
+<?xul-overlay href="chrome://sbdevtools/content/wizard-common-overlay.xul"?>
+
+<!DOCTYPE window SYSTEM "chrome://sbdevtools/locale/extension-wizard.dtd">
+<wizard id="extension-wizard" 
+  title="&wizard.title;" 
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  xmlns:html="http://www.w3.org/1999/xhtml" >
+
+
+  <wizardpage id="overview" label="&overview.label;" description="&overview.description;">
+    <description>&overview.purpose;</description>
+    <separator class="thin"/>
+    <description>&overview.requirements;
+      <html:ul>
+        <html:li>&overview.requirements.b1;</html:li>
+        <html:li>&overview.requirements.b2;</html:li>
+        <html:li>&overview.requirements.b3;</html:li>
+      </html:ul>
+    </description>
+    <vbox flex="1"/>
+    <label class="text-link" value="&overview.link;" href="http://wiki.songbirdnest.com/Developer/Developer_Intro/Extensions"/>
+  </wizardpage>
+  
+  <!-- Filled by wizard-common-overlay.xul -->
+  <wizardpage id="general" />
+  <wizardpage id="package-page" />
+  <wizardpage id="contributors" />
+
+  <wizardpage id="ui" label="&ui.label;" description="&ui.description;">
+<!--    
+    <checkbox id="ui-contextmenu" label="Context menu"/>
+    <checkbox id="ui-sidebar" label="Sidebar"/>
+ -->
+    <checkbox id="ui-toolbarbutton" label="&ui.option.toolbarbutton;" checked="true"/>
+    <checkbox id="ui-displaypane-rightsidebar" label="&ui.option.displaypane-rightsidebar;" checked="true"/>
+    <checkbox id="ui-displaypane-contentpane" label="&ui.option.displaypane-contentpane;" checked="true"/>
+    <checkbox id="ui-displaypane-servicepane" label="&ui.option.displaypane-servicepane;" checked="true"/>
+    <checkbox id="ui-servicepane-radio" label="&ui.option.servicepane-radio;" checked="true"/>
+    <checkbox id="ui-servicepane-services" label="&ui.option.servicepane-services;" checked="true"/>
+    <checkbox id="ui-mediapage" label="&ui.option.mediapage;" checked="false" hidden="true"/>
+    <checkbox id="ui-mainmenu" label="&ui.option.mainmenu;" checked="true"/>
+    <checkbox id="ui-options" label="&ui.option.preferences;" checked="true"/>
+  </wizardpage>
+
+  <wizardpage id="destination" />
+
+  <wizardpage id="ready" label="&ready.label;" description="&ready.description;">
+    <description>&ready.nextstep;
+      <html:ul>
+        <html:li>&ready.nextstep.b1;</html:li>
+        <html:li>&ready.nextstep.b2;</html:li>
+        <html:li>&ready.nextstep.b3;</html:li>
+      </html:ul>
+    </description>
+    <separator class="thin"/>
+    <description>&ready.mustrestart;</description>
+    <checkbox id="restart" label="&ready.restart.checkbox;" checked="true" />
+    <description>&ready.instructions;</description>
+    <vbox flex="1"/>
+    <label class="text-link" value="&ready.link;" href="http://wiki.songbirdnest.com/Developer/Developer_Intro/Extensions"/>
+  </wizardpage>
+
+  <script type="application/x-javascript" src="chrome://explorer/content/tools/abstract-generator-wizard.js"/>
+  <script type="application/x-javascript" src="chrome://sbdevtools/content/extension-wizard.js"/>
+
+</wizard>

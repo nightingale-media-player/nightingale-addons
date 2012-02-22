@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<wizard id="theWizard" title="XUL Wizard"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+<script>
+function checkCode(){
+  document.getElementById('theWizard').canAdvance = (document.getElementById('secretCode').value == "cabbage");
+} 
+</script>
+
+  <wizardpage onpageshow="checkCode();" description="XUL Wizard">
+    <label value="Enter the secret code:"/>
+    <textbox id="secretCode" onkeyup="checkCode();"/>
+  </wizardpage>
+
+  <wizardpage description="XUL Wizard">
+    <description><html:h1>XUL Wizard</html:h1></description>
+    <label value="That is the correct secret code."/>
+  </wizardpage>
+
+</wizard>

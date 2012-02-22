@@ -1,0 +1,24 @@
+@namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+.appIcon {
+  width:32px;
+  height:32px;
+}
+
+.appTitle {
+  font-weight:bold;
+  font-size:12pt;
+}
+
+.appCopyright {
+  font-size:9pt;
+}
+
+tabpanel {
+  padding:2px 2px 2px 2px;
+}
+
+iframe {
+  border:1px solid #7F9DB9;
+  padding:2px 2px 2px 2px;
+}

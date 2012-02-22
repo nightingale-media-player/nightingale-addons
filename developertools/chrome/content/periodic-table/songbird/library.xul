@@ -1,0 +1,230 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+
+<window title="Songbird Generic Controls"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   
+    <!-- Load the interface code -->
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/songbirdInterfaces.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/sbDataRemoteUtils.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/windowUtils.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/browserUtilities.js"/>
+
+<script>
+<![CDATA[
+]]>
+</script>
+
+<description><html:h1>Songbird Library Controls</html:h1></description>
+
+<vbox flex="1">
+
+  <hbox flex="1">
+
+    <groupbox>
+      <caption label="servicepane" />
+      <hbox flex="1">
+        <sb-servicepane width="150"/>
+      </hbox>
+    </groupbox>
+
+    <groupbox flex="1">
+      <caption label="playlist" flex="1"/>
+      <hbox flex="1">
+        <sb-playlist id="sbplaylist" flex="1"/>
+      </hbox>
+    </groupbox>
+
+  </hbox>
+  
+  <hbox>
+    <groupbox flex="1">
+      <caption label="command toolbar" flex="1"/>
+      <hbox height="32">
+        <vbox flex="1">
+          <sb-commands-toolbar id="sbcommandtoolbar" flex="1"/>
+          <spacer flex="1"/>
+        </vbox>
+      </hbox>
+    </groupbox>
+
+    <groupbox width="96">
+      <caption label="command menuitems" flex="1"/>
+      <hbox flex="1">
+        <vbox>
+          <button label="menuitems" type="menu">
+            <menupopup>
+              <sb-commands-menuitems id="sbcommandmenuitems" flex="1" commandtype="mediaitem" />
+            </menupopup>
+          </button>
+          <spacer flex="1"/>
+        </vbox>
+      </hbox>
+    </groupbox>
+
+    <groupbox flex="1">
+      <caption label="command shortcuts" flex="1"/>
+      <hbox flex="1">
+        <vbox>
+          <label value="this element adds shortcuts to the playlist:"/>
+          <label value="- Shift-F2 (action 1)"/>
+          <label value="- Alt-F3 (action 2)"/>
+          <sb-commands-shortcuts id="sbcommandshortcuts" commandtype="mediaitem" />
+        </vbox>
+      </hbox>
+    </groupbox>
+
+    <groupbox flex="1">
+      <caption label="search" flex="1"/>
+      <hbox flex="1">
+        <vbox flex="1">
+          <searchbar id="sbsearch" flex="1"/>
+        </vbox>
+      </hbox>
+    </groupbox>
+
+  </hbox>
+
+
+</vbox>
+
+<script>
+<![CDATA[
+
+  // Import constants for public playlist commands
+  if (typeof(kPlaylistCommands) == "undefined") {
+    Components.utils.import("resource://app/components/kPlaylistCommands.jsm");
+    if (!kPlaylistCommands)
+      throw new Error("Import of kPlaylistCommands module failed!");
+  }
+
+  // Import constant for songbird properties
+  if (typeof(SBProperties) == "undefined") {
+    Components.utils.import("resource://app/components/sbProperties.jsm");
+    if (!SBProperties)
+      throw new Error("Import of sbProperties module failed");
+  }
+
+  const CommandsExampleDBGuid = "ce513ba8-70ad-44ce-b944-2d10119e62b2";
+
+  var ptCommands = {
+
+    // Initialize
+    createCommandsObject: function() {
+
+      var cmds  
+      const PlaylistCommandsBuilder = new Components.
+        Constructor("@songbirdnest.com/Songbird/PlaylistCommandsBuilder;1", 
+                    "sbIPlaylistCommandsBuilder");
+      
+      cmds = new PlaylistCommandsBuilder();
+      
+      // Add a custom action
+      cmds.appendAction(null,
+                        "commands_example_action1",
+                        "Action 1",
+                        "Action 1 Tooltip",
+                        ptCommands.plCmdExample_Action1_OnTrigger);
+      
+      // Only enable this action when at least one track is selected
+      cmds.setCommandEnabledCallback(null,
+                                      "commands_example_action1",
+                                      ptCommands.plCmdExample_IsAnyTrackSelected);
+
+      cmds.setCommandShortcut(null,
+                              "commands_example_action1",
+                              "",
+                              "VK_F2",
+                              "shift",
+                              true);
+
+      // Add a separator
+      cmds.appendSeparator(null, "commands_example_separator1");
+      
+      // Add a submenu
+      cmds.appendSubmenu(null,
+                        "commands_example_submenu1",
+                        "Menu 1",
+                        "Menu 1 Tooltip");
+      
+      // Add a custom action to the submenu
+      cmds.appendAction("commands_example_submenu1",
+                        "commands_example_action2",
+                        "Action 2",
+                        "Action 2 Tooltip",
+                        ptCommands.plCmdExample_Action2_OnTrigger);
+
+      cmds.setCommandShortcut("commands_example_submenu1",
+                              "commands_example_action2",
+                              "",
+                              "VK_F3",
+                              "alt",
+                              true);
+      
+      return cmds;
+    },
+                                    
+    
+    // Called when Action1 is triggered
+    plCmdExample_Action1_OnTrigger: function(aContext, aSubMenuId, aCommandId, aHost) {
+      var enumerator = ptCommands.unwrap(aContext.playlist).treeView.selectedMediaItems
+      while (enumerator.hasMoreElements()) {
+        var item = enumerator.getNext().mediaItem;
+        aContext.window.alert("Action 1 was triggered on " + item.getProperty(SBProperties.contentURL));
+      }
+    },
+
+    // Called when Action2 is triggered
+    plCmdExample_Action2_OnTrigger: function(aContext, aSubMenuId, aCommandId, aHost) {
+      aContext.window.alert("Action 2 was triggered");
+    },
+
+    // Returns true when at least one track is selected in the playlist
+    plCmdExample_IsAnyTrackSelected: function(aContext, aSubMenuId, aCommandId, aHost) {
+      return (ptCommands.unwrap(aContext.playlist).tree.currentIndex != -1 );
+    },
+
+    unwrap: function(obj) {
+      if (obj && obj.wrappedJSObject)
+        obj = obj.wrappedJSObject;
+      return obj;
+    },
+
+  };
+  
+  var playlist = document.getElementById("sbplaylist");
+  var libraryManager = Components.classes['@songbirdnest.com/Songbird/library/Manager;1']
+                       .getService(Components.interfaces.sbILibraryManager);
+  var library = libraryManager.mainLibrary;
+  playlist.bind(library.createView());
+  
+  playlist.addEventListener("playlist-selchange", playlistSelectionChanged, false);
+  
+  var commands = ptCommands.createCommandsObject(); // from commands.js
+  
+  var toolbar = document.getElementById("sbcommandtoolbar");
+  toolbar.bind(library, playlist, commands);
+
+  var menuitems = document.getElementById("sbcommandmenuitems");
+  menuitems.bind(library, playlist, commands);
+
+  var shortcuts = document.getElementById("sbcommandshortcuts");
+  shortcuts.bind(library, playlist, commands);
+
+  function playlistSelectionChanged() {
+    toolbar.refreshCommands();
+    menuitems.refreshCommands();    
+    shortcuts.refreshCommands();    
+  }
+
+]]>
+</script>
+
+</window>

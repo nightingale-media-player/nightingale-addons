@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE overlay [
+  <!ENTITY % overlayDTD SYSTEM "chrome://xpcomviewer/locale/preferences.dtd">
+  %overlayDTD;
+]>
+<overlay xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+				 type="prefwindow" id="xpcomviewerPreferences"
+				 windowtype="xpcomviewer-dialog" title="&prefWindow.title;"
+				 onload="gPrefWin.onLoad();"
+				 width="640" height="480"
+				 persist="screenX,screenY">
+
+	<!-- Main preferences -->
+	<vbox id="xpcomviewerPreferencesGeneralPane">
+		<preferences id="generalPreferences">
+			<preference id="pref.useLastView"
+									type="bool"
+									name="extensions.xpcomviewer.useLastView"/>
+			<preference id="pref.useCustomView"
+									type="bool"
+									name="extensions.xpcomviewer.useCustomView"/>
+			<preference id="pref.customView.type"
+									type="wstring"
+									name="extensions.xpcomviewer.customView.type"/>
+			<preference id="pref.selectedLXRServer"
+									type="wstring"
+									name="extensions.xpcomviewer.selectedLXRServer"/>
+      <preference id="pref.selectedBugzillaServer"
+                  type="wstring"
+                  name="extensions.xpcomviewer.selectedBugzillaServer"/>
+		</preferences>
+
+		<script type="application/javascript"
+		        src="chrome://xpcomviewer/content/preferences/general.js"/>
+
+		<vbox>
+			<groupbox flex="1">
+				<caption label="&selectStartupView.desc;"/>
+				<radiogroup id="selectStartupViewRadiogroup">
+					<radio id="useLastView-radio"
+								 label="&useLastView.label;"
+					       accesskey="&useLastView.key;"
+								 value="useLastView" selected="true"
+                 onclick="gGeneralPrefpane.onStartupViewChange(this.value);"/>
+					<radio id="useCustomView-radio"
+								 label="&useCustomView.label;"
+					       accesskey="&useCustomView.key;"
+								 value="useCustomView" selected="false"
+                 onclick="gGeneralPrefpane.onStartupViewChange(this.value);"/>
+					<radiogroup id="useCustomViewType"
+											preference="pref.useCustomView.type"
+					            value="classes">
+						<radio id="customViewTypeClasses-radio"
+									 label="&useCustomViewType1.label;"
+						       accesskey="&useCustomViewType1.key;"
+									 value="classes" selected="true"
+                   disabled="true"/>
+						<radio id="customViewTypeIfaces-radio"
+									 label="&useCustomViewType2.label;"
+						       accesskey="&useCustomViewType2.key;"
+									 value="ifaces" selected="false"
+                   disabled="true"/>
+						<radio id="customViewTypeResults-radio"
+									 label="&useCustomViewType3.label;"
+						       accesskey="&useCustomViewType3.key;"
+									 value="results" selected="false"
+                   disabled="true"/>
+					</radiogroup>
+				</radiogroup>
+			</groupbox>
+      <hbox>
+        <groupbox flex="2" style="min-width:290px;max-width:290px;">
+          <caption label="&chooseLxrServer.caption;"/>
+          <description>&chooseLxrServer.description;</description>
+          <hbox align="center">
+            <label value="&preferedSourcesLocationLXR.label;"
+                   accesskey="&preferedSourcesLocationLXR.key;"
+                   control="preferred-lxr-service-uri"/>
+            <menulist id="preferred-lxr-service-uri"
+                      value="http://lxr.mozilla.org"
+                      preference="pref.selectedLXRServer">
+              <!-- @todo This list should be loaded from a external data file
+                 -       (stored in defaults directory - use our SQLite db file
+                 -       with bookmarks?) - so append onpopupshowing event
+                 -       handler and load LXR servers from it.
+                 -->
+              <menupopup>
+                <menuitem label="lxr.allpeers.com"
+                          value="http://lxr.allpeers.com/"/>
+                <menuitem label="lxr.flock.com"
+                          value="http://lxr.flock.com/"/>
+                <menuitem label="lxr.mozilla.org"
+                          value="http://lxr.mozilla.org/"/>
+              </menupopup>
+            </menulist>
+          </hbox>
+        </groupbox>
+        <spacer flex="1"/>
+        <groupbox flex="2" style="min-width:290px;max-width:290px;">
+          <caption label="&chooseBugzillaServer.caption;"/>
+          <description>&chooseBugzillaServer.description;</description>
+          <hbox align="center">
+            <label value="&preferedSourcesLocationBugzilla.label;"
+                   accesskey="&preferedSourcesLocationBugzilla.key;"
+                   control="preferred-bugzilla-service-uri"/>
+            <menulist id="preferred-bugzilla-service-uri"
+                      value="http://bugzilla.mozilla.org"
+                      preference="pref.selectedBugzillaServer">
+              <!-- @todo This list should be loaded from a external data file
+                 -       (stored in defaults directory - use our SQLite db file
+                 -       with bookmarks?) - so append onpopupshowing event
+                 -       handler and load bugzilla servers from it.
+                 -->
+              <menupopup>
+                <menuitem label="bugzilla.allpeers.com"
+                          value="http://bugzilla.allpeers.com/"/>
+                <menuitem label="bugzilla.flock.com"
+                          value="http://bugzilla.flock.com/"/>
+                <menuitem label="bugzilla.mozilla.org"
+                          value="http://bugzilla.mozilla.org/"/>
+                <menuitem label="bugzilla.pculture.org"
+                          value="http://bugzilla.pculture.org/"/>
+                <menuitem label="bugzilla.songbirdnest.com"
+                          value="http://bugzilla.songbirdnest.com/"/>
+              </menupopup>
+            </menulist>
+          </hbox>
+        </groupbox>
+      </hbox>
+      <groupbox flex="1">
+        <caption label="&othersGeneralPrefs.caption;"/>
+        <checkbox id="enableXPCOMViewerSidebar-check" disabled="true"
+                  label="&enableXPCOMViewerSidebar.label;"
+                  accesskey="&enableXPCOMViewerSidebar.key;"/>
+      </groupbox>
+		</vbox>
+	</vbox>
+
+</overlay>

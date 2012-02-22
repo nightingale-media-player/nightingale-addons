@@ -1,0 +1,8 @@
+content extensiondev jar:chrome/extensiondev.jar!/content/ xpcnativewrappers=no
+locale extensiondev en-US jar:chrome/extensiondev.jar!/locale/en-US/
+skin extensiondev classic/1.0 jar:chrome/extensiondev.jar!/skin/
+overlay	chrome://browser/content/browser.xul	chrome://extensiondev/content/firefoxOverlay.xul
+overlay	chrome://messenger/content/messenger.xul	chrome://extensiondev/content/thunderbirdOverlay.xul
+overlay chrome://navigator/content/navigatorOverlay.xul chrome://extensiondev/content/seamonkeyOverlay.xul
+style chrome://global/content/customizeToolbar.xul chrome://extensiondev/skin/extensiondev.css
+

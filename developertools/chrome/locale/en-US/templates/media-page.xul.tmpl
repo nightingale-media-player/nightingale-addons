@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+
+<?xml-stylesheet href="chrome://[:= $_.package :]/skin/media-page.css" type="text/css"?>
+
+<!DOCTYPE page SYSTEM "chrome://songbird/locale/songbird.dtd" >
+
+<!-- Import the standard scripts and overlays for all media pages.
+     Required for the playlist and other widgets to function correctly. -->
+<?xul-overlay href="chrome://songbird/content/xul/mediaPageOverlay.xul"?>
+
+
+<!--
+ 
+  [:= $_.name :] Media Page 
+  
+  A custom viewer for sbIMediaListViews.  Shows a media list as a plain 
+  table using the sb-playlist XBL widget.
+
+  This page is registered with sbIMediaPageManager and loaded by the
+  sbTabBrowser widget.
+  
+  For more information see http://wiki.songbirdnest.com/Developer/Developer_Intro/Extensions
+  
+  -->
+<page
+  id="[:= $_.package :]-media-page"
+  title="[:= $_.name :]"
+  xmlns:html="http://www.w3.org/1999/xhtml"
+  xmlns:rdf="http://www.w3.org/TR/WD-rdf-syntax#"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+  onload="window.mediaPage.onLoad();"
+  onunload="window.mediaPage.onUnload();"
+  windowtype="Songbird:MediaPage"
+>
+
+  <!-- TODO: Insert custom UI here? -->
+  <vbox id="[:= $_.package :]-media-page-box" align="center" pack="center">
+    <label value="Custom Media Page" />
+  </vbox>
+
+  <!-- Songbird Playlist tree/table widget.
+  
+       Contains:
+         * Playlist commands (keyboard shortcuts, context menus, toolbars)
+         * Filtering UI (Used to manipulate sbIMediaListView.cascadeFilterSets)
+         * A tree widget that displays the contents of the sbIMediaListView
+         * Drag and drop support
+    -->
+  <sb-playlist id="playlist" 
+      flex="1"
+      enableColumnDrag="true"
+      persist="column-list column-widths"
+      editable="true"
+      hidefilters="true"
+  />
+
+
+  <!-- Page Controller.
+       Registers a window.mediaPage object implementing the 
+       sbIMediaPage interface.
+    -->
+  <script type="application/x-javascript" src="media-page.js" />
+
+</page>

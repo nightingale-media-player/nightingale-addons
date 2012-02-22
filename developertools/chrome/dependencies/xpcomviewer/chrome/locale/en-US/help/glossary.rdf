@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE window [
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd">
+    %brandDTD;
+]>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:nc="http://home.netscape.com/NC-rdf#">
+  <rdf:Description about="urn:root" 
+      nc:base="chrome://xpcomviewer/locale/help/glossary.xhtml">
+    <nc:subheadings>
+      <rdf:Seq>
+        <!-- These nodes are used for searching purposes, relating to 
+           - glossary.xhtml. 
+           -->
+        <rdf:li><rdf:Description nc:name="XPCOM" 
+            nc:link="aboutxpcom.xhtml"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Components.classes" 
+            nc:link="aboutxpcom.xhtml#c_classes"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Components.interfaces" 
+            nc:link="aboutxpcom.xhtml#c_interfaces"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Components.results" 
+            nc:link="aboutxpcom.xhtml#c_results"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Bookmarks" 
+            nc:link="mainwindow.xhtml#bookmarks"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Tree" 
+            nc:link="mainwindow.xhtml#tree"/></rdf:li>
+        <rdf:li><rdf:Description nc:name="Preferences" 
+          nc:link="mainwindow.xhtml#preferences"/></rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+</rdf:RDF>

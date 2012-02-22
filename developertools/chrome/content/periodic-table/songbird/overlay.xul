@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://sbdevtools/skin/overlay.css" type="text/css"?>
+
+<overlay id="sbdevtools-periodictable-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+  <listbox id="working-list" style="width:13em"> 
+    <listitem value="songbird/dataremotes.xul"      label="Songbird Data Remotes" />
+    <listitem value="songbird/generic.xul"          label="Songbird Generic Controls" />
+    <listitem value="songbird/library.xul"          label="Songbird Library Controls" />
+    <listitem value="songbird/playercontrols.xul"   label="Songbird Player Controls" />
+    <listitem value="songbird/smartsplitters.xul"   label="Songbird Smart Splitters" />
+  </listbox>
+  
+</overlay>

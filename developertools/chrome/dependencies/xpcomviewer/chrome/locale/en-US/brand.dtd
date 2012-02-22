@@ -1,0 +1,8 @@
+<!ENTITY appName "XPCOMViewer">
+<!ENTITY appFullName "XPCOMViewer">
+<!ENTITY appShortName "xpcomviewer">
+<!ENTITY appDescription "XPCOMViewer - Explore world of XPCOM!">
+<!ENTITY appVersion "0.9a">
+<!ENTITY appUrl "http://xpcomviewer.mozdev.org">
+<!ENTITY vendorName "Ondřej Doněk">
+<!ENTITY vendorUrl "http://www.ondrejd.iglu.cz/">

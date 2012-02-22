@@ -1,0 +1,140 @@
+<!-- XPCOMViewer's commands -->
+<!ENTITY quitCmd.label "Close">
+<!ENTITY quitCmd.key "C">
+<!ENTITY quitCmd.tip "Close &appFullName;">
+<!ENTITY showAboutCmd.label "About">
+<!ENTITY showAboutCmd.key "A">
+<!ENTITY showAboutCmd.tip "Show about dialog">
+<!ENTITY showHelpCmd.label "Help">
+<!ENTITY showHelpCmd.key "H">
+<!ENTITY showHelpCmd.tip "Show help for &appFullName;">
+<!ENTITY showHomePageCmd.label "Home page">
+<!ENTITY showHomePageCmd.key "o">
+<!ENTITY showHomePageCmd.tip "Show homepages of &appFullName;">
+<!ENTITY toggleFullscreenCmd.label "Fullscreen">
+<!ENTITY toggleFullscreenCmd.key "F">
+<!ENTITY toggleFullscreenCmd.tip "Toggle full screen mode">
+<!ENTITY showJSConsoleCmd.label "Error Console">
+<!ENTITY showJSConsoleCmd.key "E">
+<!ENTITY showJSConsoleCmd.tip "Show console with listed JavaScript/CSS errors">
+<!ENTITY showPreferencesCmd.label "Preferences">
+<!ENTITY showPreferencesCmd.key "P">
+<!ENTITY showPreferencesCmd.tip "Show preferences dialog">
+<!ENTITY saveAsXMLCmd.label "Save as XML">
+<!ENTITY saveAsXMLCmd.key "M">
+<!ENTITY saveAsXMLCmd.tip "Save report as XML document">
+<!ENTITY saveAsHTMLCmd.label "Save as HTML">
+<!ENTITY saveAsHTMLCmd.key "H">
+<!ENTITY saveAsHTMLCmd.tip "Save report as HTML document">
+<!ENTITY saveAsTXTCmd.label "Save as TXT">
+<!ENTITY saveAsTXTCmd.key "T">
+<!ENTITY saveAsTXTCmd.tip "Save report as text document">
+<!ENTITY showClassesCmd.label "Classes">
+<!ENTITY showClassesCmd.key "c">
+<!ENTITY showClassesCmd.tip "Show available XPCOM classes">
+<!ENTITY showIfacesCmd.label "Interfaces">
+<!ENTITY showIfacesCmd.key "f">
+<!ENTITY showIfacesCmd.tip "Show available XPCOM interfaces">
+<!ENTITY showResultsCmd.label "Results">
+<!ENTITY showResultsCmd.key "r">
+<!ENTITY showResultsCmd.tip "Show available XPCOM results">
+<!ENTITY showFilteredCmd.label "Apply filter">
+<!ENTITY showFilteredCmd.key "A">
+<!ENTITY showFilteredCmd.tip "Apply entered string filter on displayed tree items">
+<!ENTITY showAllCmd.label "Show all">
+<!ENTITY showAllCmd.key "a">
+<!ENTITY showAllCmd.tip "Show all treeitems (removes filter)">
+<!ENTITY showWithBookmarkCmd.label "With bookmark">
+<!ENTITY showWithBookmarkCmd.key "W">
+<!ENTITY showWithBookmarkCmd.tip "Show all treeitems with bookmark attached">
+<!ENTITY addBookmarkCmd.label "Add bookmark">
+<!ENTITY addBookmarkCmd.key "b">
+<!ENTITY addBookmarkCmd.tip "Add new bookmark">
+<!ENTITY editBookmarkCmd.label "Edit bookmark">
+<!ENTITY editBookmarkCmd.key "E">
+<!ENTITY editBookmarkCmd.tip "Edit selected bookmark">
+<!ENTITY removeBookmarkCmd.label "Remove bookmark">
+<!ENTITY removeBookmarkCmd.key "R">
+<!ENTITY removeBookmarkCmd.tip "Remove selected bookmark">
+<!ENTITY copyNameOfSelCmd.label "Copy name">
+<!ENTITY copyNameOfSelCmd.key "o">
+<!ENTITY copyNameOfSelCmd.tip "Copy name of selected to clipboard">
+<!ENTITY generateCppCodeCmd.label "Generate C++ code">
+<!ENTITY generateCppCodeCmd.key "C">
+<!ENTITY generateCppCodeCmd.tip "Generate C++ code of selected interface to clipboard">
+<!ENTITY generateJsCodeCmd.label "Generate JavaScript code">
+<!ENTITY generateJsCodeCmd.key "J">
+<!ENTITY generateJsCodeCmd.tip "Generate JavaScript code of selected interface to clipboard">
+<!ENTITY generatePythonCodeCmd.label "Generate Python code">
+<!ENTITY generatePythonCodeCmd.key "P">
+<!ENTITY generatePythonCodeCmd.tip "Generate Python code of selected interface to clipboard">
+<!ENTITY ifaceLxrLookupCmd.label "Search on LXR">
+<!ENTITY ifaceLxrLookupCmd.key "X">
+<!ENTITY ifaceLxrLookupCmd.tip "Search selected on LXR server">
+<!ENTITY showLxrSearchPage.label "LXR search">
+<!ENTITY showLxrSearchPage.key "X">
+<!ENTITY showLxrSearchPage.tip "Show/hide LXR search page in browser's pane">
+<!ENTITY showBugzillaSearchPage.label "Bugzilla search">
+<!ENTITY showBugzillaSearchPage.key "B">
+<!ENTITY showBugzillaSearchPage.tip "Show/hide Bugzilla search page in browser's pane">
+<!ENTITY showBookmarksPaneCmd.label "Show bookmarks pane">
+<!ENTITY showBookmarksPaneCmd.key "o">
+<!ENTITY closeBookmarksPaneCmd.label "Hide bookmarks pane">
+<!ENTITY closeBookmarksPaneCmd.key "o">
+<!ENTITY showJSShellCmd.label "JavaScript Shell">
+<!ENTITY showJSShellCmd.key "h">
+<!ENTITY showJSShellCmd.tip "Shows the JavaScript Shell">
+
+<!-- Tab context menu -->
+<!ENTITY closeTabboxTabCmd.label "Close tab">
+<!ENTITY closeTabboxTabCmd.key "C">
+
+<!-- keyset -->
+<!ENTITY quitCmd.commandkey "Q"> <!-- accel -->
+<!ENTITY addBookmarkCmd.commandkey "B"> <!-- accel+shift -->
+
+<!-- Main menubar -->
+<!ENTITY mainMenubar.toolbarname "Main menubar">
+<!ENTITY mainMenubar.key "M">
+<!ENTITY fileMenu.label "File">
+<!ENTITY fileMenu.key "F">
+<!ENTITY fileMenuSave.label "Reports">
+<!ENTITY fileMenuSave.key "R">
+<!ENTITY showMenu.label "Show">
+<!ENTITY showMenu.key "S">
+<!ENTITY helpMenu.label "Help">
+<!ENTITY helpMenu.key "H">
+
+<!-- Main toolbar -->
+<!ENTITY mainToolbar.toolbarname "XPCOMViewer Toolbar">
+<!ENTITY mainToolbar.key "o">
+
+<!-- Filter toolbar -->
+<!ENTITY filterToolbar.toolbarname "Filter Toolbar">
+<!ENTITY filterToolbar.key "e">
+<!ENTITY filterTextbox.label "Filter:">
+<!ENTITY filterTextbox.key "F">
+
+<!-- Workspace tabbox -->
+<!ENTITY xpcomTreeTab.label "...">
+<!ENTITY xpcomTreeTab.key ".">
+<!ENTITY lxrLookupTab.label "LXR">
+<!ENTITY lxrLookupTab.key "L">
+<!ENTITY bugzillaLookupTab.label "Bugzilla">
+<!ENTITY bugzillaLookupTab.key "B">
+<!ENTITY jsshellTab.label "JS Shell">
+<!ENTITY jsshellTab.key "S">
+<!ENTITY jsshellTab.tip "JavaScript Shell">
+
+<!-- Main tree cols labels -->
+<!ENTITY xpcomTree.bookmarkCol.label "B.">
+<!ENTITY xpcomTree.bookmarkCol.tip "Has item a bookmark attached?">
+<!ENTITY xpcomTree.nameCol.label "Name">
+<!ENTITY xpcomTree.valueCol.label "Value">
+
+<!-- Bookmars tree -->
+<!ENTITY bookmarksTree.titleCol.label "Title">
+<!ENTITY bookmarksTree.notesCol.label "Notes">
+<!ENTITY bookmarksTree.targetCol.label "Target">
+<!ENTITY bookmarksTree.sinceCol.label "Since">
+<!ENTITY bookmarksTree.lastEditedCol.label "Last edited">

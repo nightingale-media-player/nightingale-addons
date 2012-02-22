@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+<?xml-stylesheet href="chrome://sbdevtools/skin/drawers.css" type="text/css"?>
+<window id="drawer-single-window" title="Songbird Drawer"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/songbirdInterfaces.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/sbDataRemoteUtils.js"/>
+
+<groupbox>
+  <sb-drawer id="songbird-drawer-single" title="Drawer">
+    <vbox>
+      <spacer flex="1"/>
+      <label value="The height of the content is read from css"/>
+      <spacer flex="1"/>
+    </vbox>
+  </sb-drawer>
+</groupbox>
+
+<script>
+<![CDATA[
+]]>
+</script>
+
+</window>

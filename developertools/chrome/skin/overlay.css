@@ -1,0 +1,26 @@
+
+#sbdevtools-bug-toolbarbutton
+{  
+  list-style-image: url(chrome://songbird/skin/buttons/bug-button.png); 
+  -moz-image-region: rect(108px 38px 161px 0px);
+}
+
+#sbdevtools-bug-toolbarbutton:hover
+{
+  -moz-image-region: rect(54px 38px 107px 0px);
+}
+
+#sbdevtools-bug-toolbarbutton:active
+{
+  -moz-image-region: rect(0px 38px 53px 0px);
+}
+
+#sbdevtools-bug-toolbarbutton[disabled="true"]
+{
+  -moz-image-region: rect(162px 38px 215px 0px);
+}
+
+#sbdevtools-bug-toolbarbutton > .toolbarbutton-icon {
+ padding: 0px;
+ margin: 0px;
+}

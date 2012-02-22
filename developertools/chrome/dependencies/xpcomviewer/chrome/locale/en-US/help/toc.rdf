@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE rdf:RDF [
+    <!ENTITY % brandDTD SYSTEM "chrome://xpcomviewer/locale/brand.dtd">
+    %brandDTD;
+]>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:nc="http://home.netscape.com/NC-rdf#">
+  
+  <rdf:Description about="urn:root">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="xpcomviewer-help" 
+                                 nc:name="Welcome" 
+                                 nc:link="welcome.xhtml"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="main-window" 
+                                 nc:name="Main window" 
+                                 nc:link="mainwindow.xhtml"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="using" 
+                                 nc:name="Using &appFullName;" 
+                                 nc:link="using.xhtml"/>
+        </rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+  
+  <rdf:Description about="#main-window">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="main-window-mainmenu" 
+                                 nc:name="Main menubar" 
+                                 nc:link="mainwindow.xhtml#mainmenu"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="main-window-maintoolbar" 
+                                 nc:name="Main toolbar" 
+                                 nc:link="mainwindow.xhtml#mainmenu"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="main-window-filtrtoolbar" 
+                                 nc:name="Toolbar Filter" 
+                                 nc:link="mainwindow.xhtml#filtrtoolbar"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="main-window-maintree" 
+                                 nc:name="Main tree" 
+                                 nc:link="mainwindow.xhtml#maintree"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="main-window-preferences" 
+                                 nc:name="Dialog Preferences" 
+                                 nc:link="mainwindow.xhtml#preferences"/>
+        </rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+  
+  <rdf:Description about="#using">
+    <nc:subheadings>
+      <rdf:Seq>
+        <rdf:li><rdf:Description ID="using-bookmarks" 
+                                 nc:name="Bookmarks" 
+                                 nc:link="using.xhtml#bookmarks"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="using-reports" 
+                                 nc:name="Reports" 
+                                 nc:link="using.xhtml#reports"/>
+        </rdf:li>
+        <rdf:li><rdf:Description ID="using-codegeneration" 
+                                 nc:name="Code generating" 
+                                 nc:link="using.xhtml#codegeneration"/>
+        </rdf:li>
+      </rdf:Seq>
+    </nc:subheadings>
+  </rdf:Description>
+  
+</rdf:RDF>

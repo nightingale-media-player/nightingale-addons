@@ -1,0 +1,21 @@
+#extension-wizard .wizard-header-icon {
+  list-style-image: url("chrome://sbdevtools/skin/extensions-icon.png");
+  padding-right: 10px;
+}
+
+#feathers-wizard .wizard-header-icon {
+  list-style-image: url("chrome://sbdevtools/skin/feathers-icon.png");
+  padding-right: 10px;
+}
+
+label.text-link {
+  margin-bottom: 0px;
+}
+
+.required {
+  list-style-image: url(chrome://explorer/skin/images/back.png);
+}
+
+separator {
+  background-image: none !important;
+}

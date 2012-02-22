@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+     xmlns:songbird="http://www.songbirdnest.com/2007/addon-metadata-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>[:= $_.id :]</em:id>
+    <em:type>2</em:type>
+    <em:name>[:= $_.name :]</em:name>
+    <em:version>[:= $_.version :]</em:version>
+    <em:creator>[:= $_.author :]</em:creator>
+[: for (var i=0; i<$_.contributors.length; i++) { :]
+    <em:contributor>[:= $_.contributors[i].name :]</em:contributor>
+[: } :]
+[: if ($_.description.length > 0) { :]
+    <em:description>[:= $_.description :]</em:description>
+[: } :]
+[: if ($_.homepageURL.length > 0) { :]
+    <em:homepageURL>[:= $_.homepageURL :]</em:homepageURL>
+[: } :]
+[: if ($_.updateURL.length > 0) { :]
+    <em:updateURL>[:= $_.updateURL :]</em:updateURL>
+[: } :]
+[: if ($_.aboutURL.length > 0) { :]
+    <em:aboutURL>[:= $_.aboutURL :]</em:aboutURL>
+[: } :]
+[: if ($_.optionsURL.length > 0) { :]
+    <em:optionsURL>[:= $_.optionsURL :]</em:optionsURL>
+[: } :]
+[: if ($_.ui.indexOf("feathers") == -1) { :]
+    <em:iconURL>chrome://[:= $_.package :]/skin/icon_addon.png</em:iconURL>
+[: } :]
+[: for (var i=0; i<$_.targets.length; i++) { :]
+    <em:targetApplication>
+      <Description>
+        <em:id>[:= $_.targets[i].id :]</em:id>
+        <em:minVersion>[:= $_.targets[i].minVersion :]</em:minVersion>
+        <em:maxVersion>[:= $_.targets[i].maxVersion :]</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+[: } :]
+
+[: if ($_.ui.indexOf("feathers") != -1) { :]
+    <!-- Register an skin for the built in layouts. 
+         See http://wiki.songbirdnest.com/Developer/Developer_Intro/Feathers -->
+    <songbird:skin>
+      <Description>
+        <songbird:name>[:= $_.name :]</songbird:name>
+        <songbird:internalName>[:= $_.package :]</songbird:internalName>
+        <songbird:compatibleLayout>
+          <Description>
+            <songbird:layoutURL>chrome://purplerain/content/xul/mainplayer.xul</songbird:layoutURL>
+            <!-- no "showChrome" tag here will cause the feather manager to use
+                 default values - true for OS X, false for other OSes -->
+            <songbird:onTop>false</songbird:onTop>
+          </Description>
+        </songbird:compatibleLayout>
+        <songbird:compatibleLayout>
+          <Description>
+            <songbird:layoutURL>chrome://purplerain/content/xul/miniplayer.xul</songbird:layoutURL>
+            <songbird:showChrome>false</songbird:showChrome>
+            <songbird:onTop>true</songbird:onTop>
+          </Description>
+        </songbird:compatibleLayout>
+      </Description>
+    </songbird:skin>
+[: } :]
+
+[: if ($_.ui.indexOf("displaypane") != -1) { :]
+    <!-- Register a pane to be displayed below the service sidebar.
+         See http://wiki.songbirdnest.com/Developer/Articles/Getting_Started/Display_Panes -->
+    <songbird:displayPane>
+      <Description>
+        <songbird:contentTitle>[:= $_.name :]</songbird:contentTitle>
+        <songbird:contentUrl>chrome://[:= $_.package :]/content/pane.xul</songbird:contentUrl>
+        <songbird:contentIcon>chrome://[:= $_.package :]/skin/pane-icon.png</songbird:contentIcon>
+        <songbird:defaultWidth>200</songbird:defaultWidth>
+        <songbird:defaultHeight>100</songbird:defaultHeight>
+        <songbird:suggestedContentGroups>[: if ($_.ui.indexOf("displaypane-rightsidebar") != -1) { :]sidebar[: } :];[: if ($_.ui.indexOf("displaypane-contentpane") != -1) { :]contentpane[: } :];[: if ($_.ui.indexOf("displaypane-servicepane") != -1) { :]servicepane[: } :]</songbird:suggestedContentGroups>
+        <songbird:showOnInstall>true</songbird:showOnInstall>
+      </Description>
+    </songbird:displayPane>
+[: } :]
+
+[: if ($_.ui.indexOf("mediapage") != -1) { :]
+    <!-- Register a custom media page.
+         See http://wiki.songbirdnest.com/Developer/Articles/Getting_Started/Building_Media_Views -->
+    <songbird:mediaPage>
+      <Description>
+        <songbird:contentTitle>[:= $_.name :]</songbird:contentTitle>
+        <songbird:contentUrl>chrome://[:= $_.package :]/content/media-page.xul</songbird:contentUrl>
+        <songbird:contentIcon>chrome://[:= $_.package :]/skin/mediaview-icon.png</songbird:contentIcon>
+      </Description>
+    </songbird:mediaPage>
+[: } :]
+  </Description>
+</RDF>

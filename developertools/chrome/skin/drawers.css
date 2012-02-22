@@ -1,0 +1,19 @@
+#drawer-single-window 
+{
+  width: 300px;
+}
+
+#songbird-drawer-single > .drawer-box > .drawer-content
+{
+  height: 60px;
+}
+
+#drawer-multi-window 
+{
+  width: 420px;
+}
+
+#songbird-drawer-multi > .drawer-box > .drawer-content-item
+{
+  height: 24px;
+}

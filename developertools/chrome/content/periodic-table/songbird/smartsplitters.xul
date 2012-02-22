@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/content/bindings/bindings.css" type="text/css"?>
+<?xml-stylesheet href="chrome://songbird/skin/songbird.css" type="text/css"?>
+
+<window title="Songbird Generic Controls"
+        xmlns:html="http://www.w3.org/1999/xhtml"
+        xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+   
+    <!-- Load the interface code -->
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/songbirdInterfaces.js"/>
+    <script type="application/x-javascript" 
+    src="chrome://songbird/content/scripts/sbDataRemoteUtils.js"/>
+
+<script>
+<![CDATA[
+]]>
+</script>
+
+<description><html:h1>Songbird Smart Splitters</html:h1></description>
+
+ <vbox flex="1" style="overflow: auto">
+
+    <groupbox orient="horizontal" flex="1">
+    <caption label="collapse before" />
+      <groupbox flex="1"><label flex="1" value="Left side, remembered" /></groupbox>
+      <sb-smart-splitter collapse="before" stateid="smartsplitter1" resizebefore="closest" resizeafter="closest"><grippy flex="1"/></sb-smart-splitter>
+      <groupbox flex="1"><label flex="1" value="Right side, remembered" /></groupbox>
+    </groupbox>
+
+    <groupbox orient="horizontal" flex="1">
+    <caption label="collapse after" />
+      <groupbox flex="1"><label flex="1" value="Left side, remembered" /></groupbox>
+      <sb-smart-splitter collapse="after" stateid="smartsplitter2" resizebefore="closest" resizeafter="closest"><grippy flex="1"/></sb-smart-splitter>
+      <groupbox flex="1"><label flex="1" value="Right side, remembered" /></groupbox>
+    </groupbox>
+
+    <groupbox orient="horizontal" flex="1">
+    <caption label="no collapse" />
+      <groupbox flex="1"><label flex="1" value="Left side, remembered" /></groupbox>
+      <sb-smart-splitter collapse="none" stateid="smartsplitter3" resizebefore="closest" resizeafter="closest"><grippy flex="1"/></sb-smart-splitter>
+      <groupbox flex="1"><label flex="1" value="Right side, remembered" /></groupbox>
+   </groupbox>
+
+  <groupbox orient="horizontal" flex="1">
+  <caption label="double splitters" />
+      <groupbox flex="1"><label flex="1" value="Left side, remembered" /></groupbox>
+      <sb-smart-splitter collapse="before" stateid="smartsplitter4" resizebefore="closest" resizeafter="closest"><grippy flex="1"/></sb-smart-splitter>
+      <groupbox flex="1"><label flex="1" value="Middle, remembered" /></groupbox>
+      <sb-smart-splitter collapse="after" stateid="smartsplitter5" resizebefore="closest" resizeafter="closest"><grippy flex="1"/></sb-smart-splitter>
+      <groupbox flex="1"><label flex="1" value="Right side, remembered" /></groupbox>
+  </groupbox>
+
+</vbox>
+
+<script>
+</script>
+
+</window>

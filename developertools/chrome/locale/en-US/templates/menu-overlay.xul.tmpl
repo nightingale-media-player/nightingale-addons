@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://[:= $_.package :]/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://[:= $_.package :]/locale/overlay.dtd">
+<overlay id="[:= $_.package :]-menu-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+  <!-- Target the tools menu -->
+  <menupopup id="menu_ToolsPopup"> 
+
+    <!-- Add a menu item -->
+    <menuitem id="[:= $_.package :]-helloworld-menuitem"
+            label="&[:= $_.package :].helloworld.label;" 
+            accesskey="&[:= $_.package :].helloworld.accesskey;" 
+            insertafter="devToolsSeparator"
+            command="[:= $_.package :]-helloworld-cmd" />   
+     
+  </menupopup>
+
+</overlay>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+ xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>{75739dec-72db-4020-aa9a-6afa6744759b}</em:id>
+    <em:name>Extension Developer</em:name>
+    <em:version>0.3.0.20060726</em:version>
+    <em:creator>Ted Mielczarek</em:creator>
+    <em:contributor>Jesse Ruderman</em:contributor>
+    <em:contributor>Cüneyt Yilmaz</em:contributor>
+    <em:contributor>Tony Chang</em:contributor>
+    <em:description>A suite of tools for extension developers</em:description>
+    <em:iconURL>chrome://extensiondev/skin/extensiondev.png</em:iconURL>
+    <!-- <em:optionsURL>chrome://extensiondev/content/options.xul</em:optionsURL> -->
+    <em:homepageURL>http://ted.mielczarek.org/code/mozilla/extensiondev/</em:homepageURL>
+    <!--    <em:updateURL>http://ted.mielczarek.org/code/mozilla/extensiondev/extensiondev.rdf</em:updateURL>-->
+    <em:targetApplication>
+      <Description>
+        <em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id> <!-- firefox -->
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>3.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetApplication>
+      <Description>
+        <em:id>{3550f703-e582-4d05-9a08-453d09bdfdc6}</em:id> <!-- thunderbird -->
+        <em:minVersion>1.5</em:minVersion>
+        <em:maxVersion>3.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    <em:targetApplication>
+      <Description>
+        <em:id>{a463f10c-3994-11da-9945-000d60ca027b}</em:id>
+        <em:minVersion>0.5</em:minVersion>
+        <em:maxVersion>1.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+     <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.9.0a</em:minVersion>
+        <em:maxVersion>1.11.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+  </Description>
+</RDF>

@@ -1,0 +1,25 @@
+content [:= $_.package :]  chrome/content/
+locale  [:= $_.package :]  en-US  chrome/locale/en-US/
+skin    [:= $_.package :]  classic/1.0 chrome/skin/
+
+[: if ($_.ui.indexOf("feathers") != -1) { :]
+# Create a skin for Songbird
+skin  songbird [:= $_.package :] chrome/skin/
+# Include the Songbird global in order to suppress the
+# standard OS look and feel.
+skin  global [:= $_.package :]  chrome://songbird-global/skin/
+skin  mozapps  [:= $_.package :]  chrome://songbird-mozapps/skin/
+# Include platform specific skin rules
+skin  songbird-os-specific  [:= $_.package :]  chrome/skin/os-specific/
+[: } else { :]
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://[:= $_.package :]/content/scripts-overlay.xul
+[: if ($_.ui.indexOf("mainmenu") != -1) { :]
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://[:= $_.package :]/content/menu-overlay.xul
+[: } :]
+[: if ($_.ui.indexOf("toolbarbutton") != -1) { :]
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://[:= $_.package :]/content/toolbar-overlay.xul
+[: } :]
+[: if ($_.ui.indexOf("toolbarbutton") != -1 || $_.ui.indexOf("mainmenu") != -1) { :]
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://[:= $_.package :]/content/commands-overlay.xul
+[: } :]
+[: } :]
