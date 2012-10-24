@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+
+    <em:id>duckduckgo@getnightingale.com</em:id>
+    <em:name>DuckDuckGo Search</em:name>
+    <em:description>Adds DuckDuckGo to the list of search engines</em:description>
+    <em:creator>Antoine Turmel (geekshadow@gmail.com)</em:creator>
+    <em:homepageURL>http://wiki.getnightingale.com/doku.php?id=projects:search</em:homepageURL>
+    <em:version>1.0.0</em:version>
+    <em:iconURL>chrome://duckduckgo/skin/icon.png</em:iconURL>
+    <em:type>2</em:type>
+
+    <!-- Songbird --> 
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.4.3</em:minVersion>
+        <em:maxVersion>3.0.0</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    
+    <!-- Nightingale -->
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+        <em:minVersion>1.11.0</em:minVersion>
+        <em:maxVersion>3.0.0</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+
+  </Description>
+
+</RDF>

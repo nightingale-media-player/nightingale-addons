@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName>DuckDuckGo</ShortName>
+   <Description>DuckDuckGo search engine</Description>
+   <Image width="16" height="16">http://duckduckgo.com/favicon.ico</Image>
+   <Url type="text/html" method="GET" template="http://duckduckgo.com/">
+   <Param name="q" value="{searchTerms}"/>      
+   </Url>
+   <InputEncoding>utf-8</InputEncoding>
+</OpenSearchDescription>

@@ -1,0 +1,7 @@
+content duckduckgo  chrome/content/
+skin    duckduckgo  classic/1.0 chrome/skin/
+
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://duckduckgo/content/scripts-overlay.xul
+
+
+
