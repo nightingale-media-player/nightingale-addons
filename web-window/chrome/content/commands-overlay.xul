@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://web-window/skin/overlay.css" type="text/css"?>
+<!DOCTYPE overlay SYSTEM "chrome://web-window/locale/overlay.dtd">
+<overlay id="web-window-menu-overlay"
+         xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  
+  <!-- Add a command.  See http://www.xulplanet.com/tutorials/xultu/commands.html -->  
+  <commandset id="mainCommandSet">
+    <command id="web-window-openwindow-cmd"  />
+  </commandset>
+  
+</overlay>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<OpenSearchDescription xmlns="http://a9.com/-/spec/opensearch/1.1/">
+   <ShortName>Dogmazic</ShortName>
+   <Description>Dogmazic audio search</Description>
+   <Image width="16" height="16">http://www.dogmazic.net/favicon.ico</Image>
+   <Url type="text/html" method="GET" template="http://www.dogmazic.net/static.php">
+   <Param name="op" value="musiqueIndex.php"/>
+   <Param name="recherche" value="O"/>
+   <Param name="motcles" value="{searchTerms}"/>
+   </Url>
+   <InputEncoding>utf-8</InputEncoding>
+</OpenSearchDescription>

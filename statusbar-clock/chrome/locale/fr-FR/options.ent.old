@@ -1,0 +1,43 @@
+<!ENTITY options.display.title "Options de l'horloge en barre d'état">
+
+<!ENTITY options.formatView.caption "Affichage">
+<!ENTITY options.formatView.description "Ce paramètre permet de définir comment l'heure et ou la date seront affichées dans la barre d'état. Les valeurs #date# et #time# seront remplacées par la date et l'heure actuelle générée en dessous.">
+
+<!ENTITY options.formatDate.caption "Format de la date">
+<!ENTITY options.formatDate.description "Entrez le format de la date ici.">
+
+<!ENTITY options.formatDate.val.yyyy "yyyy - Année">
+<!ENTITY options.formatDate.val.yy "yy - Année, deux chiffres">
+<!ENTITY options.formatDate.val.m "m - Mois (numérique)">
+<!ENTITY options.formatDate.val.mm "mm - Mois (numérique avec zéro)">
+<!ENTITY options.formatDate.val.d "d - Jour du mois ">
+<!ENTITY options.formatDate.val.dd "dd - Jour du mois (avec zéro)">
+<!ENTITY options.formatDate.val.ddd "ddd - Jour du mois (ordonné)">
+<!ENTITY options.formatDate.val.month "month - Nom du mois">
+<!ENTITY options.formatDate.val.mth "mth - Nom du mois (abrégé)">
+<!ENTITY options.formatDate.val.weekday "weekday - Jour de la semaine">
+<!ENTITY options.formatDate.val.wkd "wkd - Jour de la semaine (abrégé)">
+
+<!ENTITY options.formatTime.caption "Format de l'heure">
+<!ENTITY options.formatTime.description "Entrez le format de l'heure ici.">
+
+<!ENTITY options.formatTime.val.h "h - Heures (Format 12-heures)">
+<!ENTITY options.formatTime.val.hh "hh - Heures (Format 12-heures avec zéro)">
+<!ENTITY options.formatTime.val.H "H - Heures (Format 24-heures)">
+<!ENTITY options.formatTime.val.HH "HH - Heures (Format 24-heures avec zéro)">
+<!ENTITY options.formatTime.val.m "m - minutes (avec zéro)">
+<!ENTITY options.formatTime.val.s "s - secondes (avec zéro)">
+<!ENTITY options.formatTime.val.am "am - am/pm">
+<!ENTITY options.formatTime.val.admd "a.m. - a.m./p.m.">
+<!ENTITY options.formatTime.val.AM "AM - AM/PM">
+<!ENTITY options.formatTime.val.AdMd "A.M. - A.M./P.M.">
+<!ENTITY options.formatTime.val.offset "offset - UTC/GMT offset">
+
+<!ENTITY options.restoreDefault "Par défaut">
+
+<!ENTITY options.position.title "Position de l'horloge dans la barre d'état">
+<!ENTITY options.position.label "Déplacer l'horloge">
+<!ENTITY options.position.before "à gauche de">
+<!ENTITY options.position.after "à droite de">
+
+<!ENTITY options.buttonApply "Appliquer">

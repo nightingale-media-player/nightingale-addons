@@ -1,0 +1,7 @@
+content web-window  chrome/content/
+skin    web-window  classic/1.0 chrome/skin/
+
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://web-window/content/scripts-overlay.xul
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://web-window/content/menu-overlay.xul
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://web-window/content/toolbar-overlay.xul
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://web-window/content/commands-overlay.xul

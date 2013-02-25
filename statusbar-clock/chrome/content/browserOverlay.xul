@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://timestatus/content/timestatus.css" type="text/css"?> 
+
+<!DOCTYPE overlay SYSTEM "chrome://timestatus/locale/context-timestatus.ent">
+
+<overlay id="timestatus-overlay"
+			xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+	
+	<stringbundleset id="stringbundleset">
+		<stringbundle id="timestatus-bundle" src="chrome://timestatus/locale/timestatus-bundle.properties"/>
+	</stringbundleset>
+	
+	<script type="application/x-javascript" src="chrome://timestatus/content/_PrefManager.js" />
+	<script type="application/x-javascript" src="chrome://timestatus/content/browserOverlay.js" />
+	
+	<popupset id="mainPopupSet">
+		<popup id="timestatus-contextmenu">
+			<menuitem id="ts-menu-settings" oncommand="TimeStatus.popupSettings();"
+						label="&context-timestatus.settings.label;"
+						accesskey="&context-timestatus.settings.accesskey;"/>
+			<menuitem id="ts-menu-position" oncommand="TimeStatus.popupPosition();"
+						label="&context-timestatus.position.label;"
+						accesskey="&context-timestatus.position.accesskey;"/>
+		</popup>
+		<tooltip id="timestatus-tooltip">
+			<description id="timestatus-tooltip-value" value="" style="margin:0px;"/>
+		</tooltip>
+	</popupset>
+	
+	<statusbar id="status-bar">
+		<statusbarpanel id="statusbar-clock-display"
+						insertafter="livemark-button" context="timestatus-contextmenu" mousethrough="never" tooltip="timestatus-tooltip" onclick="TimeStatus.clickHandler(event)"
+						style="min-width: 16px; white-space: nowrap; padding: 0px;" />
+	</statusbar>
+
+</overlay>

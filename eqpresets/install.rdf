@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+     xmlns:songbird="http://www.songbirdnest.com/2007/addon-metadata-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>EqPresets@geekshadow.com</em:id>
+    <em:type>2</em:type>
+    <em:name>Equalizer Presets</em:name>
+    <em:version>1.0.13</em:version>
+    <em:creator>Antoine Turmel (geekshadow@gmail.com)</em:creator>
+    <em:contributor>Seba_Kerckhof</em:contributor>
+    <em:description>Add Presets to the Equalizer</em:description>
+    <em:iconURL>chrome://eqpresets/skin/icon.png</em:iconURL>
+    <em:homepageURL>http://blog.geekshadow.com</em:homepageURL>
+
+    <!-- Songbird -->
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.4.3</em:minVersion>
+        <em:maxVersion>2.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    
+    <!-- Nightingale -->
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+        <em:minVersion>1.11.0a</em:minVersion>
+        <em:maxVersion>2.3.0a</em:maxVersion>
+      </Description>
+    </em:targetApplication>    
+
+  </Description>
+</RDF>

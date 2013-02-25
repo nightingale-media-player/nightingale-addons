@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>g15simple@geekshadow.com</em:id>
+    <em:version>0.7.4</em:version>
+
+    <!-- Songbird -->   
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.1.1</em:minVersion>
+        <em:maxVersion>2.*</em:maxVersion>
+      </Description>   
+    </em:targetApplication>
+
+    <!-- Nightingale -->    
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+        <em:minVersion>1.11.0a</em:minVersion>
+        <em:maxVersion>2.3.0a</em:maxVersion>
+      </Description>   
+    </em:targetApplication>    
+
+    <!-- Front End MetaData -->
+    <em:targetPlatform>Linux</em:targetPlatform>
+    <em:name>G15 Simple CE</em:name>
+    <em:description>Simple G15 Composer based notification add-on for Linux</em:description>
+    <em:iconURL>chrome://g15simple-plugin/skin/icon.png</em:iconURL>
+    <em:creator>Joakim Andersson</em:creator>
+    <em:contributor>Antoine Turmel (geekshadow@gmail.com)</em:contributor>
+    <em:contributor>Lukas Diener (Lukas_Skywalker)</em:contributor>
+    <em:homepageURL>http://firetech.nu/</em:homepageURL>
+    
+    <em:localized>
+      <Description>
+        <em:locale>fr</em:locale>
+        <em:name>G15 Simple CE</em:name>
+        <em:description>Affichage sur l'écran du Logitech G15 pour Linux</em:description>
+        <em:translator>Antoine Turmel (GeekShadow)</em:translator>
+      </Description>
+    </em:localized>  
+    
+  </Description>      
+
+</RDF>

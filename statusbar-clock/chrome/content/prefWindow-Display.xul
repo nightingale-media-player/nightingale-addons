@@ -1,0 +1,92 @@
+<?xml version="1.0"?>
+
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+
+<!DOCTYPE window SYSTEM "chrome://timestatus/locale/options.ent">
+
+<prefwindow id="timestatus-options"
+		xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+		title="&options.display.title;"
+		buttons="accept"
+		style="width:50em;"> <!-- dirty hack -->
+	
+	<prefpane id="options-display-pane">
+		<preferences>
+			<preference id="pFormatView" name="extensions.timestatus.format.view" type="string" instantApply="true" />
+			<preference id="pFormatTime" name="extensions.timestatus.format.time" type="string" instantApply="true" />
+			<preference id="pFormatDate" name="extensions.timestatus.format.date" type="string" instantApply="true" />
+		</preferences>
+		
+		<vbox>
+			<groupbox flex="1">
+				<caption label="&options.formatView.caption;"/>
+				<hbox>
+					<textbox id="formatView" preference="pFormatView" size="30" flex="1"/>
+				</hbox>
+				<vbox flex="1">
+					<description style="width:42em">&options.formatView.description;</description>
+				</vbox>
+				<hbox>
+					<spacer flex="1"/>
+					<button label="&options.restoreDefault;" oncommand="document.getElementById('pFormatView').reset();"/>
+				</hbox>
+			</groupbox>
+			
+			<hbox>
+				<groupbox flex="1">
+					<caption label="&options.formatDate.caption;"/>
+					<description>&options.formatDate.description;</description>
+					<hbox>
+						<textbox id="formatDate" preference="pFormatDate" size="30" flex="1"/>
+					</hbox>
+					<vbox flex="1">
+						<description value="&options.formatDate.val.yyyy;"/>
+						<description value="&options.formatDate.val.yy;"/>
+						<description value="&options.formatDate.val.m;"/>
+						<description value="&options.formatDate.val.mm;"/>
+						<description value="&options.formatDate.val.d;"/>
+						<description value="&options.formatDate.val.dd;"/>
+						<description value="&options.formatDate.val.ddd;"/>
+						<description value="&options.formatDate.val.month;"/>
+						<description value="&options.formatDate.val.mth;"/>
+						<description value="&options.formatDate.val.weekday;"/>
+						<description value="&options.formatDate.val.wkd;"/>
+					</vbox>
+					<hbox>
+						<spacer flex="1"/>
+						<button label="&options.restoreDefault;" oncommand="document.getElementById('pFormatDate').reset();"/>
+					</hbox>
+				</groupbox>
+				
+				<groupbox flex="1">
+					<caption label="&options.formatTime.caption;"/>
+					<description>&options.formatTime.description;</description>
+					<hbox>
+						<textbox id="formatTime" preference="pFormatTime" size="30" flex="1"/>
+					</hbox>
+					<vbox flex="1">
+						<description value="&options.formatTime.val.h;"/>
+						<description value="&options.formatTime.val.hh;"/>
+						<description value="&options.formatTime.val.H;"/>
+						<description value="&options.formatTime.val.HH;"/>
+						<description value="&options.formatTime.val.m;"/>
+						<description value="&options.formatTime.val.s;"/>
+						<description value="&options.formatTime.val.am;"/>
+						<description value="&options.formatTime.val.admd;"/>
+						<description value="&options.formatTime.val.AM;"/>
+						<description value="&options.formatTime.val.AdMd;"/>
+						<description value="&options.formatTime.val.offset;"/>
+					</vbox>
+					<hbox>
+						<spacer flex="1"/>
+						<button label="&options.restoreDefault;" oncommand="document.getElementById('pFormatTime').reset();"/>
+					</hbox>
+				</groupbox>
+			</hbox>
+		</vbox>
+
+		<spacer flex="1" style="height:1em;"/> <!-- dirty hack -->
+
+	</prefpane>
+
+</prefwindow>

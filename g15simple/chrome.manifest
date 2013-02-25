@@ -1,0 +1,3 @@
+content g15simple-plugin					chrome/content/
+skin    g15simple-plugin	classic/1.0		chrome/skin/
+overlay windowtype:Songbird:Main chrome://g15simple-plugin/content/g15simple.xul

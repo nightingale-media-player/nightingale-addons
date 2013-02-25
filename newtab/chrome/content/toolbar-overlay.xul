@@ -1,0 +1,19 @@
+<?xml version="1.0"?> 
+
+<?xml-stylesheet href="chrome://newtab/skin/overlay.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://songbird/locale/songbird.dtd" >
+<overlay
+  id="newtab-toolbar-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Add the toolbar button into the browser toolbar palette so that
+         the user can show/hide it as desired -->
+    <toolbarpalette id="BrowserToolbarPalette">
+        <toolbarbutton  id="newtab-toolbarbutton" 
+            label="&menu.file.newtab;"
+            tooltiptext="&menu.file.newtab;" 
+            class="toolbarbutton-1 chromeclass-toolbar-additional" 
+            command="newtab-helloworld-cmd" />
+    </toolbarpalette>
+
+</overlay>

@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:em="http://www.mozilla.org/2004/em-rdf#"
+     xmlns:songbird="http://www.songbirdnest.com/2007/addon-metadata-rdf#">
+  <Description about="urn:mozilla:install-manifest">
+    <em:id>equalizerpane@geekshadow.com</em:id>
+    <em:type>2</em:type>
+    <em:name>EqualizerPane</em:name>
+    <em:version>1.0.11</em:version>
+    <em:creator>Antoine Turmel (geekshadow@gmail.com)</em:creator>
+
+    <em:description>Allow the equalizer to be used in the bottom display pane</em:description>
+    <em:iconURL>chrome://equalizerpane/skin/icon.png</em:iconURL>
+
+    <!-- Songbird -->
+    <em:targetApplication>
+      <Description>
+        <em:id>songbird@songbirdnest.com</em:id>
+        <em:minVersion>1.4.3</em:minVersion>
+        <em:maxVersion>2.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>
+    
+    <!-- Nightingale -->
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+        <em:minVersion>1.11.0a</em:minVersion>
+        <em:maxVersion>2.3.0a</em:maxVersion>
+      </Description>
+    </em:targetApplication>    
+
+    <!-- Register a pane to be displayed below the service sidebar.
+         See http://wiki.songbirdnest.com/Developer/Articles/Getting_Started/Display_Panes -->
+    <songbird:displayPane>
+      <Description>
+        <songbird:contentTitle>Equalizer</songbird:contentTitle>
+        <songbird:contentUrl>chrome://equalizerpane/content/pane.xul</songbird:contentUrl>
+        <songbird:contentIcon>chrome://equalizerpane/skin/pane-icon.png</songbird:contentIcon>
+        <songbird:defaultWidth>200</songbird:defaultWidth>
+        <songbird:defaultHeight>200</songbird:defaultHeight>
+        <songbird:suggestedContentGroups>contentpane</songbird:suggestedContentGroups>
+        <songbird:showOnInstall>true</songbird:showOnInstall>
+      </Description>
+    </songbird:displayPane>
+
+  </Description>
+</RDF>

@@ -1,0 +1,11 @@
+content timestatus  chrome/content/
+
+#Firefox
+overlay chrome://browser/content/browser.xul  chrome://timestatus/content/browserOverlay.xul
+#Songbird
+overlay chrome://songbird/content/xul/layoutBaseOverlay.xul chrome://timestatus/content/browserOverlay.xul
+
+locale  timestatus  en-US  chrome/locale/en-US/
+locale  timestatus  fr-FR  chrome/locale/fr-FR/
+
+skin  timestatus  classic/1.0  chrome/skin/

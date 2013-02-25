@@ -1,0 +1,7 @@
+content newtab  chrome/content/
+skin    newtab  classic/1.0 chrome/skin/
+
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://newtab/content/scripts-overlay.xul
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://newtab/content/toolbar-overlay.xul
+overlay chrome://songbird/content/xul/layoutWithBrowserOverlay.xul chrome://newtab/content/commands-overlay.xul
+

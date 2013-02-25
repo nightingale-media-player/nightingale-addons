@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+		xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+<Description about="urn:mozilla:install-manifest">
+	<em:id>{3669edc0-b1ad-11d8-92e7-00d09e0179f2}</em:id>
+	<em:version>1.8.16</em:version>
+
+<!-- Songbird -->	
+<em:targetApplication>
+	<Description>
+		<em:id>songbird@songbirdnest.com</em:id>
+		<em:minVersion>1.4.3</em:minVersion>
+		<em:maxVersion>2.*</em:maxVersion>
+	</Description>
+</em:targetApplication>
+
+<!-- Nightingale -->
+<em:targetApplication>
+	<Description>
+		<em:id>nightingale@getnightingale.com</em:id>
+		<em:minVersion>1.11.0a</em:minVersion>
+		<em:maxVersion>2.3.0a</em:maxVersion>
+	</Description>
+</em:targetApplication>
+	
+	<em:name>Statusbar Clock</em:name>
+	<em:description>Display the date and time in the status bar.</em:description>
+	<em:creator>Cosmic Cat Creations</em:creator>
+	<em:homepageURL>http://www.cosmicat.com/</em:homepageURL>
+	
+	<em:iconURL>chrome://timestatus/skin/icon.png</em:iconURL>
+	<em:optionsURL>chrome://timestatus/content/prefWindow-Display.xul</em:optionsURL>
+</Description>
+
+</RDF>

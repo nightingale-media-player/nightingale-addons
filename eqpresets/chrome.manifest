@@ -1,0 +1,5 @@
+content eqpresets  chrome/content/
+skin    eqpresets  classic/1.0 chrome/skin/
+
+overlay chrome://songbird/content/xul/mediacore/mediacoreEqualizer.xul chrome://eqpresets/content/equalizer.xul
+overlay chrome://equalizerpane/content/pane.xul chrome://eqpresets/content/equalizer.xul

@@ -1,0 +1,27 @@
+<?xml version="1.0"?> 
+
+<?xml-stylesheet href="chrome://web-window/skin/overlay.css" type="text/css"?>
+
+<!DOCTYPE overlay [
+<!ENTITY % songbirdDTD SYSTEM "chrome://songbird/locale/songbird.dtd">
+<!ENTITY % helpDTD SYSTEM "chrome://songbird/locale/help.dtd">
+<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
+%songbirdDTD;
+%helpDTD;
+%browserDTD;
+]>
+<overlay
+  id="web-window-toolbar-overlay"
+  xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+
+    <!-- Add the toolbar button into the browser toolbar palette so that
+         the user can show/hide it as desired -->
+    <toolbarpalette id="BrowserToolbarPalette">
+        <toolbarbutton  id="web-window-toolbarbutton" 
+            label="&newWindowButton.tooltip; - &help.keyboard.section.browser;"
+            tooltiptext="&newWindowButton.tooltip; - &help.keyboard.section.browser;" 
+            class="toolbarbutton-1 chromeclass-toolbar-additional" 
+            command="web-window-openwindow-cmd" />
+    </toolbarpalette>
+
+</overlay>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://web-window/skin/overlay.css" type="text/css"?>
+
+<!DOCTYPE window [
+<!ENTITY % songbirdDTD SYSTEM "chrome://songbird/locale/songbird.dtd">
+<!ENTITY % helpDTD SYSTEM "chrome://songbird/locale/help.dtd">
+<!ENTITY % browserDTD SYSTEM "chrome://browser/locale/browser.dtd" >
+%songbirdDTD;
+%helpDTD;
+%browserDTD;
+]>
+
+<window
+  id     = "mybrowser"
+  title  = "&help.keyboard.section.browser;"
+  width  = "920"
+  height = "760"
+  xmlns  = "http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <script src="mybrowser.js"/>
+  <hbox>
+    <button id="back"     tooltiptext="&tooltip.browser.back;" oncommand="back();" disabled="true"/>
+    <button id="forward"  tooltiptext="&tooltip.browser.fwd;" oncommand="forward();" disabled="true"/>
+    <button id="reload"   tooltiptext="&tooltip.browser.refresh;" oncommand="reload();"/>
+    <button id="stop"     tooltiptext="&tooltip.browser.stop;" oncommand="stop();" disabled="true"/>
+    <textbox id="urlbar" value="" flex="1" onchange="go();"/>
+    <button id="go" tooltiptext="&goEndCap.tooltip;" oncommand="go();"/>
+  </hbox>
+  <browser flex="1" id="browser" src="" type="content-primary"/>
+  <statusbar>
+    <statusbarpanel id="status" label="" crop="end" flex="1"/>
+    <progressmeter id="progress" mode="determined" value="0%" style="display: none"/>
+    <statusbarpanel id="security" label="" style="display: none"/>
+  </statusbar>
+</window>
