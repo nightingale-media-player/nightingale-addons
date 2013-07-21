@@ -12,14 +12,16 @@ if (typeof(Cr) == 'undefined')
 
 // Imports to help with some common tasks
 Cu.import('resource://app/jsmodules/sbProperties.jsm');
-Cu.import('resource://app/jsmodules/sbLibraryUtils.jsm');
+//Cu.import('resource://app/jsmodules/sbLibraryUtils.jsm');
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
 Cu.import('resource://app/jsmodules/StringUtils.jsm');
 
 // set up a debug logger
-Cu.import("resource://app/jsmodules/DebugUtils.jsm");
-
-const LOG = DebugUtils.generateLogFunction("bandcamp@getnightingale.com", 2);
+//Cu.import("resource://app/jsmodules/DebugUtils.jsm");
+var consoleService = Cc["@mozilla.org/consoleservice;1"]
+                      .getService(Ci.nsIConsoleService);
+consoleService.logStringMessage("Attaching error logger");
+const LOG = consoleService.logStringMessage;
 
 // We need FUEL!
 var Application = Cc["@mozilla.org/fuel/application;1"]
