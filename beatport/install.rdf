@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+
+<RDF xmlns="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+     xmlns:em="http://www.mozilla.org/2004/em-rdf#">
+
+  <Description about="urn:mozilla:install-manifest">
+
+    <em:id>beatport@getnightingale.com</em:id>
+    <em:name>Beatport</em:name>
+    <em:description>Integrates Beatport with Nightingale</em:description>
+    <em:creator>freaktechnik</em:creator>
+    <em:homepageURL>http://getnightingale.com/</em:homepageURL>
+    <em:version>1.0</em:version>
+    <em:iconURL>chrome://beatport/skin/icon.png</em:iconURL>
+    <em:type>2</em:type>
+    
+    <!-- Nightingale --> 
+    <em:targetApplication>
+      <Description>
+        <em:id>nightingale@getnightingale.com</em:id>
+		    <em:minVersion>1.11.0</em:minVersion>
+		    <em:maxVersion>2.*</em:maxVersion>
+      </Description>
+    </em:targetApplication>    
+  </Description>
+
+</RDF>
