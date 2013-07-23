@@ -16,13 +16,6 @@ Cu.import('resource://app/jsmodules/sbProperties.jsm');
 Cu.import('resource://gre/modules/XPCOMUtils.jsm');
 Cu.import('resource://app/jsmodules/StringUtils.jsm');
 
-// set up a debug logger
-//Cu.import("resource://app/jsmodules/DebugUtils.jsm");
-var consoleService = Cc["@mozilla.org/consoleservice;1"]
-                      .getService(Ci.nsIConsoleService);
-consoleService.logStringMessage("Attaching error logger");
-const LOG = consoleService.logStringMessage;
-
 // We need FUEL!
 var Application = Cc["@mozilla.org/fuel/application;1"]
                     .getService(Ci.fuelIApplication);
@@ -41,6 +34,7 @@ if (typeof Bandcamp == 'undefined') {
   var Bandcamp = {};
 }
 
+
 /**
  * UI controller that is loaded into the main player window
  */
@@ -50,7 +44,6 @@ Bandcamp.Controller = {
    * Called when the window finishes loading
    */
   onLoad: function() {
-    LOG("LOADED");
     // initialization code
     this._initialized = true;
     this._strings = Cc["@mozilla.org/intl/stringbundle;1"]
@@ -77,13 +70,13 @@ Bandcamp.Controller = {
       Application.prefs.setValue(FIRSTRUN_PREF, false);
       this._firstRunSetup();
     }
+    this._addServicePaneNode();
   },
 
   _servicePaneService:  null,
   _searchService: null,
 
   _addServicePaneNode: function() {
-    try {
       var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
       // add the services node if it doesn't exist
       if (!servicesNode) {
@@ -109,13 +102,15 @@ Bandcamp.Controller = {
       //myNode.stringbundle = STRINGBUNDLE;
       myNode.setAttributeNS(SERVICEPANE_NS, "addonID", ADDON_ID);
       servicesNode.appendChild(myNode);
-    } catch(e) {
-      console.log(e);
-    }
   },
 
   _removeServicePaneNode: function() {
-    //???
+    var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
+    servicesNode.removeChild(this._servicePaneService.getNode("NG:Bandcamp"));
+    
+    if(!servicesNode.childNodes.hasMoreElements()) {
+        this._servicePaneService.root.removeChild(servicesNode);
+    }
   },
 
   _addSearchEngine: function() {
@@ -163,19 +158,17 @@ Bandcamp.Controller = {
    */
   _firstRunSetup : function() {
     this._addSearchEngine();
-    this._addServicePaneNode();
   },
 
-  _uninstall: function() {
+  uninstall: function() {
     Application.prefs.setValue(FIRSTRUN_PREF, true);
 
     // remove the search engine
-    var engine = this._searchService.getEngineByName("Bandcamp");
-    if (engine) {
-      this._searchService.removeEngine(engine);
-    }
+    this._removeSearchEngine();
 
-    // the service pane node is removed automatically
+    // the service pane node is removed automatically.
+    // however in case of disable, we want to remove it.
+    this._removeServicePaneNode();
 
     this._initialized = false;
 
@@ -186,18 +179,20 @@ Bandcamp.Controller = {
 
 Bandcamp.Observer = {
   observe: function(subject,topic,data) {
-    LOG(subject);
+    subject.QueryInterface(Ci.nsIUpdateItem);
+    
     // only do actions if the subject is this extension
     if(subject.id==ADDON_ID) {
-      if((data=='item-uninstalled'||data=='item-disabled')&&this._initialized) {
-        this._uninstall();
+      if((data=='item-uninstalled'||data=='item-disabled')&&Bandcamp.Controller._initialized) {
+        Bandcamp.Controller.uninstall();
       }
       // if the user changes his mind in runtime, we want to revert our actions
-      else if((data==='item-cancel-action'||data=='item-enabled')&&!this._initialized) {
-        this.onLoad();
+      else if((data=='item-cancel-action'||data=='item-enabled')&&!Bandcamp.Controller._initialized) {
+        Bandcamp.Controller.onLoad();
       }
     }
   }
 };
 
 window.addEventListener("load", function(e) { Bandcamp.Controller.onLoad(e); }, false);
+
