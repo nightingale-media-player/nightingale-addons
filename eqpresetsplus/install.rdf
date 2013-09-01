@@ -5,15 +5,16 @@
     <em:id>{caf68136-085e-402e-a6ce-471d52be6f64}</em:id>
     <em:type>2</em:type>
     <em:name>COMETE-EQ</em:name>
-    <em:version>0.0.0.3</em:version>
+    <em:version>0.0.0.4</em:version>
     <em:creator>Azraeht</em:creator>
     <em:description>COMETE-EQ</em:description>
     <em:iconURL>chrome://cometeeq/skin/icon_addon.png</em:iconURL>
+    
     <em:targetApplication>
       <Description>
         <em:id>nightingale@getnightingale.com</em:id>
         <em:minVersion>1.8.0</em:minVersion>
-        <em:maxVersion>1.10.*</em:maxVersion>
+        <em:maxVersion>1.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 

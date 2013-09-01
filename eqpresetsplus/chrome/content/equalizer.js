@@ -63,7 +63,6 @@ cometeeq = {
 				//opt.setAttribute("selected", true);
 				//alert(preset);
 				selectedItem = i;
-				document.getElementById("nom_preset").value = presets[i].getAttribute("name");
 			}
 			
 			//On ajoute l'item à la liste de presets
@@ -205,63 +204,61 @@ cometeeq = {
 		return data;
 	},
 	presets: function(eqpreset,band0,band1,band2,band3,band4,band5,band6,band7,band8,band9) {
-		this.mm = Components.classes["@getnightingale.com/Nightingale/Mediacore/Manager;1"]
+		this.mm = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"]
                     .getService(Components.interfaces.sbIMediacoreManager);
 		//this.mm = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"].getService(Components.interfaces.sbIMediacoreManager);
-  	var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch2);
-	pref.setCharPref("extensions.cometeeq.currentpreset",eqpreset);
-	
-	var start = new Array();
-	var bands = new Array();
-	var bandSet = new Array();
-	
-	bands[0] = band0;
-	bands[1] = band1;
-	bands[2] = band2;
-	bands[3] = band3;
-	bands[4] = band4;
-	bands[5] = band5;
-	bands[6] = band6;
-	bands[7] = band7;
-	bands[8] = band8;
-	bands[9] = band9;
-	
-	for(i = 0; i < 10; i++)
-	{
-		bandSet[i] = this.mm.equalizer.getBand(""+i);
-		start[i] = parseFloat(bandSet[i].gain);
-		bands[i] = parseFloat(bands[i]);
-	}
-	
-	var steps = 30;
-	var currStep = 0;
+        var pref = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch2);
+        pref.setCharPref("extensions.cometeeq.currentpreset",eqpreset);
+        
+        var start = new Array();
+        var bands = new Array();
+        var bandSet = new Array();
+        
+        bands[0] = band0;
+        bands[1] = band1;
+        bands[2] = band2;
+        bands[3] = band3;
+        bands[4] = band4;
+        bands[5] = band5;
+        bands[6] = band6;
+        bands[7] = band7;
+        bands[8] = band8;
+        bands[9] = band9;
+        
+        for(var i = 0; i < 10; i++)
+        {
+            bandSet[i] = this.mm.equalizer.getBand(""+i);
+            start[i] = parseFloat(bandSet[i].gain);
+            bands[i] = parseFloat(bands[i]);
+        }
+        
+        var steps = 30;
+        var currStep = 0;
 
-	var anim = window.setInterval(
-		function()
-		{
-			
-			for(i = 0; i < 10; i++)
-			{
-				pref.setCharPref("nightingale.eq.band." + i.toString(),cometeeq.easeInOut(start[i],bands[i],steps,currStep,1.6));
-			}
-			
-			currStep++;
-			
-			if(currStep > steps)
-			{
-				for(i = 0; i < 10; i++)
-				{
-				
-					bandSet[i].gain = bands[i];
-					this.mm.equalizer.setBand(bandSet[i])  
-					pref.setCharPref("nightingale.eq.band." + i.toString(),bands[i]);
-				}
-				window.clearInterval(anim);
-			}
-			
-		}, 10);
-
-		document.getElementById("nom_preset").value = eqpreset;
+        var anim = window.setInterval(
+            function()
+            {
+                
+                for(var i = 0; i < 10; i++)
+                {
+                    pref.setCharPref("songbird.eq.band." + i.toString(),cometeeq.easeInOut(start[i],bands[i],steps,currStep,1.6));
+                }
+                
+                currStep++;
+                
+                if(currStep > steps)
+                {
+                    for(var i = 0; i < 10; i++)
+                    {
+                    
+                        bandSet[i].gain = bands[i];
+                        this.mm.equalizer.setBand(bandSet[i])  
+                        pref.setCharPref("songbird.eq.band." + i.toString(),bands[i]);
+                    }
+                    window.clearInterval(anim);
+                }
+                
+            }, 10);
 	},
 	exporteqf: function() {
 	
@@ -275,7 +272,7 @@ cometeeq = {
     // 0x10 = PR_APPEND (append to file with each write)
     foStream.init(file, 0x02 | 0x08 | 0x20, 0666, 0);
 
-var data = "Winamp EQ library file v1.1!--Entry1";
+    var data = "Winamp EQ library file v1.1!--Entry1";
 
     foStream.write(data, data.length);
     foStream.close();
@@ -291,14 +288,14 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 		var xmlDoc = cometeeq.readXMLDocument(path);
 		
 		//récupérer nom preset
-		var preset_name = document.getElementById("nom_preset").value;
+		var preset_name = document.getElementById("currentpreset").value;
 		
 		//récupérer valeur preset
 		var bandSet = new Array();
-		this.mm = Components.classes["@getnightingale.com/Nightingale/Mediacore/Manager;1"]
+		this.mm = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"]
                     .getService(Components.interfaces.sbIMediacoreManager);
 		//this.mm = Components.classes["@songbirdnest.com/Songbird/Mediacore/Manager;1"].getService(Components.interfaces.sbIMediacoreManager);
-		for(i = 0; i < 10; i++)
+		for(var i = 0; i < 10; i++)
 		{
 			bandSet[i] = this.mm.equalizer.getBand(""+i).gain;
 		}
@@ -306,21 +303,23 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 		//créer DOM preset
 		if(preset_name != ""){
 			var oldy = null;
-			var valid_name=true;
+			var newName=true;
 			var rootNode = xmlDoc.documentElement;
 			var presets = rootNode.getElementsByTagName("preset");
-			for (var i = 0, sz = presets.length; i < sz; i++)
+			for (var i = 0, sz = presets.length; i < sz; i++) {
 				if(presets[i].getAttribute("name") == preset_name){
-					valid_name = false;
+					newName = false;
 					oldy = presets[i];
-				}
+                    break;
+                }
+			}
 			
-			if(valid_name){
+			if(newName){
 				//Insérer preset dans xmlDoc
 				var presetDOM = xmlDoc.createElement("preset");
 				presetDOM.setAttribute("name",preset_name);
 				
-				for(i = 0; i < 10; i++){
+				for(var i = 0; i < 10; i++){
 					var bandDom = xmlDoc.createElement("band");
 					var newtext = xmlDoc.createTextNode(bandSet[i]);
 					bandDom.appendChild(newtext);
@@ -346,12 +345,13 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 				pref.setCharPref("extensions.cometeeq.currentpreset",preset_name);
 				//Recharger liste
 				cometeeq.loadList();
-			}else{
+			}
+            else{
 				//Créer un nouveau préset
 				var presetDOM = xmlDoc.createElement("preset");
 				presetDOM.setAttribute("name",preset_name);
 				
-				for(i = 0; i < 10; i++){
+				for(var i = 0; i < 10; i++){
 					var bandDom = xmlDoc.createElement("band");
 					var newtext = xmlDoc.createTextNode(bandSet[i]);
 					bandDom.appendChild(newtext);
@@ -370,7 +370,8 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 				//Recharger liste
 				cometeeq.loadList();
 			}
-		}else{
+		}
+        else{
 			alert(strbundle.getString("alertPresetNameMissing"));
 			//alert("Preset Name Missing");
 			
@@ -408,18 +409,48 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 	},
 	restorePreset: function(){
 		if(confirm("Restore presets?")){
+        
+            // Read current presets
 			var path = cometeeq.getFilePathInProfile("cometeeq_presets.xml");
-			
+            var xmlDoc = cometeeq.readXMLDocument(path);
+            var presets = xmlDoc.documentElement.getElementsByTagName("preset");
 				
-			//Ecriture du fichier de paramètres
-			var presets = cometeeq.getDefaultPresets();
+			var defaultPresets = cometeeq.getDefaultPresets();
+            
+            var selectedItem = null;
+            var currentPresets = [];
+            //On parcours les presets du fichier de paramétrage
+            for (var i in presets)
+            {
+                // Création du oncommand en fonction des paramètres band du Presets
+                var node = presets[i];
+                var name = presets[i].getAttribute("name");
+                currentPresets[name] = [];
+                
+                var bands = node.getElementsByTagName("band");
+                for(var j = 0; j< bands.length; j++){ 
+                    var element = bands[j]; 
+                    currentPresets[name][j] = element.firstChild.nodeValue;
+                }
+                
+            }
+            
+            // iterate over the currentPresets first, since those are potentially bigger than the defaults
+            // restores the default presets
+            for( var otherName in currentPresets ) {
+                for( var presetName in defaultPresets ) {
+                    if( otherName == presetName ) {
+                        currentPresets[otherName] = defaultPresets[presetName];
+                    }
+                }
+            }
 				
 			// creation d'un parser DOM,
 			var parser = Components.classes["@mozilla.org/xmlextras/domparser;1"]
 						.createInstance(Components.interfaces.nsIDOMParser);
 				
 			// création du contenu du fichier
-			var datas = cometeeq.createXMLString(presets);
+			var datas = cometeeq.createXMLString(currentPresets);
 			
 			//On crée le document DOM
 			var DOMDoc = parser.parseFromString(datas,"text/xml");
@@ -429,6 +460,22 @@ var data = "Winamp EQ library file v1.1!--Entry1";
 			
 			//On recharge la liste
 			cometeeq.loadList();
+            
+            // ease to the restored values if it is the current preset
+            var isCurrentPreset = false;
+            var preset_name = document.getElementById("currentpreset").value;
+            
+            for (var preset in presets) {
+				if(preset == preset_name){
+					isCurrentPreset = true;
+                    break;
+                }
+			}
+            
+            if( isCurrentPreset ) {
+                this.presets(preset_name,presets[preset_name][0],presets[preset_name][1],presets[preset_name][2],presets[preset_name][3],presets[preset_name][4],
+                             presets[preset_name][5],presets[preset_name][6],presets[preset_name][7],presets[preset_name][8],presets[preset_name][9]);
+            }
 		
 		}
 	},
