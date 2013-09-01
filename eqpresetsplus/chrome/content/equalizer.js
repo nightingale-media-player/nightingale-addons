@@ -291,7 +291,6 @@ cometeeq = {
 		
 		//récupérer nom preset
 		var preset_name = document.getElementById('presets').parentNode.inputField.value;
-        alert( preset_name );
 		
 		//récupérer valeur preset
 		var bandSet = new Array();
