@@ -80,9 +80,10 @@ cometeeq = {
 		file.initWithPath(path);		
 		
 		//Vérification de l'existance du fichier
-		if(file.exists()){
+		if(file.exists()) {
 			//alert("Le fichier existe");
-		}else{
+		}
+        else{
 			file.create("text/XML",0777);
 			
 			//Ecriture du fichier de paramètres
@@ -123,9 +124,10 @@ cometeeq = {
 							 .createInstance(Components.interfaces.nsIDOMParser);
 		// generation d'un DOM à partir du flux
 		var doc = parser.parseFromStream(stream, null, file.fileSize, "text/xml");
-		parser = null;
-		stream = null;
-		file = null;
+		//parser = null;
+		//stream = null;
+		//file = null;
+        
 		return doc;
 	},
 	getFilePathInProfile: function(aRelativePath) {
@@ -300,6 +302,7 @@ cometeeq = {
 			bandSet[i] = this.mm.equalizer.getBand(""+i).gain;
 		}
 		
+        alert( preset_name );
 		//créer DOM preset
 		if(preset_name != ""){
 			var oldy = null;
@@ -381,7 +384,7 @@ cometeeq = {
 		//récupérer le string bundle
 		var strbundle = document.getElementById("messages");
 		
-		var preset = document.getElementById("nom_preset").value;
+		var preset = document.getElementById("currentpreset").value;
 		
 		// Lecture du fichier de présets
 		var path = cometeeq.getFilePathInProfile("cometeeq_presets.xml");
@@ -390,59 +393,78 @@ cometeeq = {
 		var rootNode = xmlDoc.documentElement;
 		var node = null;
 		var presets = rootNode.getElementsByTagName("preset");
+        var nextIndex = 0;
 		//On parcours les presets du fichier de paramétrage
-		for (var i = 0, sz = presets.length; i < sz; i++)
-			if(presets[i].getAttribute("name") == preset)
-					node = presets[i];
+		for (var i = 0, sz = presets.length; i < sz; i++) {
+			if(presets[i].getAttribute("name") == preset) {
+                node = presets[i];
+                nextIndex = (i + 1) % presets.length;
+            }
+        }
 					
 		if(node != null){
+        
+            // select next preset and load it
+            document.getElementById('presets').parentNode.selectedIndex = nextIndex;
+            
+            var bands = presets[nextIndex].getElementsByTagName("band");
+            this.presets( presets[nextIndex].getAttribute("name"),
+                          bands[0].firstChild.nodeValue,
+                          bands[1].firstChild.nodeValue,
+                          bands[2].firstChild.nodeValue,
+                          bands[3].firstChild.nodeValue,
+                          bands[4].firstChild.nodeValue,
+                          bands[5].firstChild.nodeValue,
+                          bands[6].firstChild.nodeValue,
+                          bands[7].firstChild.nodeValue,
+                          bands[8].firstChild.nodeValue,
+                          bands[9].firstChild.nodeValue
+                        );
+            
 			rootNode.removeChild(node);
 			cometeeq.saveXMLDocument(xmlDoc,path);
 			cometeeq.loadList();
-			document.getElementById("nom_preset").value="";
 			alert(strbundle.getString("alertPresetBegin")+" "+preset+" "+strbundle.getString("alertPresetDeletedEnd"));
 			//alert("Preset Deleted");
-		}else{
-			alert(strbundle.getString("alertPresetBegin")+" "+preset+" "+strbundle.getString("alertPresetUndeletedEnd"));
+		}
+        else{
+			//alert(strbundle.getString("alertPresetBegin")+" "+preset+" "+strbundle.getString("alertPresetUndeletedEnd"));
 			//alert("Preset undeleted");
 		}
 	},
 	restorePreset: function(){
 		if(confirm("Restore presets?")){
         
+            this.findOrCreate();
+        
             // Read current presets
 			var path = cometeeq.getFilePathInProfile("cometeeq_presets.xml");
             var xmlDoc = cometeeq.readXMLDocument(path);
-            var presets = xmlDoc.documentElement.getElementsByTagName("preset");
+            
+            var rootNode = xmlDoc.documentElement;
+            
+            var presets = rootNode.getElementsByTagName("preset");
 				
-			var defaultPresets = cometeeq.getDefaultPresets();
+			var defaultPresets = this.getDefaultPresets();
             
             var selectedItem = null;
             var currentPresets = [];
             //On parcours les presets du fichier de paramétrage
-            for (var i in presets)
-            {
+            for (var i = 0; i < presets.length; i++) {
                 // Création du oncommand en fonction des paramètres band du Presets
-                var node = presets[i];
                 var name = presets[i].getAttribute("name");
                 currentPresets[name] = [];
                 
-                var bands = node.getElementsByTagName("band");
+                var bands = presets[i].getElementsByTagName("band");
                 for(var j = 0; j< bands.length; j++){ 
-                    var element = bands[j]; 
-                    currentPresets[name][j] = element.firstChild.nodeValue;
+                    currentPresets[name][j] = bands[j].firstChild.nodeValue;
                 }
                 
             }
             
-            // iterate over the currentPresets first, since those are potentially bigger than the defaults
-            // restores the default presets
-            for( var otherName in currentPresets ) {
-                for( var presetName in defaultPresets ) {
-                    if( otherName == presetName ) {
-                        currentPresets[otherName] = defaultPresets[presetName];
-                    }
-                }
+            // set the default presets to the default values
+            for( var presetName in defaultPresets ) {
+                currentPresets[presetName] = defaultPresets[presetName];
             }
 				
 			// creation d'un parser DOM,
@@ -473,8 +495,18 @@ cometeeq = {
 			}
             
             if( isCurrentPreset ) {
-                this.presets(preset_name,presets[preset_name][0],presets[preset_name][1],presets[preset_name][2],presets[preset_name][3],presets[preset_name][4],
-                             presets[preset_name][5],presets[preset_name][6],presets[preset_name][7],presets[preset_name][8],presets[preset_name][9]);
+                this.presets(preset_name,
+                             currentPresets[preset_name][0],
+                             currentPresets[preset_name][1],
+                             currentPresets[preset_name][2],
+                             currentPresets[preset_name][3],
+                             currentPresets[preset_name][4],
+                             currentPresets[preset_name][5],
+                             currentPresets[preset_name][6],
+                             currentPresets[preset_name][7],
+                             currentPresets[preset_name][8],
+                             currentPresets[preset_name][9]
+                            );
             }
 		
 		}
