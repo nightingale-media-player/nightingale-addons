@@ -461,11 +461,11 @@ cometeeq = {
 			//On recharge la liste
 			cometeeq.loadList();
             
-            // ease to the restored values if it is the current preset
+            // ease to the restored values if a default preset is the current preset
             var isCurrentPreset = false;
             var preset_name = document.getElementById("currentpreset").value;
             
-            for (var preset in presets) {
+            for (var preset in defaultPresets) {
 				if(preset == preset_name){
 					isCurrentPreset = true;
                     break;
