@@ -17,20 +17,17 @@
     <stringbundleset id="strbundles">
         <stringbundle id="messages" src="chrome://cometeeq/locale/messages.properties"/>
     </stringbundleset>
-    
-	<vbox>
-        <hbox>
-            <button id="Save" label="&Save;" oncommand="cometeeq.savePreset()" flex="1"/>
-            <button id="Delete" label="&Delete;" oncommand="cometeeq.deletePreset()" flex="1"/>
-            <button id="Restore" label="&Restore;" oncommand="cometeeq.restorePreset()" flex="1"/>
-        </hbox>
-	</vbox>
-	
 
 	<menulist preference="currentpreset" id="currentpreset" label="Presets" width="80" editable="true">
 		<menupopup id="presets">
 		</menupopup>
     </menulist>
+    <hbox>
+        <button id="Save" label="&Save;" oncommand="cometeeq.savePreset()" flex="1"/>
+        <button id="Delete" label="&Delete;" oncommand="cometeeq.deletePreset()" flex="1"/>
+        <button id="Restore" label="&Restore;" oncommand="cometeeq.restorePreset()" flex="1"/>
+    </hbox>
+	
 	
 	<!-- Contribution de GeekShadow-->
 	<!--

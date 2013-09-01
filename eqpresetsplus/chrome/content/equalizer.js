@@ -290,7 +290,8 @@ cometeeq = {
 		var xmlDoc = cometeeq.readXMLDocument(path);
 		
 		//récupérer nom preset
-		var preset_name = document.getElementById("currentpreset").value;
+		var preset_name = document.getElementById('presets').parentNode.inputField.value;
+        alert( preset_name );
 		
 		//récupérer valeur preset
 		var bandSet = new Array();
@@ -302,7 +303,6 @@ cometeeq = {
 			bandSet[i] = this.mm.equalizer.getBand(""+i).gain;
 		}
 		
-        alert( preset_name );
 		//créer DOM preset
 		if(preset_name != ""){
 			var oldy = null;
@@ -384,7 +384,7 @@ cometeeq = {
 		//récupérer le string bundle
 		var strbundle = document.getElementById("messages");
 		
-		var preset = document.getElementById("currentpreset").value;
+		var preset = document.getElementById('presets').parentNode.inputField.value;
 		
 		// Lecture du fichier de présets
 		var path = cometeeq.getFilePathInProfile("cometeeq_presets.xml");
@@ -485,7 +485,7 @@ cometeeq = {
             
             // ease to the restored values if a default preset is the current preset
             var isCurrentPreset = false;
-            var preset_name = document.getElementById("currentpreset").value;
+            var preset_name = document.getElementById('presets').parentNode.inputField.value;
             
             for (var preset in defaultPresets) {
 				if(preset == preset_name){
