@@ -20,20 +20,19 @@ Cu.import('resource://app/jsmodules/StringUtils.jsm');
 var Application = Cc["@mozilla.org/fuel/application;1"]
                     .getService(Ci.fuelIApplication);
 
-// A few constants
-const NODE_SERVICES = 'SB:Services';
-const SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
-
-const FIRSTRUN_PREF = "extensions.beatport.firstrun";
-const ADDON_ID = 'beatport@getnightingale.com';
-
-const ICON = 'chrome://beatport/skin/small-icon.png';
-
 // Make a namespace.
 if (typeof Beatport == 'undefined') {
   var Beatport = {};
 }
 
+// A few constants
+Beatport.NODE_SERVICES = 'SB:Services';
+Beatport.SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
+
+Beatport.FIRSTRUN_PREF = "extensions.beatport.firstrun";
+Beatport.ADDON_ID = 'beatport@getnightingale.com';
+
+Beatport.ICON = 'chrome://beatport/skin/small-icon.png';
 
 /**
  * UI controller that is loaded into the main player window
@@ -66,8 +65,8 @@ Beatport.Controller = {
     observerService.addObserver(Beatport.Observer,'em-action-requested',false);
 
     // Perform extra actions the first time the extension is run
-    if (Application.prefs.get(FIRSTRUN_PREF).value) {
-      Application.prefs.setValue(FIRSTRUN_PREF, false);
+    if (Application.prefs.get(Beatport.FIRSTRUN_PREF).value) {
+      Application.prefs.setValue(Beatport.FIRSTRUN_PREF, false);
       this._firstRunSetup();
     }
     this._addServicePaneNode();
@@ -77,15 +76,15 @@ Beatport.Controller = {
   _searchService: null,
 
   _addServicePaneNode: function() {
-      var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
+      var servicesNode = this._servicePaneService.getNode(Beatport.NODE_SERVICES);
       // add the services node if it doesn't exist
       if (!servicesNode) {
         servicesNode = this._servicePaneService.createNode();
-        servicesNode.id = NODE_SERVICES;
+        servicesNode.id = Beatport.NODE_SERVICES;
         servicesNode.className = 'folder services';
         servicesNode.editable = false;
         servicesNode.name = SBString("servicesource.services");
-        servicesNode.setAttributeNS(SERVICEPANE_NS, 'Weight', 1);
+        servicesNode.setAttributeNS(Beatport.SERVICEPANE_NS, 'Weight', 1);
         this._servicePaneService.root.appendChild(servicesNode);
       } else {
         servicesNode.hidden = false;
@@ -95,17 +94,17 @@ Beatport.Controller = {
       var myNode = this._servicePaneService.createNode();
       myNode.id = 'NG:Beatport';
       myNode.url = 'http://beatport.com';
-      myNode.image = ICON;
+      myNode.image = Beatport.ICON;
       myNode.className = 'Beatport Music history';
       myNode.searchtype = "Beatport";
       myNode.name = SBString('storeName',null,this._strings);
       //myNode.stringbundle = STRINGBUNDLE;
-      myNode.setAttributeNS(SERVICEPANE_NS, "addonID", ADDON_ID);
+      myNode.setAttributeNS(Beatport.SERVICEPANE_NS, "addonID", Beatport.ADDON_ID);
       servicesNode.appendChild(myNode);
   },
 
   _removeServicePaneNode: function() {
-    var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
+    var servicesNode = this._servicePaneService.getNode(Beatport.NODE_SERVICES);
     servicesNode.removeChild(this._servicePaneService.getNode("NG:Beatport"));
     
     if(!servicesNode.childNodes.hasMoreElements()) {
@@ -122,7 +121,7 @@ Beatport.Controller = {
       // Register our new search engine
       this._searchService
           .addEngineWithDetails("Beatport",
-                                ICON,
+                                Beatport.ICON,
                                 "Beatport",
                                 SBString('storeName',null,this._strings),
                                 "GET",
@@ -161,7 +160,7 @@ Beatport.Controller = {
   },
 
   uninstall: function() {
-    Application.prefs.setValue(FIRSTRUN_PREF, true);
+    Application.prefs.setValue(Beatport.FIRSTRUN_PREF, true);
 
     // remove the search engine
     this._removeSearchEngine();
@@ -182,7 +181,7 @@ Beatport.Observer = {
     subject.QueryInterface(Ci.nsIUpdateItem);
     
     // only do actions if the subject is this extension
-    if(subject.id==ADDON_ID) {
+    if(subject.id==Beatport.ADDON_ID) {
       if((data=='item-uninstalled'||data=='item-disabled')&&Beatport.Controller._initialized) {
         Beatport.Controller.uninstall();
       }
@@ -195,4 +194,3 @@ Beatport.Observer = {
 };
 
 window.addEventListener("load", function(e) { Beatport.Controller.onLoad(e); }, false);
-

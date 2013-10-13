@@ -20,20 +20,19 @@ Cu.import('resource://app/jsmodules/StringUtils.jsm');
 var Application = Cc["@mozilla.org/fuel/application;1"]
                     .getService(Ci.fuelIApplication);
 
-// A few constants
-const NODE_SERVICES = 'SB:Services';
-const SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
-
-const FIRSTRUN_PREF = "extensions.bandcamp.firstrun";
-const ADDON_ID = 'bandcamp@getnightingale.com';
-
-const ICON = 'chrome://bandcamp/skin/small-icon.png';
-
 // Make a namespace.
 if (typeof Bandcamp == 'undefined') {
   var Bandcamp = {};
 }
 
+// A few constants
+Bandcamp.NODE_SERVICES = 'SB:Services';
+Bandcamp.SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
+
+Bandcamp.FIRSTRUN_PREF = "extensions.bandcamp.firstrun";
+Bandcamp.ADDON_ID = 'bandcamp@getnightingale.com';
+
+Bandcamp.ICON = 'chrome://bandcamp/skin/small-icon.png';
 
 /**
  * UI controller that is loaded into the main player window
@@ -66,8 +65,8 @@ Bandcamp.Controller = {
     observerService.addObserver(Bandcamp.Observer,'em-action-requested',false);
 
     // Perform extra actions the first time the extension is run
-    if (Application.prefs.get(FIRSTRUN_PREF).value) {
-      Application.prefs.setValue(FIRSTRUN_PREF, false);
+    if (Application.prefs.get(Bandcamp.FIRSTRUN_PREF).value) {
+      Application.prefs.setValue(Bandcamp.FIRSTRUN_PREF, false);
       this._firstRunSetup();
     }
     this._addServicePaneNode();
@@ -77,15 +76,15 @@ Bandcamp.Controller = {
   _searchService: null,
 
   _addServicePaneNode: function() {
-      var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
+      var servicesNode = this._servicePaneService.getNode(Bandcamp.NODE_SERVICES);
       // add the services node if it doesn't exist
       if (!servicesNode) {
         servicesNode = this._servicePaneService.createNode();
-        servicesNode.id = NODE_SERVICES;
+        servicesNode.id = Bandcamp.NODE_SERVICES;
         servicesNode.className = 'folder services';
         servicesNode.editable = false;
         servicesNode.name = SBString("servicesource.services");
-        servicesNode.setAttributeNS(SERVICEPANE_NS, 'Weight', 1);
+        servicesNode.setAttributeNS(Bandcamp.SERVICEPANE_NS, 'Weight', 1);
         this._servicePaneService.root.appendChild(servicesNode);
       } else {
         servicesNode.hidden = false;
@@ -95,17 +94,17 @@ Bandcamp.Controller = {
       var myNode = this._servicePaneService.createNode();
       myNode.id = 'NG:Bandcamp';
       myNode.url = 'http://bandcamp.com';
-      myNode.image = ICON;
+      myNode.image = Bandcamp.ICON;
       myNode.className = 'Bandcamp Music history';
       myNode.searchtype = "Bandcamp";
       myNode.name = SBString('storeName',null,this._strings);
       //myNode.stringbundle = STRINGBUNDLE;
-      myNode.setAttributeNS(SERVICEPANE_NS, "addonID", ADDON_ID);
+      myNode.setAttributeNS(Bandcamp.SERVICEPANE_NS, "addonID", Bandcamp.ADDON_ID);
       servicesNode.appendChild(myNode);
   },
 
   _removeServicePaneNode: function() {
-    var servicesNode = this._servicePaneService.getNode(NODE_SERVICES);
+    var servicesNode = this._servicePaneService.getNode(Bandcamp.NODE_SERVICES);
     servicesNode.removeChild(this._servicePaneService.getNode("NG:Bandcamp"));
     
     if(!servicesNode.childNodes.hasMoreElements()) {
@@ -122,7 +121,7 @@ Bandcamp.Controller = {
       // Register our new search engine
       this._searchService
           .addEngineWithDetails("Bandcamp",
-                                ICON,
+                                Bandcamp.ICON,
                                 "Bandcamp",
                                 SBString('storeName',null,this._strings),
                                 "GET",
@@ -161,7 +160,7 @@ Bandcamp.Controller = {
   },
 
   uninstall: function() {
-    Application.prefs.setValue(FIRSTRUN_PREF, true);
+    Application.prefs.setValue(Bandcamp.FIRSTRUN_PREF, true);
 
     // remove the search engine
     this._removeSearchEngine();
@@ -182,7 +181,7 @@ Bandcamp.Observer = {
     subject.QueryInterface(Ci.nsIUpdateItem);
     
     // only do actions if the subject is this extension
-    if(subject.id==ADDON_ID) {
+    if(subject.id==Bandcamp.ADDON_ID) {
       if((data=='item-uninstalled'||data=='item-disabled')&&Bandcamp.Controller._initialized) {
         Bandcamp.Controller.uninstall();
       }
@@ -195,4 +194,3 @@ Bandcamp.Observer = {
 };
 
 window.addEventListener("load", function(e) { Bandcamp.Controller.onLoad(e); }, false);
-
