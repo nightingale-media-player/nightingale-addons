@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE overlay SYSTEM "chrome://cometeeq/locale/overlay.dtd">
+<!--
+
+<!DOCTYPE overlay [
+<!ENTITY % cometeeq SYSTEM "chrome://cometeeq/locale/overlay.dtd">
+%cometeeq;
+]>-->
+
+<overlay id="equalizer" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+  <vbox>
+    <preferences>
+		<preference id="currentpreset" name="extensions.cometeeq.currentpreset" type="string"/>
+    </preferences>
+	
+    <stringbundleset id="strbundles">
+        <stringbundle id="messages" src="chrome://cometeeq/locale/messages.properties"/>
+    </stringbundleset>
+
+	<menulist preference="currentpreset" id="currentpreset" label="Presets" width="80" editable="true">
+		<menupopup id="presets">
+		</menupopup>
+    </menulist>
+    <hbox>
+        <button id="Save" label="&Save;" oncommand="cometeeq.savePreset()" flex="1"/>
+        <button id="Delete" label="&Delete;" oncommand="cometeeq.deletePreset()" flex="1"/>
+        <button id="Restore" label="&Restore;" oncommand="cometeeq.restorePreset()" flex="1"/>
+    </hbox>
+	
+	
+	<!-- Contribution de GeekShadow-->
+	<!--
+    <menulist preference="currentpreset" label="Presets" width="80">
+     <menupopup id="presets">
+      <menuitem value="classical"       label="&equalizer.preset.classical;"                  oncommand="cometeeq.presets('classical','0','0','0','0','0','0','-0.2','-0.2','-0.2','-0.4')" />
+      <menuitem value="club"            label="&equalizer.preset.club;"                       oncommand="cometeeq.presets('club','0','0','0.15','0.2','0.2','0.2','0.15','0','0','0')" />
+      <menuitem value="dance"           label="&equalizer.preset.dance;"                      oncommand="cometeeq.presets('dance','0.5','0.25','0.05','0','0','-0.2','-0.3','-0.3','0','0')" />
+      <menuitem value="flat"            label="Flat"                                          oncommand="cometeeq.presets('flat','0','0','0','0','0','0','0','0','0','0')" selected="true" />
+      <menuitem value="fullbass"        label="&equalizer.preset.full_bass;"                  oncommand="cometeeq.presets('fullbass','0.4','0.4','0.4','0.2','0','-0.2','-0.3','-0.35','-0.4','-0.4')" />
+      <menuitem value="fullbasstreble"  label="&equalizer.preset.full_bass_treble;"           oncommand="cometeeq.presets('fullbasstreble','0.2','0.15','0','-0.3','-0.25','0','0.2','0.3','0.4','0.4')" />
+      <menuitem value="fulltreble"      label="&equalizer.preset.full_treble;"                oncommand="cometeeq.presets('fulltreble','-0.4','-0.4','-0.4','-0.15','0.1','0.4','0.8','0.8','0.8','0.8')" />
+      <menuitem value="headphones"      label="&equalizer.preset.small_speakers;"             oncommand="cometeeq.presets('headphones','0.2','0.4','0.2','-0.2','-0.15','0','0.2','0.4','0.6','0.7')" />
+      <menuitem value="largehall"       label="&equalizer.preset.large_hall;"                 oncommand="cometeeq.presets('largehall','0.45','0.45','0.2','0.2','0','-0.2','-0.2','-0.2','0','0')" />
+      <menuitem value="live"            label="&equalizer.preset.live;"                       oncommand="cometeeq.presets('live','-0.2','0','0.15','0.2','0.2','0.2','0.1','0.05','0.05','0')" />
+      <menuitem value="party"           label="&equalizer.preset.party;"                      oncommand="cometeeq.presets('party','0.25','0.25','0','0','0','0','0','0','0.25','0.25')" />
+      <menuitem value="pop"             label="&equalizer.preset.pop;"                        oncommand="cometeeq.presets('pop','-0.15','0.15','0.2','0.25','0.15','-0.15','-0.15','-0.15','-0.1','-0.1')" />
+      <menuitem value="reggae"          label="&equalizer.preset.reggae;"                     oncommand="cometeeq.presets('reggae','0','0','-0.1','-0.2','0','0.2','0.2','0','0','0')" />
+      <menuitem value="rock"            label="&equalizer.preset.rock;"                       oncommand="cometeeq.presets('rock','0.3','0.15','-0.2','-0.3','-0.1','0.15','0.3','0.35','0.35','0.35')" />
+      <menuitem value="ska"             label="&equalizer.preset.ska;"                        oncommand="cometeeq.presets('ska','-0.1','-0.15','-0.12','-0.05','0.15','0.2','0.3','0.3','0.4','0.3')" />
+      <menuitem value="soft"            label="&equalizer.preset.soft;"                       oncommand="cometeeq.presets('soft','0.2','0','-0.1','-0.15','-0.1','0.2','0.3','0.35','0.4','0.5')" />
+      <menuitem value="softrock"        label="&equalizer.preset.soft_rock;"                  oncommand="cometeeq.presets('softrock','0.2','0.2','0','-0.1','-0.2','-0.3','-0.2','-0.1','0.2','0.4')" />
+      <menuitem value="techno"          label="&equalizer.preset.techno;"                     oncommand="cometeeq.presets('techno','0.3','0.25','0','-0.25','-0.2','0','0.3','0.35','0.35','0.3')" />
+     </menupopup>
+    </menulist>-->
+  <script src="equalizer.js"/>
+</vbox>
+</overlay>
