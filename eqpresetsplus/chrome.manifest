@@ -1,0 +1,11 @@
+content cometeeq  chrome/content/
+
+locale  cometeeq  en-US  chrome/locale/en-US/
+locale  cometeeq  fr-FR  chrome/locale/fr-FR/
+
+skin    cometeeq  classic/1.0 chrome/skin/
+
+overlay chrome://songbird/content/xul/mediacore/mediacoreEqualizer.xul chrome://cometeeq/content/equalizer.xul
+overlay chrome://equalizerpane/content/pane.xul chrome://cometeeq/content/equalizer.xul
+
+

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<presets>
+	<preset name="test">
+		<band>0.1</band>
+		<band>0.2</band>
+		<band>0.3</band>
+		<band>0.4</band>
+		<band>0.5</band>
+		<band>0.6</band>
+		<band>0.7</band>
+		<band>0.8</band>
+		<band>0.9</band>
+	</preset>
+</presets>

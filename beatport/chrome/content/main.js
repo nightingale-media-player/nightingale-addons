@@ -21,23 +21,23 @@ var Application = Cc["@mozilla.org/fuel/application;1"]
                     .getService(Ci.fuelIApplication);
 
 // Make a namespace.
-if (typeof Bandcamp == 'undefined') {
-  var Bandcamp = {};
+if (typeof Beatport == 'undefined') {
+  var Beatport = {};
 }
 
 // A few constants
-Bandcamp.NODE_SERVICES = 'SB:Services';
-Bandcamp.SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
+Beatport.NODE_SERVICES = 'SB:Services';
+Beatport.SERVICEPANE_NS = 'http://songbirdnest.com/rdf/servicepane#';
 
-Bandcamp.FIRSTRUN_PREF = "extensions.bandcamp.firstrun";
-Bandcamp.ADDON_ID = 'bandcamp@getnightingale.com';
+Beatport.FIRSTRUN_PREF = "extensions.beatport.firstrun";
+Beatport.ADDON_ID = 'beatport@getnightingale.com';
 
-Bandcamp.ICON = 'chrome://bandcamp/skin/small-icon.png';
+Beatport.ICON = 'chrome://beatport/skin/small-icon.png';
 
 /**
  * UI controller that is loaded into the main player window
  */
-Bandcamp.Controller = {
+Beatport.Controller = {
 
   /**
    * Called when the window finishes loading
@@ -47,7 +47,7 @@ Bandcamp.Controller = {
     this._initialized = true;
     this._strings = Cc["@mozilla.org/intl/stringbundle;1"]
                        .getService(Ci.nsIStringBundleService)
-                       .createBundle("chrome://bandcamp/locale/overlay.properties");
+                       .createBundle("chrome://beatport/locale/overlay.properties");
 
      /* SEARCH ENGINE */
   	// Get the search engine service
@@ -62,11 +62,11 @@ Bandcamp.Controller = {
     var observerService = Cc["@mozilla.org/observer-service;1"]
                             .getService(Ci.nsIObserverService);
 
-    observerService.addObserver(Bandcamp.Observer,'em-action-requested',false);
+    observerService.addObserver(Beatport.Observer,'em-action-requested',false);
 
     // Perform extra actions the first time the extension is run
-    if (Application.prefs.get(Bandcamp.FIRSTRUN_PREF).value) {
-      Application.prefs.setValue(Bandcamp.FIRSTRUN_PREF, false);
+    if (Application.prefs.get(Beatport.FIRSTRUN_PREF).value) {
+      Application.prefs.setValue(Beatport.FIRSTRUN_PREF, false);
       this._firstRunSetup();
     }
     this._addServicePaneNode();
@@ -76,36 +76,36 @@ Bandcamp.Controller = {
   _searchService: null,
 
   _addServicePaneNode: function() {
-      var servicesNode = this._servicePaneService.getNode(Bandcamp.NODE_SERVICES);
+      var servicesNode = this._servicePaneService.getNode(Beatport.NODE_SERVICES);
       // add the services node if it doesn't exist
       if (!servicesNode) {
         servicesNode = this._servicePaneService.createNode();
-        servicesNode.id = Bandcamp.NODE_SERVICES;
+        servicesNode.id = Beatport.NODE_SERVICES;
         servicesNode.className = 'folder services';
         servicesNode.editable = false;
         servicesNode.name = SBString("servicesource.services");
-        servicesNode.setAttributeNS(Bandcamp.SERVICEPANE_NS, 'Weight', 1);
+        servicesNode.setAttributeNS(Beatport.SERVICEPANE_NS, 'Weight', 1);
         this._servicePaneService.root.appendChild(servicesNode);
       } else {
         servicesNode.hidden = false;
       }
 
-      // create Bandcamp node
+      // create Beatport node
       var myNode = this._servicePaneService.createNode();
-      myNode.id = 'NG:Bandcamp';
-      myNode.url = 'http://bandcamp.com';
-      myNode.image = Bandcamp.ICON;
-      myNode.className = 'Bandcamp Music history';
-      myNode.searchtype = "Bandcamp";
+      myNode.id = 'NG:Beatport';
+      myNode.url = 'http://beatport.com';
+      myNode.image = Beatport.ICON;
+      myNode.className = 'Beatport Music history';
+      myNode.searchtype = "Beatport";
       myNode.name = SBString('storeName',null,this._strings);
       //myNode.stringbundle = STRINGBUNDLE;
-      myNode.setAttributeNS(Bandcamp.SERVICEPANE_NS, "addonID", Bandcamp.ADDON_ID);
+      myNode.setAttributeNS(Beatport.SERVICEPANE_NS, "addonID", Beatport.ADDON_ID);
       servicesNode.appendChild(myNode);
   },
 
   _removeServicePaneNode: function() {
-    var servicesNode = this._servicePaneService.getNode(Bandcamp.NODE_SERVICES);
-    servicesNode.removeChild(this._servicePaneService.getNode("NG:Bandcamp"));
+    var servicesNode = this._servicePaneService.getNode(Beatport.NODE_SERVICES);
+    servicesNode.removeChild(this._servicePaneService.getNode("NG:Beatport"));
     
     if(!servicesNode.childNodes.hasMoreElements()) {
         this._servicePaneService.root.removeChild(servicesNode);
@@ -113,21 +113,21 @@ Bandcamp.Controller = {
   },
 
   _addSearchEngine: function() {
-    var engine = this._searchService.getEngineByName("Bandcamp");
+    var engine = this._searchService.getEngineByName("Beatport");
 
     if(!engine) {
       // code mainly from GeekShadow
 
       // Register our new search engine
       this._searchService
-          .addEngineWithDetails("Bandcamp",
-                                Bandcamp.ICON,
-                                "Bandcamp",
+          .addEngineWithDetails("Beatport",
+                                Beatport.ICON,
+                                "Beatport",
                                 SBString('storeName',null,this._strings),
                                 "GET",
-                                'http://www.bandcamp.com/search?q={searchTerms}');
+                                'http://www.beatport.com/search?query={searchTerms}');
       // Get a reference back to our new search engine we just registered
-      engine = this._searchService.getEngineByName("Bandcamp");
+      engine = this._searchService.getEngineByName("Beatport");
 
       // Move it to be the first/primary search engine
       //if (searchEngine)
@@ -138,7 +138,7 @@ Bandcamp.Controller = {
   },
 
   _removeSearchEngine: function() {
-    var engine = this._searchService.getEngineByName("Bandcamp");
+    var engine = this._searchService.getEngineByName("Beatport");
     if (engine) {
       this._searchService.removeEngine(engine);
     }
@@ -160,7 +160,7 @@ Bandcamp.Controller = {
   },
 
   uninstall: function() {
-    Application.prefs.setValue(Bandcamp.FIRSTRUN_PREF, true);
+    Application.prefs.setValue(Beatport.FIRSTRUN_PREF, true);
 
     // remove the search engine
     this._removeSearchEngine();
@@ -176,21 +176,21 @@ Bandcamp.Controller = {
   
 };
 
-Bandcamp.Observer = {
+Beatport.Observer = {
   observe: function(subject,topic,data) {
     subject.QueryInterface(Ci.nsIUpdateItem);
     
     // only do actions if the subject is this extension
-    if(subject.id==Bandcamp.ADDON_ID) {
-      if((data=='item-uninstalled'||data=='item-disabled')&&Bandcamp.Controller._initialized) {
-        Bandcamp.Controller.uninstall();
+    if(subject.id==Beatport.ADDON_ID) {
+      if((data=='item-uninstalled'||data=='item-disabled')&&Beatport.Controller._initialized) {
+        Beatport.Controller.uninstall();
       }
       // if the user changes his mind in runtime, we want to revert our actions
-      else if((data=='item-cancel-action'||data=='item-enabled')&&!Bandcamp.Controller._initialized) {
-        Bandcamp.Controller.onLoad();
+      else if((data=='item-cancel-action'||data=='item-enabled')&&!Beatport.Controller._initialized) {
+        Beatport.Controller.onLoad();
       }
     }
   }
 };
 
-window.addEventListener("load", function(e) { Bandcamp.Controller.onLoad(e); }, false);
+window.addEventListener("load", function(e) { Beatport.Controller.onLoad(e); }, false);
