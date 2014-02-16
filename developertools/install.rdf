@@ -32,7 +32,7 @@
       <Description>
         <em:id>nightingale@getnightingale.com</em:id>
         <em:minVersion>1.9.0a</em:minVersion>
-        <em:maxVersion>1.11.*</em:maxVersion>
+        <em:maxVersion>1.12.*</em:maxVersion>
       </Description>
     </em:targetApplication>    
 
