@@ -39,6 +39,7 @@
     <command id="sbdevtools-launch-debugger" oncommand="SBDevTools.Controller.launchJavascriptDebugger();"/>
     <command id="sbdevtools-restart" oncommand="SBDevTools.Controller.restart();"/>
     <command id="sbdevtools-refresh-ui" oncommand="SBDevTools.Controller.refreshUI();"/>
+    <command id="sbdevtools-xpcomviewer" oncommand="SBDevTools.Controller.launchXPCOMViewer();"/>
   </commandset>
   
   <keyset id="mainKeyset">
@@ -68,6 +69,11 @@
             insertafter="devToolsSeparator"
             key="sbdevtools-debugger-key"
             command="sbdevtools-launch-debugger"/>
+
+    <menuitem id="sbdevtools-xpcomviewer-menuitem"
+            label="XPCOM Viewer"
+            insertafter="devToolsSeparator"
+            command="sbdevtools-xpcomviewer"/>
 
     <menuitem id="sbdevtools-xul-table-menuitem"
             label="&sbdevtools.menu.xultable;" 

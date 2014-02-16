@@ -190,6 +190,14 @@ if (typeof SBDevTools.Controller == 'undefined') {
         gBrowser.loadURI(pref.value);
       }    
     }, 
+
+    /**
+     * Launch the XPCOM Viewer
+     */
+     launchXPCOMViewer: function() {
+       window.open("chrome://xpcomviewer/content/xv.xul","xpcomviewer",   
+	        "chrome,extrachrome,menubar,resizable,width=700,height=550,scrollbars,status,toolbar,titlebar");
+     },
     
 
     /** 
