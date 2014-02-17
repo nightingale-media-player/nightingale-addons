@@ -6,7 +6,7 @@
   
     <em:id>developer-tools@getnightingale.com</em:id>
     <em:name>Nightingale Developer Tools</em:name>
-    <em:version>0.7.20140216</em:version>
+    <em:version>0.7.20140217</em:version>
     <em:description>A collection of essential utilities for feathers designers and extension developers.</em:description>
     <em:creator>POTI Inc.</em:creator>
     
@@ -14,7 +14,9 @@
     <em:contributor>Ted Mielczarek (Extension Developer's Extension)</em:contributor>
     <em:contributor>Jesse Ruderman (JS Environment)</em:contributor>
     <em:contributor>Ondrej Donek (XPCOM Viewer)</em:contributor>
+    <em:contributor>Robert Ginda (Venkman JS Debugger)</em:contributor>
     <em:contributor>Antoine Turmel (Several improvements)</em:contributor>
+    <em:contributor>Mark Becwar (Small Fixes)</em:contributor>
 
     <em:iconURL>chrome://sbdevtools/skin/developer-tools.png</em:iconURL>
 

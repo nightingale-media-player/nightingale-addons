@@ -45,7 +45,7 @@
       </html:ul>
     </description>
     <vbox flex="1"/>
-    <label class="text-link" value="&overview.link;" href="http://wiki.songbirdnest.com/Developer/Developer_Intro/Extensions"/>
+    <label class="text-link" value="&overview.link;" href="http://wiki.getnightingale.com/doku.php"/>
   </wizardpage>
   
   <!-- Filled by wizard-common-overlay.xul -->
@@ -84,7 +84,7 @@
     <checkbox id="restart" label="&ready.restart.checkbox;" checked="true" />
     <description>&ready.instructions;</description>
     <vbox flex="1"/>
-    <label class="text-link" value="&ready.link;" href="http://wiki.songbirdnest.com/Developer/Developer_Intro/Extensions"/>
+    <label class="text-link" value="&ready.link;" href="http://wiki.getnightingale.com/doku.php"/>
   </wizardpage>
 
   <script type="application/x-javascript" src="chrome://explorer/content/tools/abstract-generator-wizard.js"/>

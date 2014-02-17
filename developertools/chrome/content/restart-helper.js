@@ -34,7 +34,7 @@ const SBDEVTOOLS_DEFERRED_ACTION_PREFBRANCH = "sbdevtools.deferredActions";
 
 
 /**
- * Helper object for restarting Songbird and 
+ * Helper object for restarting Nightingale and 
  * deferring actions until after a restart has
  * occurred. 
  */
@@ -99,8 +99,8 @@ SBDevTools.RestartHelper = {
           try {
            object.run();
           } catch (e) {
-           alert("Developer Tools: An error occurred while restarting Songbird.\n" +
-                 "Please report the following message to http://bugzilla.songbirdnest.com:\n\n" +
+           alert("Developer Tools: An error occurred while restarting Nightingale.\n" +
+                 "Please report the following message to https://github.com/nightingale-media-player/nightingale-addons/issues:\n\n" +
                  e.toString());
           }
           prefs.clearUserPref(prefName);
@@ -116,7 +116,7 @@ SBDevTools.RestartHelper = {
   
   
   /**
-   * Super hacky songbird restart notification.  Sigh.
+   * Super hacky nightingale restart notification.  Sigh.
    */
   restart : function() {
     var createDataRemote =  new Components.Constructor(

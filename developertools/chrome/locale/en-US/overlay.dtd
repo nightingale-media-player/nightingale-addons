@@ -15,3 +15,5 @@
 <!ENTITY sbdevtools.menu.createfeathers "Create Feathers...">
 <!ENTITY sbdevtools.menu.createextension "Create Extension...">
 <!ENTITY sbdevtools.menu.linkexistingextension "Link Extension in Test Mode...">
+<!ENTITY sbdevtools.menu.xpcomviewer "XPCOM Viewer...">
+<!ENTITY sbdevtools.menu.xpcomviewer.key "X">

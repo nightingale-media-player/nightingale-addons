@@ -143,7 +143,7 @@ var ExtensionWizard = {
     if (file.exists()) {
       // ok, this exists. hmm, lets prompt the user to see if they want to
       // delete it
-      if (confirm("The extension is already installed in Songbird under " +
+      if (confirm("The extension is already installed in Nightingale under " +
                   "this profile. Remove it?") == true) {
         file.remove(true);
       }
@@ -166,7 +166,7 @@ var ExtensionWizard = {
   
   
   /**
-   * Cause Songbird to display a congrats 
+   * Cause Nightingale to display a congrats 
    * page on restart
    */
   deferCompletion: function(packageName) {
@@ -280,7 +280,7 @@ var ExtensionWizard = {
     
     } catch (e) {
       alert("Sorry, an error occurred while generating your add-on.  \n" +
-            "Please report the following error to http://bugzilla.songbirdnest.com:\n\n" +
+            "Please report the following error to https://github.com/nightingale-media-player/nightingale-addons/issues:\n\n" +
             e.toString());
     }
   }

@@ -35,7 +35,7 @@ if (typeof SBDevTools == 'undefined') {
  * ExtensionGenerator
  * 
  * Extends the XUL-Explorer ExtensionGenerator to support
- * Feathers and other Songbird specific extension types.
+ * Feathers and other Nightingale specific extension types.
  */
 
 SBDevTools.ExtensionGenerator = function() {

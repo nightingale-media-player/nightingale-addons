@@ -115,7 +115,7 @@ if (typeof SBDevTools.Controller == 'undefined') {
     },
 
     linkExistingExtension: function() { 
-      alert("This tool installs an unzipped, existing extension for convenience while developing. Please browse to your install.rdf file. If you disable the XUL Cache, you will be able to make many changes without restarting Songbird.");
+      alert("This tool installs an unzipped, existing extension for convenience while developing. Please browse to your install.rdf file. If you disable the XUL Cache, you will be able to make many changes without restarting Nightingale.");
       var fp = Components.classes["@mozilla.org/filepicker;1"]
                          .createInstance(Components.interfaces.nsIFilePicker);
       fp.appendFilter("Install.rdf","*.rdf");
@@ -157,7 +157,7 @@ if (typeof SBDevTools.Controller == 'undefined') {
         stream.write(content, content.length);
         stream.close();
 
-        alert("Done. The extension will be loaded (if it works!) when you restart Songbird.");
+        alert("Done. The extension will be loaded (if it works!) when you restart Nightingale.");
       }
     },
 
@@ -201,7 +201,7 @@ if (typeof SBDevTools.Controller == 'undefined') {
     
 
     /** 
-     * Relaunch Songbird
+     * Relaunch Nightingale
      */
     restart: function() {
       SBDevTools.RestartHelper.restart();
@@ -240,7 +240,7 @@ if (typeof SBDevTools.Controller == 'undefined') {
       profileService.flush();
       
       if (show) {
-        alert("The Profile Manager will be shown next time you start Songbird");
+        alert("The Profile Manager will be shown next time you start Nightingale");
       }
     },
     
