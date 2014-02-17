@@ -114,6 +114,7 @@ if (typeof SBDevTools.Controller == 'undefined') {
       window.openDialog("chrome://extensiondev/content/xuledit.xul", "_blank", "all=no,width=500,height=400,scrollbars=yes,resizable=yes,dialog=no");
     },
 
+    
     linkExistingExtension: function() { 
       alert("This tool installs an unzipped, existing extension for convenience while developing. Please browse to your install.rdf file. If you disable the XUL Cache, you will be able to make many changes without restarting Nightingale.");
       var fp = Components.classes["@mozilla.org/filepicker;1"]
@@ -199,6 +200,16 @@ if (typeof SBDevTools.Controller == 'undefined') {
 	        "chrome,extrachrome,menubar,resizable,width=700,height=550,scrollbars,status,toolbar,titlebar");
      },
     
+    /**
+     * Open XUL Browser
+     */
+    launchXULExplorer: function() {
+      window.open("chrome://explorer/content/explorer.xul", 
+                  "xulexplorer", 
+                  "chrome,extrachrome,menubar,resizable,width=700,height=550,scrollbars,status,toolbar,titlebar");
+
+    },
+
 
     /** 
      * Relaunch Nightingale

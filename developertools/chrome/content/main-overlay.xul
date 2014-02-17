@@ -59,6 +59,10 @@
          modifiers="accel shift"
          key="&sbdevtools.menu.xpcomviewer.key;"
          command="sbdevtools-restart"/>
+    <key id="sbdevtools-xulexplorer-key"
+         modifiers="accel shift"
+         key="&sbdevtools.menu.xulexplorer.key;"
+         command="sbdevtools-restart"/>
   </keyset>
 
   <menupopup id="menu_ToolsPopup"> 
@@ -79,6 +83,12 @@
             insertafter="devToolsSeparator"
             key="sbdevtools-xpcomviewer-key"
             command="sbdevtools-xpcomviewer"/>
+
+    <menuitem id="sbdevtools-xul-explorer-menuitem"
+            label="&sbdevtools.menu.xulexplorer;" 
+            insertafter="devToolsSeparator"
+            oncommand="SBDevTools.Controller.launchXULExplorer();"/> 
+
 
     <menuitem id="sbdevtools-xul-table-menuitem"
             label="&sbdevtools.menu.xultable;" 

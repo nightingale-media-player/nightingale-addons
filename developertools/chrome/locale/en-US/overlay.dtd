@@ -17,3 +17,5 @@
 <!ENTITY sbdevtools.menu.linkexistingextension "Link Extension in Test Mode...">
 <!ENTITY sbdevtools.menu.xpcomviewer "XPCOM Viewer...">
 <!ENTITY sbdevtools.menu.xpcomviewer.key "X">
+<!ENTITY sbdevtools.menu.xulexplorer "XUL Explorer">
+<!ENTITY sbdevtools.menu.xulexplorer.key "L">
