@@ -338,11 +338,11 @@ var toolsController = {
       }
       case "cmd_options":
       {
-#ifdef XP_MACOSX
-        window.openDialog("chrome://explorer/content/options.xul", "options", "chrome,titlebar,toolbar,centerscreen");
-#else
+//#ifdef XP_MACOSX
+//        window.openDialog("chrome://explorer/content/options.xul", "options", "chrome,titlebar,toolbar,centerscreen");
+//#else
         window.openDialog("chrome://explorer/content/options.xul", "options", "chrome,titlebar,toolbar,centerscreen,modal");
-#endif
+//#endif
         break;
       }
     }
