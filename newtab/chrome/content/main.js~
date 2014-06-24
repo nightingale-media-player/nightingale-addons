@@ -31,7 +31,7 @@ Newtab.Controller = {
     // Attach doHelloWorld to our helloworld command
     this.newtabCmd = document.getElementById("newtab-helloworld-cmd");
     this.newtabCmd.addEventListener("command", 
-         function() { gBrowser.addTab("about:blank"); }, false);
+         function() { gBrowser.loadOneTab("about:blank"); }, false);
 
   },
   
