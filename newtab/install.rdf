@@ -5,7 +5,7 @@
     <em:id>newtab@geekshadow.com</em:id>
     <em:type>2</em:type>
     <em:name>New Tab Button</em:name>
-    <em:version>1.2.8</em:version>
+    <em:version>1.2.9</em:version>
     <em:creator>Antoine Turmel (geekshadow@gmail.com)</em:creator>
 
     <em:description>Add a new tab button on the toolbar</em:description>
