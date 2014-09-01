@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import os
 import sys
 from zipfile import ZipFile
@@ -9,7 +11,7 @@ else:
   install = parse(os.path.join(sys.argv[1], "install.rdf"))
   element = install.getElementsByTagName("em:version")[0]
   version = element.firstChild.data
-  xpiName = sys.argv[1] + "-" + version + ".xpi"
+  xpiName = sys.argv[1].replace("/", "") + "-" + version + ".xpi"
   xpi = ZipFile(xpiName, "w")
   os.chdir(sys.argv[1])
   for root, dirs, files in os.walk("."):
