@@ -62,6 +62,9 @@
         <label value="&equalizer.band9.label;" class="sb-eq-label"/>
       </vbox>
     </hbox>
+    <vbox>
+      <xul:ng-eq-preset-list id="equalizer-pesets"/>
+    </vbox>
   </vbox>
 
   <script type="application/x-javascript" 
@@ -79,9 +82,31 @@
         
       var check_eq = document.getElementById("equalizer-check");
       check_eq.checked = this.mm.equalizer.eqEnabled;
+	
+      //BUG #240
+      //force a label update onload
+      for (var i = 0; i < 10; i++)
+      {
+        onSliderChange(i); 
+      }
 
-      //var presetList = document.getElementById("equalizer_preset_list");
-      //presetList.value = this.mm.equalizer.equalizerPreset;
+    }
+
+    //Callback function for label update
+    //Added for BUG #240
+    function onSliderChange(band)
+    {
+        var labelName = "eq-label-band" + band;
+        var label = document.getElementById(labelName);
+        var gainValue = this.mm.equalizer.getBand(band).gain;
+        
+        gainValue = Math.floor(gainValue * 100.0);
+        if (gainValue > 0) 
+          gainValue = "+" + gainValue + "%";
+        else
+          gainValue = gainValue + "%";
+
+        label.value = gainValue;
     }
 
     function onCheckEqualizer(evt) {
