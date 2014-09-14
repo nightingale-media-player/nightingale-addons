@@ -20,7 +20,7 @@ else:
           xpi.write(path, path, 8)
   xpi.close()
   os.chdir("..")
-  if os.path.exists(xpiName):
+  if os.path.exists(os.path.basename(xpiName)):
       print(xpiName + " successfully written.")
   else:
       sys.exit(xpiName + " could not be written.")
