@@ -25,7 +25,7 @@
       <Description>
         <em:id>songbird@songbirdnest.com</em:id>
         <em:minVersion>1.8.0a</em:minVersion>
-        <em:maxVersion>1.12.*</em:maxVersion>
+        <em:maxVersion>1.13.*</em:maxVersion>
       </Description>
     </em:targetApplication>
 
@@ -34,7 +34,7 @@
       <Description>
         <em:id>nightingale@getnightingale.com</em:id>
         <em:minVersion>1.9.0a</em:minVersion>
-        <em:maxVersion>1.12.*</em:maxVersion>
+        <em:maxVersion>1.13.*</em:maxVersion>
       </Description>
     </em:targetApplication>    
 
